@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Base.Theme.Wordnote" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:colorControlHighlight">#1AFFFFFF</item>
+
+    </style>
+
+    <style name="Theme.Wordnote" parent="Base.Theme.Wordnote" />
+
+    <style name="AppBaseDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="enableEdgeToEdge">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+</resources>

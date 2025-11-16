@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Word learning</string>
+    <string name="word_of_the_day">Mother fucking day</string>
+    <string name="demo">Demo</string>
+    <string name="word">WORD</string>
+    <string name="definition">Definition:</string>
+    <string name="meaning1">no idea ;0</string>
+    <string name="meaning2">meaning2</string>
+    <string name="meaning3">meaning3</string>
+    <string name="meaning4">meaning4</string>
+    <string name="meaning5">meaning5</string>
+    <string name="asasdasd">/asasdasd/</string>
+    <string name="channel_name">channel_name</string>
+    <string name="channel_description">channel_description</string>
+    <string name="search">Search</string>
+    <string name="mother_fucking_day">Mother Fucking Day</string>
+</resources>
