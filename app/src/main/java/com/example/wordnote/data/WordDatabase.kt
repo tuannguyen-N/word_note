@@ -12,3 +12,4 @@ import com.example.wordnote.data.entities.WordEntity
 abstract class WordDatabase: RoomDatabase() {
     abstract val dao: WordDao
 }
+
