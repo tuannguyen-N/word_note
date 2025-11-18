@@ -48,14 +48,14 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavView"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="7dp"
         android:background="@drawable/bg_nav"
-        android:padding="10dp"
+        android:padding="5dp"
         app:itemBackground="@drawable/nav_item_ripple"
-        app:itemIconSize="30dp"
+        app:itemIconSize="25dp"
         app:itemIconTint="@color/text_bottom_nav"
         app:itemTextColor="@color/text_bottom_nav"
         app:labelVisibilityMode="labeled"

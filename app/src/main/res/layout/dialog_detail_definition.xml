@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp"
+                android:padding="15dp"
                 tools:ignore="MissingPrefix">
 
                 <LinearLayout
@@ -33,23 +33,22 @@
                         android:id="@+id/tvWord"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/dosis_regular"
+                        android:fontFamily="@font/ubuntu_bold"
                         android:text="@string/word"
-                        android:textColor="#FFD2D2"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/black"
+                        android:textSize="25sp" />
 
-                    <TextView
-                        android:id="@+id/tvNote"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp"
-                        android:padding="6dp"
-                        android:text="@string/meaning1"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="19sp"
-                        android:textStyle="bold" />
+                    <!--                    <TextView-->
+                    <!--                        android:id="@+id/tvNote"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginHorizontal="20dp"-->
+                    <!--                        android:fontFamily="@font/ubuntu_regular"-->
+                    <!--                        android:padding="6dp"-->
+                    <!--                        android:text="@string/meaning1"-->
+                    <!--                        android:textAlignment="center"-->
+                    <!--                        android:textColor="@color/black"-->
+                    <!--                        android:textSize="19sp" />-->
 
                     <EditText
                         android:id="@+id/etNote"
@@ -57,38 +56,38 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         android:background="@null"
-                        android:inputType="text|textEmailSubject"
+                        android:fontFamily="@font/ubuntu_regular"
+                        android:hint="@string/meaning1"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
                         android:padding="6dp"
-                        android:text="You're fuck"
-                        android:textColor="@color/white"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
-
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="#80000000"
+                        android:textSize="19sp" />
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/phonetic"
+                    android:id="@+id/tvPhonetic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_regular"
                     android:text="@string/asasdasd"
-                    android:textColor="#1c828d"
+                    android:textColor="@color/blue1"
                     android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginVertical="10dp"
-                    android:background="@color/white" />
+                    android:layout_marginTop="10dp"
+                    android:background="@color/black" />
 
-                <LinearLayout
-                    android:id="@+id/meaning_container"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMeaning"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-
-                </LinearLayout>
+                    tools:itemCount="4"
+                    tools:listitem="@layout/item_meaning" />
 
             </LinearLayout>
 

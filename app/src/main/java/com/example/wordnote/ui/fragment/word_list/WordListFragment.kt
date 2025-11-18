@@ -1,50 +1,74 @@
 package com.example.wordnote.ui.fragment.word_list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wordnote.adapter.WordAdapter
+import com.example.wordnote.data.WordDatabase
+import com.example.wordnote.data.api.RetrofitInstance
+import com.example.wordnote.data.dao.WordDao
 import com.example.wordnote.databinding.FragmentWordListBinding
 import com.example.wordnote.data.entities.WordEntity
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.domain.LocalWordUseCase
+import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.ui.dialog.AddWordDialog
 import com.example.wordnote.ui.dialog.DetailDefinitionDialog
 import com.example.wordnote.ui.fragment.BaseFragment
+import com.example.wordnote.util.SortType
 import com.example.wordnote.util.SpeakingManager
+import com.example.wordnote.util.shakeView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.core.view.isVisible
 
 class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListBinding::inflate) {
     private val wordListViewModel: WordListViewModel by viewModels {
-        WordListViewModelFactory(LocalWordUseCase(WordRepository()),SpeakingManager(requireContext()))
+        WordListViewModelFactory(
+            LocalWordUseCase(
+                WordRepository(
+                    WordDatabase.getInstance(requireContext()).dao,
+                    RetrofitInstance.api
+                )
+            ),
+            SpeakingManager(requireContext())
+        )
     }
 
     private val wordAdapter = WordAdapter(
         onAction = {
             wordListViewModel.onAction(WordListAction.OnOpenDetailWordDialog(it))
         },
+        onDelete = {
+            wordListViewModel.onAction(WordListAction.OnDeleteWord(it))
+        },
         onClickTvWord = { word ->
             wordListViewModel.onAction(WordListAction.OnSpeakingWord(word))
+        },
+        onClickLevel = {
+            wordListViewModel.onAction(WordListAction.OnUpdateLevel(it))
         }
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
-        listenUIEvent()
-        listenLiveData()
         setOnClick()
+        collectState()
+        collectUIEvent()
     }
 
-    private fun listenLiveData() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            wordListViewModel.wordList.collect { listWord ->
-                wordAdapter.setItemList(listWord)
-            }
+    private fun setUpRecyclerView() {
+        binding.recyclerView.apply {
+            adapter = wordAdapter
+            layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
@@ -53,44 +77,114 @@ class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListB
             btnAddWord.setOnClickListener {
                 wordListViewModel.onAction(WordListAction.OnShowAddWordDialog)
             }
-        }
-    }
-
-    private fun listenUIEvent() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            wordListViewModel.uiEvent.collect { event ->
-                when (event) {
-                    is WordListUIEvent.ShowDetailWordDialog -> showDetailWordDialog(event.word)
-                    is WordListUIEvent.ShowAddWordDialog -> showAddWordDialog()
-                    is WordListUIEvent.ShowToast -> showToast(event.message)
+            btnSort.setOnClickListener {
+                levelContainer.root.visibility =
+                    if (levelContainer.root.isVisible) View.GONE else View.VISIBLE
+            }
+            levelContainer.apply {
+                btnLevel1.setOnClickListener {
+                    wordListViewModel.onAction(WordListAction.OnSortWords(SortType.LEVEL(1)))
+                }
+                btnLevel2.setOnClickListener {
+                    wordListViewModel.onAction(WordListAction.OnSortWords(SortType.LEVEL(2)))
+                }
+                btnLevel3.setOnClickListener {
+                    wordListViewModel.onAction(WordListAction.OnSortWords(SortType.LEVEL(3)))
+                }
+                btnLevel4.setOnClickListener {
+                    wordListViewModel.onAction(WordListAction.OnSortWords(SortType.LEVEL(4)))
+                }
+                btnLevel5.setOnClickListener {
+                    wordListViewModel.onAction(WordListAction.OnSortWords(SortType.LEVEL(5)))
                 }
             }
         }
     }
 
+    private fun collectState() {
+        /* shouldn't use that because it can cause memory leak (when fragment is destroyed, the job is not cancel)*/
+//        lifecycleScope.launch(Dispatchers.Main) { ... }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                wordListViewModel.state.collect { wordState ->
+                    loadingUI(wordState.isLoading)
+                    wordAdapter.setItemList(wordState.words)
+                    onSelectedLevel(wordState.selectedLevel)
+                }
+            }
+        }
+    }
+
+    private fun onSelectedLevel(selectedLevel: Int?) {
+        val levelButtons = mapOf(
+            binding.levelContainer.btnLevel1 to 1,
+            binding.levelContainer.btnLevel2 to 2,
+            binding.levelContainer.btnLevel3 to 3,
+            binding.levelContainer.btnLevel4 to 4,
+            binding.levelContainer.btnLevel5 to 5
+        )
+        levelButtons.forEach { (button, level) ->
+            button.alpha = if (selectedLevel == level) 1f else 0.3f
+        }
+    }
+
+    private fun loadingUI(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun collectUIEvent() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                wordListViewModel.uiEvent.collect { event ->
+                    when (event) {
+                        WordListUIEvent.ShowAddWordDialog -> showAddWordDialog()
+                        is WordListUIEvent.ShowDetailWordDialog -> showDetailWordDialog(event.word)
+                        is WordListUIEvent.ShowToast -> showToast(event.message)
+                        is WordListUIEvent.HideLevelContainer -> hideLevelContainer()
+                        is WordListUIEvent.ScrollToExistWord -> scrollToExistWord(event.word)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun scrollToExistWord(word: String) {
+        binding.recyclerView.post {
+            val index = wordAdapter.itemList.indexOfFirst { it.word.equals(word, ignoreCase = true) }
+            if (index != -1) {
+                binding.recyclerView.smoothScrollToPosition(index)
+
+                binding.recyclerView.postDelayed({
+                    val holder = binding.recyclerView.findViewHolderForAdapterPosition(index)
+                    holder?.itemView?.let { shakeView(it) }
+                }, 400)
+            }
+        }
+    }
+
+
+
+    private fun hideLevelContainer() {
+        binding.levelContainer.root.visibility = View.GONE
+    }
+
     private fun showToast(message: String) {
-        Toast.makeText(requireContext(), "Speaking $message", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun showAddWordDialog() {
         val dialog = AddWordDialog(
-            onEnter = {
-                wordListViewModel.onAction(WordListAction.OnAddNewWord(it))
+            onEnter = { word, level->
+                wordListViewModel.onAction(WordListAction.OnSaveWord(word,level))
             }
         )
         dialog.show(childFragmentManager, "AddWordDialog")
     }
 
-    private fun setUpRecyclerView() {
-        wordAdapter.setItemList()
-        binding.recyclerView.apply {
-            adapter = wordAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+    private fun showDetailWordDialog(word: WordData) {
+        val dialog = DetailDefinitionDialog(word){newWord->
+            wordListViewModel.onAction(WordListAction.OnUpdateNote(newWord))
         }
-    }
-
-    private fun showDetailWordDialog(word: WordEntity) {
-        val dialog = DetailDefinitionDialog(word)
         dialog.show(childFragmentManager, "DetailDefinitionDialog")
     }
 }

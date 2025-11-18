@@ -14,4 +14,6 @@
     <string name="channel_description">channel_description</string>
     <string name="search">Search</string>
     <string name="mother_fucking_day">Mother Fucking Day</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter">Enter</string>
 </resources>

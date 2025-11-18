@@ -7,11 +7,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white1">#fbfbfb</color>
-    <color name="background">#17181c</color>
+    <color name="background">#121212</color>
     <color name="background1">#27292d</color>
     <color name="item">#eeff57</color>
     <color name="item_white">#e5f0ff</color>
     <color name="yellow">#fecd54</color>
     <color name="transparent">#00000000</color>
     <color name="orange">#f19c59</color>
+    <color name="blue1">#1c828d</color>
 </resources>

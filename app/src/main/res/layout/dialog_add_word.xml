@@ -14,60 +14,95 @@
         android:background="@drawable/bg_dialog"
         android:gravity="end"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp">
 
         <EditText
             android:id="@+id/etWord"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background_et_border"
+            android:fontFamily="@font/ubuntu_regular"
             android:hint="Enter a word"
+            android:includeFontPadding="false"
             android:inputType="text"
-            android:textColor="@color/background"
+            android:padding="14dp"
+            android:textColor="@color/black"
             android:textColorHint="@color/background" />
-
-        <LinearLayout
-            android:id="@+id/icon_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
-
-            <ImageView
-                android:id="@+id/icon_template"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_circle"
-                android:src="@drawable/vocab_level_1"
-                android:visibility="gone" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="end">
+            android:layout_marginBottom="3dp"
+            android:gravity="center_vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnLevel5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="7dp"
+                android:alpha="0.3"
+                android:src="@drawable/vocab_level_5" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnLevel4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:alpha="0.3"
+                android:src="@drawable/vocab_level_4" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnLevel3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:alpha="0.3"
+                android:src="@drawable/vocab_level_3" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnLevel2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:alpha="0.3"
+                android:src="@drawable/vocab_level_2" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnLevel1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.3"
+                android:src="@drawable/vocab_level_1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/cancelBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:fontFamily="@font/ubuntu_bold"
                 android:padding="5dp"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textColor="@color/background"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/enterBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:fontFamily="@font/ubuntu_bold"
                 android:padding="5dp"
-                android:text="Enter"
+                android:text="@string/enter"
                 android:textColor="@color/background"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -4,8 +4,7 @@
     android:id="@+id/meaning_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="7dp"
-    android:background="@drawable/bg_word_meaning"
+    android:layout_marginTop="7dp"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
@@ -15,7 +14,7 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/partOfSpeech"
+            android:id="@+id/tvPartOfSpeech"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -25,23 +24,25 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/definition"
+            android:id="@+id/tvDefinition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Meaning: fuk fuk fuk "
-            android:textColor="#FFD2D2"
+            android:includeFontPadding="false"
+            android:textColor="@color/black"
+            android:fontFamily="@font/ubuntu_regular"
             android:textSize="15sp"
             android:textStyle="bold" />
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/example"
+        android:id="@+id/tvExample"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:text="You know what about life?"
-        android:textColor="@color/white"
+        android:textColor="@color/blue1"
         android:textSize="12sp"
         android:visibility="gone"
         android:textStyle="italic|bold" />

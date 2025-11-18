@@ -6,7 +6,10 @@ import androidx.room.PrimaryKey
 @Entity
 data class WordEntity(
     val word: String,
-    val definition: String,
+    val phonetic: String,
+    val meaningsJson: String,
+    val level: Int = 0,
+    val note: String = "",
 
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0
