@@ -11,8 +11,6 @@ enum class Level(val level: Int) {
     LEVEL1(1),
     LEVEL2(2),
     LEVEL3(3),
-    LEVEL4(4),
-    LEVEL5(5)
 }
 
 class WordAdapter(
@@ -34,27 +32,30 @@ class WordAdapter(
             itemBinding.btnLevel1 to Level.LEVEL1,
             itemBinding.btnLevel2 to Level.LEVEL2,
             itemBinding.btnLevel3 to Level.LEVEL3,
-            itemBinding.btnLevel4 to Level.LEVEL4,
-            itemBinding.btnLevel5 to Level.LEVEL5
         )
 
         // ----- Restore -----
         levelButtons.forEach { (btn, level) ->
-            btn.alpha = if (item.level == level.level) 1f else 0.3f
+            btn.alpha = if (item.level == level.level) 1f else 0.1f
         }
 
         itemBinding.apply {
             /*Click level*/
             levelButtons.forEach { (btn, level) ->
                 btn.setOnClickListener {
-                    levelButtons.keys.forEach { it.alpha = 0.3f }
+                    levelButtons.keys.forEach { it.alpha = 0.1f }
                     btn.alpha = 1f
                     onClickLevel(item.copy(level = level.level))
                 }
             }
 
             tvWord.text = item.word
-            tvDefinition.text = item.meanings.first().definitions.first().definition
+            if (item.note.isEmpty()) tvNote.visibility = View.GONE
+            else {
+                tvNote.visibility = View.VISIBLE
+                tvNote.text = item.note
+            }
+            tvPhonetic.text = item.phonetic
 
             btnDelete.visibility = View.GONE
 

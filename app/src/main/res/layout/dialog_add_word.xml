@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +24,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/background_et_border"
             android:fontFamily="@font/ubuntu_regular"
-            android:hint="Enter a word"
+            android:hint="@string/enter_a_word"
             android:includeFontPadding="false"
             android:inputType="text"
             android:padding="14dp"
@@ -39,26 +38,10 @@
             android:gravity="center_vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnLevel5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="7dp"
-                android:alpha="0.3"
-                android:src="@drawable/vocab_level_5" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnLevel4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="7dp"
-                android:alpha="0.3"
-                android:src="@drawable/vocab_level_4" />
-
-            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btnLevel3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:layout_marginEnd="7dp"
                 android:alpha="0.3"
                 android:src="@drawable/vocab_level_3" />

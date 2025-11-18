@@ -49,8 +49,6 @@ class AddWordDialog(
             btnLevel1.setOnClickListener { updateLevel(1) }
             btnLevel2.setOnClickListener { updateLevel(2) }
             btnLevel3.setOnClickListener { updateLevel(3) }
-            btnLevel4.setOnClickListener { updateLevel(4) }
-            btnLevel5.setOnClickListener { updateLevel(5) }
         }
     }
 
@@ -61,12 +59,10 @@ class AddWordDialog(
             binding.btnLevel1 to 1,
             binding.btnLevel2 to 2,
             binding.btnLevel3 to 3,
-            binding.btnLevel4 to 4,
-            binding.btnLevel5 to 5
         )
 
         levelButtons.forEach { (button, lvl) ->
-            button.alpha = if (lvl == level) 1f else 0.3f
+            button.alpha = if (lvl == level) 1f else 0.1f
         }
     }
 }

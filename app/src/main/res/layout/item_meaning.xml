@@ -4,7 +4,7 @@
     android:id="@+id/meaning_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="7dp"
+    android:layout_marginTop="10dp"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:text="(v)"
-            android:textColor="#f19c59"
+            android:textColor="@color/blue1"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -27,7 +27,7 @@
             android:id="@+id/tvDefinition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Meaning: fuk fuk fuk "
+            android:text="@string/meaning_fuk_fuk_fuk"
             android:includeFontPadding="false"
             android:textColor="@color/black"
             android:fontFamily="@font/ubuntu_regular"
@@ -41,9 +41,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        android:text="You know what about life?"
+        android:text="@string/you_know_what_about_life"
         android:textColor="@color/blue1"
         android:textSize="12sp"
+        android:layout_marginStart="5dp"
         android:visibility="gone"
         android:textStyle="italic|bold" />
 

@@ -13,7 +13,12 @@
     <string name="channel_name">channel_name</string>
     <string name="channel_description">channel_description</string>
     <string name="search">Search</string>
-    <string name="mother_fucking_day">Mother Fucking Day</string>
+    <string name="mother_fucking_day">Mother Day</string>
     <string name="cancel">Cancel</string>
     <string name="enter">Enter</string>
+    <string name="enter_a_word">Enter a word</string>
+    <string name="no_word">No Word</string>
+    <string name="you_know_what_about_life">You know what about life?</string>
+    <string name="meaning_fuk_fuk_fuk">Meaning: fuk fuk fuk</string>
+    <string name="note">No note</string>
 </resources>

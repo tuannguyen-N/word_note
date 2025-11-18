@@ -108,6 +108,8 @@ class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListB
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 wordListViewModel.state.collect { wordState ->
                     loadingUI(wordState.isLoading)
+                    binding.viewNodata.visibility =
+                        if (wordState.words.isEmpty()) View.VISIBLE else View.GONE
                     wordAdapter.setItemList(wordState.words)
                     onSelectedLevel(wordState.selectedLevel)
                 }
@@ -150,7 +152,8 @@ class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListB
 
     private fun scrollToExistWord(word: String) {
         binding.recyclerView.post {
-            val index = wordAdapter.itemList.indexOfFirst { it.word.equals(word, ignoreCase = true) }
+            val index =
+                wordAdapter.itemList.indexOfFirst { it.word.equals(word, ignoreCase = true) }
             if (index != -1) {
                 binding.recyclerView.smoothScrollToPosition(index)
 
@@ -163,7 +166,6 @@ class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListB
     }
 
 
-
     private fun hideLevelContainer() {
         binding.levelContainer.root.visibility = View.GONE
     }
@@ -174,15 +176,15 @@ class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListB
 
     private fun showAddWordDialog() {
         val dialog = AddWordDialog(
-            onEnter = { word, level->
-                wordListViewModel.onAction(WordListAction.OnSaveWord(word,level))
+            onEnter = { word, level ->
+                wordListViewModel.onAction(WordListAction.OnSaveWord(word, level))
             }
         )
         dialog.show(childFragmentManager, "AddWordDialog")
     }
 
     private fun showDetailWordDialog(word: WordData) {
-        val dialog = DetailDefinitionDialog(word){newWord->
+        val dialog = DetailDefinitionDialog(word) { newWord ->
             wordListViewModel.onAction(WordListAction.OnUpdateNote(newWord))
         }
         dialog.show(childFragmentManager, "DetailDefinitionDialog")
