@@ -5,7 +5,8 @@ data class WordData(
     val phonetic: String,
     val meanings: List<MeaningData>,
     var level: Int = 0,
-    var note: String = ""
+    var note: String = "",
+    var addedTime: Long? = null
 )
 
 data class MeaningData(

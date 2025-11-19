@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@drawable/background_et_border"
-            android:fontFamily="@font/ubuntu_regular"
+            android:fontFamily="@font/proximasoft_regular"
             android:hint="@string/enter_a_word"
             android:includeFontPadding="false"
             android:inputType="text"
@@ -38,13 +38,13 @@
             android:gravity="center_vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnLevel3"
+                android:id="@+id/btnLevel1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="7dp"
                 android:alpha="0.3"
-                android:src="@drawable/vocab_level_3" />
+                android:src="@drawable/vocab_level_1" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btnLevel2"
@@ -55,11 +55,11 @@
                 android:src="@drawable/vocab_level_2" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnLevel1"
+                android:id="@+id/btnLevel3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.3"
-                android:src="@drawable/vocab_level_1" />
+                android:src="@drawable/vocab_level_3" />
 
             <View
                 android:layout_width="0dp"
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
-                android:fontFamily="@font/ubuntu_bold"
+                android:fontFamily="@font/proximasoft_semi_bold"
                 android:padding="5dp"
                 android:text="@string/cancel"
                 android:textColor="@color/background"
@@ -81,7 +81,7 @@
                 android:id="@+id/enterBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu_bold"
+                android:fontFamily="@font/proximasoft_semi_bold"
                 android:padding="5dp"
                 android:text="@string/enter"
                 android:textColor="@color/background"

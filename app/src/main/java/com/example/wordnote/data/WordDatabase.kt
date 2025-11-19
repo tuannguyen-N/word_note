@@ -9,7 +9,7 @@ import com.example.wordnote.data.entities.WordEntity
 
 @Database(
     entities = [WordEntity::class],
-    version = 3
+    version = 4
 )
 abstract class WordDatabase : RoomDatabase() {
     abstract val dao: WordDao

@@ -31,14 +31,11 @@ class AddWordDialog(
         binding.apply {
             enterBtn.setOnClickListener {
                 val word = etWord.text.toString().trim().lowercase()
-
                 if (word.isEmpty()) {
                     etWord.error = "Please enter a word"
                     return@setOnClickListener
                 }
-
                 onEnter(word, selectedLevel)
-
                 dismiss()
             }
 

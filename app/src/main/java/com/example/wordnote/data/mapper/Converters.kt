@@ -1,4 +1,4 @@
-package com.example.wordnote.domain.mapper
+package com.example.wordnote.data.mapper
 
 import androidx.room.TypeConverter
 import com.example.wordnote.domain.model.MeaningData

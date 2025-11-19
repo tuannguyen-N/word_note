@@ -1,0 +1,23 @@
+package com.example.wordnote.domain.model
+
+import com.example.wordnote.R
+import com.example.wordnote.ui.fragment.setting.SettingAction
+
+data class ActivitySettingData(
+    val icon: Int,
+    val title: Int,
+    val detail: Int,
+    val action: SettingAction
+) {
+    companion object {
+        fun getList(): List<ActivitySettingData> =
+            listOf(
+                ActivitySettingData(
+                    R.drawable.ic_notification_setting,
+                    title = R.string.note_alerts,
+                    detail = R.string.configure_how_your_nalerts_are_received,
+                    action = SettingAction.OpenNoteAlertSetting
+                )
+            )
+    }
+}

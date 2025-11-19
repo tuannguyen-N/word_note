@@ -2,7 +2,7 @@
     <string name="app_name">Word learning</string>
     <string name="word_of_the_day">Mother fucking day</string>
     <string name="demo">Demo</string>
-    <string name="word">WORD</string>
+    <string name="word">Word</string>
     <string name="definition">Definition:</string>
     <string name="meaning1">no idea ;0</string>
     <string name="meaning2">meaning2</string>
@@ -21,4 +21,8 @@
     <string name="you_know_what_about_life">You know what about life?</string>
     <string name="meaning_fuk_fuk_fuk">Meaning: fuk fuk fuk</string>
     <string name="note">No note</string>
+    <string name="note_alerts">Note Alerts</string>
+    <string name="configure_how_your_nalerts_are_received">Configure how your \nalerts are received</string>
+    <string name="app_notifications">App Notifications</string>
+    <string name="receive_mobile_app_notifications">Receive mobile app notifications</string>
 </resources>

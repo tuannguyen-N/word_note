@@ -1,10 +1,9 @@
 package com.example.wordnote.data.repository
 
-import android.util.Log
 import com.example.wordnote.data.api.WordAPI
 import com.example.wordnote.data.dao.WordDao
-import com.example.wordnote.domain.mapper.toData
-import com.example.wordnote.domain.mapper.toEntity
+import com.example.wordnote.data.mapper.toData
+import com.example.wordnote.data.mapper.toEntity
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.util.Result
 import kotlinx.coroutines.flow.Flow
@@ -28,9 +27,9 @@ class WordRepository(
                 return Result.NotFound
             }
 
-            val data = response.first().toData().copy(level = level)
+            val data = response.first().toData().copy(level = level, addedTime = System.currentTimeMillis())
             dao.upsertWord(data.toEntity())
-            Result.Success
+            Result.Success(data)
         } catch (e: Exception) {
             Result.Error(e.message ?: "Unknown error")
         }

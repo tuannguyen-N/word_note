@@ -17,7 +17,7 @@ import com.example.wordnote.data.dao.WordDao
 import com.example.wordnote.databinding.FragmentWordListBinding
 import com.example.wordnote.data.entities.WordEntity
 import com.example.wordnote.data.repository.WordRepository
-import com.example.wordnote.domain.LocalWordUseCase
+import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.ui.dialog.AddWordDialog
 import com.example.wordnote.ui.dialog.DetailDefinitionDialog
@@ -28,6 +28,8 @@ import com.example.wordnote.util.shakeView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.core.view.isVisible
+import com.example.wordnote.alarm.AlarmScheduler
+import com.example.wordnote.domain.usecase.ScheduleWordUseCase
 
 class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListBinding::inflate) {
     private val wordListViewModel: WordListViewModel by viewModels {
@@ -38,7 +40,8 @@ class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListB
                     RetrofitInstance.api
                 )
             ),
-            SpeakingManager(requireContext())
+            SpeakingManager(requireContext()),
+            ScheduleWordUseCase(AlarmScheduler(requireContext()))
         )
     }
 
@@ -91,12 +94,6 @@ class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListB
                 btnLevel3.setOnClickListener {
                     wordListViewModel.onAction(WordListAction.OnSortWords(SortType.LEVEL(3)))
                 }
-                btnLevel4.setOnClickListener {
-                    wordListViewModel.onAction(WordListAction.OnSortWords(SortType.LEVEL(4)))
-                }
-                btnLevel5.setOnClickListener {
-                    wordListViewModel.onAction(WordListAction.OnSortWords(SortType.LEVEL(5)))
-                }
             }
         }
     }
@@ -122,8 +119,6 @@ class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListB
             binding.levelContainer.btnLevel1 to 1,
             binding.levelContainer.btnLevel2 to 2,
             binding.levelContainer.btnLevel3 to 3,
-            binding.levelContainer.btnLevel4 to 4,
-            binding.levelContainer.btnLevel5 to 5
         )
         levelButtons.forEach { (button, level) ->
             button.alpha = if (selectedLevel == level) 1f else 0.3f
@@ -150,7 +145,7 @@ class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListB
         }
     }
 
-    private fun scrollToExistWord(word: String) {
+    fun scrollToExistWord(word: String) {
         binding.recyclerView.post {
             val index =
                 wordAdapter.itemList.indexOfFirst { it.word.equals(word, ignoreCase = true) }
@@ -164,7 +159,6 @@ class WordListFragment : BaseFragment<FragmentWordListBinding>(FragmentWordListB
             }
         }
     }
-
 
     private fun hideLevelContainer() {
         binding.levelContainer.root.visibility = View.GONE

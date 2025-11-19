@@ -8,7 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wordnote.adapter.MeaningAdapter
 import com.example.wordnote.databinding.DialogDetailDefinitionBinding
-import com.example.wordnote.domain.mapper.toListMeaningData
+import com.example.wordnote.data.mapper.toListMeaningData
 import com.example.wordnote.domain.model.WordData
 
 class DetailDefinitionDialog(

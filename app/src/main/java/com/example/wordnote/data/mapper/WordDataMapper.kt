@@ -1,4 +1,4 @@
-package com.example.wordnote.domain.mapper
+package com.example.wordnote.data.mapper
 
 import com.example.wordnote.adapter.AMeaningData
 import com.example.wordnote.data.entities.WordEntity
@@ -7,7 +7,6 @@ import com.example.wordnote.domain.model.MeaningData
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.model.response.Definition
 import com.example.wordnote.domain.model.response.Meaning
-import com.example.wordnote.domain.model.response.WordResponse
 import com.example.wordnote.domain.model.response.WordResponseItem
 
 fun WordResponseItem.toData(): WordData =
@@ -35,7 +34,8 @@ fun WordData.toEntity(): WordEntity =
         word = word.lowercase(),
         level = level,
         phonetic = phonetic,
-        meaningsJson = Converters().fromMeanings(meanings)
+        meaningsJson = Converters().fromMeanings(meanings),
+        addedTime = addedTime
     )
 
 fun WordEntity.toData(): WordData =
@@ -44,7 +44,8 @@ fun WordEntity.toData(): WordData =
         level = level,
         phonetic = phonetic,
         meanings = Converters().toMeanings(meaningsJson),
-        note = note
+        note = note,
+        addedTime = addedTime
     )
 
 fun WordData.toListMeaningData(): List<AMeaningData> {

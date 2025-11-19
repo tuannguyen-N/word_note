@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordnote.data.api.RetrofitInstance
 import com.example.wordnote.data.entities.WordEntity
-import com.example.wordnote.domain.LocalWordUseCase
+import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.model.WordState
+import com.example.wordnote.domain.usecase.ScheduleWordUseCase
 import com.example.wordnote.util.Result
 import com.example.wordnote.util.SortType
 import com.example.wordnote.util.SpeakingManager
@@ -25,7 +26,9 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class WordListViewModel(
-    private val localWordUseCase: LocalWordUseCase, private val speakingManager: SpeakingManager
+    private val localWordUseCase: LocalWordUseCase,
+    private val speakingManager: SpeakingManager,
+    private val scheduleWordUseCase: ScheduleWordUseCase
 ) : ViewModel() {
 
     private val _uiEvent = MutableSharedFlow<WordListUIEvent>()
@@ -75,6 +78,7 @@ class WordListViewModel(
     private fun performUpdateLevel(word: WordData) {
         viewModelScope.launch {
             localWordUseCase.updateLevel(word)
+            scheduleWordUseCase.scheduleWord(word)
         }
     }
 
@@ -99,7 +103,7 @@ class WordListViewModel(
     }
 
     private fun performSpeakingWord(word: String) {
-        speakingManager.speakingWord(word)
+        speakingManager.speak(word)
     }
 
     private fun performSaveWord(word: String, level: Int) {
@@ -114,10 +118,13 @@ class WordListViewModel(
     }
 
     private suspend fun upsertWord(word: String, level: Int) {
-        when (localWordUseCase.upsertWord(word, level)) {
+        when (val result = localWordUseCase.upsertWord(word, level)) {
             is Result.Error -> sendUIEvent(WordListUIEvent.ShowToast("Can't save word: $word"))
             is Result.NotFound -> sendUIEvent(WordListUIEvent.ShowToast("Not found: $word"))
-            is Result.Success -> null
+            is Result.Success -> {
+                scheduleWordUseCase.scheduleWord(result.word)
+            }
+
             is Result.AlreadyExists -> sendUIEvent(WordListUIEvent.ScrollToExistWord(word))
         }
     }

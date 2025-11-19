@@ -1,4 +1,4 @@
-package com.example.wordnote.domain
+package com.example.wordnote.domain.usecase
 
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.domain.model.WordData
