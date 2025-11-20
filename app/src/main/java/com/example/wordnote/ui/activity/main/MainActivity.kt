@@ -72,10 +72,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     private fun handleIntent() {
-        val wordFromNotification = intent.getStringExtra("WORD_FROM_NOTIFICATION")
-        if (!wordFromNotification.isNullOrEmpty()) {
-            mainViewModel.onAction(MainAction.SendWordFromNotification(wordFromNotification))
-        }
+//        val wordFromNotification = intent.getStringExtra("WORD_FROM_NOTIFICATION")
+//        if (!wordFromNotification.isNullOrEmpty()) {
+//            mainViewModel.onAction(MainAction.SendWordFromNotification(wordFromNotification))
+//        }
     }
 
     private fun showToast(message: String) {

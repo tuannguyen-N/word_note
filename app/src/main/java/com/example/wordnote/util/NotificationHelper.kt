@@ -1,5 +1,6 @@
 package com.example.wordnote.util
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -17,12 +18,13 @@ object NotificationHelper {
     private const val CHANNEL_ID = "word_channel"
 
 
+    @SuppressLint("MissingPermission")
     fun showWordNotification(context: Context, word: String, note: String?, definition: String) {
         createChannel(context)
 
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("WORD_FROM_NOTIFICATION", word)
+            putExtra("WORD_FROM_NOTIFICATION", word) //note
         }
 
         val pendingIntent = PendingIntent.getActivity(
