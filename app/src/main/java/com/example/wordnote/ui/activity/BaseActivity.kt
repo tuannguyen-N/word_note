@@ -25,11 +25,8 @@ open class BaseActivity<VBinding : ViewBinding>(private val bindingProvider: (La
     override fun onCreate(savedInstanceState: Bundle?) {
 
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(
-                Color.TRANSPARENT
-            ), navigationBarStyle = SystemBarStyle.dark(
-                Color.TRANSPARENT
-            )
+            statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
         )
         super.onCreate(savedInstanceState)
         setupContentView()
@@ -114,7 +111,7 @@ open class BaseActivity<VBinding : ViewBinding>(private val bindingProvider: (La
 
         }else{
             val windowInsetsController =  WindowInsetsControllerCompat(window, window.decorView)
-            windowInsetsController.isAppearanceLightNavigationBars = false
+            windowInsetsController.isAppearanceLightNavigationBars = true
             windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars())
             windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }

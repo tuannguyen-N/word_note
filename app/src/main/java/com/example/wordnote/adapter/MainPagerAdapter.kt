@@ -4,14 +4,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.wordnote.ui.fragment.setting.SettingFragment
-import com.example.wordnote.ui.fragment.word_list.WordListFragment
+import com.example.wordnote.ui.fragment.category.CategoryFragment
 
 class MainPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> WordListFragment()
+            0 -> CategoryFragment()
             1 -> SettingFragment()
-            else -> WordListFragment()
+            else -> CategoryFragment()
         }
     }
     override fun getItemCount(): Int = 2

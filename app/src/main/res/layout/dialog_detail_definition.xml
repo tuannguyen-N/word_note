@@ -33,7 +33,7 @@
                         android:id="@+id/tvWord"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/proximasoft_bold"
+                        android:fontFamily="@font/proximasoft_semi_bold"
                         android:text="@string/word"
                         android:textColor="@color/black"
                         android:textSize="25sp" />

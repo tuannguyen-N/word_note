@@ -8,7 +8,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp"
+        android:layout_marginVertical="7dp"
         android:background="@drawable/bg_item_word"
         android:paddingVertical="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,7 +23,7 @@
             android:layout_marginStart="15dp"
             android:includeFontPadding="false"
             android:text="@string/demo"
-            android:textColor="@color/white"
+            android:textColor="@color/black1"
             android:textSize="23sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/tvNote"
@@ -35,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:textColor="@color/blue1"
             android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@id/tvNote"
             app:layout_constraintStart_toEndOf="@id/tvWord"
@@ -61,8 +62,10 @@
         android:id="@+id/btn_delete"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/ic_x"
+        android:layout_marginEnd="5dp"
+        android:src="@drawable/ic_delete"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -96,7 +99,7 @@
         android:alpha="0.1"
         android:src="@drawable/vocab_level_3"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_delete"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

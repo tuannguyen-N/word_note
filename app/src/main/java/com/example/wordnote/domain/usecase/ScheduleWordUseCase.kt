@@ -9,10 +9,7 @@ class ScheduleWordUseCase(private val alarmScheduler: AlarmScheduler) {
     fun scheduleWord(word: WordData) {
         val level = word.level.toWordLevelOrNull() ?: return
         alarmScheduler.scheduleWord(
-            word.word,
-            word.note,
-            word.meanings.first().definitions.first().definition,
-            level.ordinal+1,
+            word,
             level.nextTrigger
         )
     }

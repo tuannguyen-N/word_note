@@ -3,17 +3,17 @@ package com.example.wordnote.adapter
 import android.view.View
 import com.example.wordnote.R
 import com.example.wordnote.databinding.ItemSettingBinding
-import com.example.wordnote.domain.model.ActivitySettingData
+import com.example.wordnote.domain.model.item.SettingItem
 import com.example.wordnote.ui.fragment.setting.SettingAction
 
 class SettingAdapter(
     private val onClickAc: (SettingAction) -> Unit
-) : BaseAdapter<ActivitySettingData>() {
+) : BaseAdapter<SettingItem>() {
     override fun doGetViewType(position: Int): Int = R.layout.item_setting
 
     override fun doBindViewHolder(
         view: View,
-        item: ActivitySettingData,
+        item: SettingItem,
         position: Int,
         holder: BaseViewHolder
     ) {

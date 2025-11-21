@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".NoteApp"
@@ -19,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wordnote">
         <activity
+            android:name=".ui.activity.word.WordActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.setting.note_alerts.NoteAlertSettingActivity"
             android:exported="false" />
 
@@ -29,7 +33,16 @@
 
         <receiver
             android:name=".alarm.WordReceiver"
-            android:exported="true" />
+            android:exported="false" />
+
+        <receiver
+            android:name=".alarm.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".ui.activity.main.MainActivity"
@@ -43,5 +56,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

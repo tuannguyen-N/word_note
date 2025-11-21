@@ -1,6 +1,5 @@
 package com.example.wordnote.ui.activity.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -10,9 +9,8 @@ import com.example.wordnote.R
 import com.example.wordnote.adapter.MainPagerAdapter
 import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.databinding.ActivityMainBinding
-import com.example.wordnote.domain.model.Page
+import com.example.wordnote.domain.model.item.PageItem
 import com.example.wordnote.ui.activity.BaseActivity
-import com.example.wordnote.ui.fragment.word_list.WordListFragment
 import com.example.wordnote.util.NotificationPermissionLauncher
 import com.example.wordnote.util.PermissionResult
 import com.google.android.material.navigation.NavigationBarView
@@ -37,19 +35,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         lifecycleScope.launch(Dispatchers.Main) {
             mainViewModel.uiEvent.collect { event ->
                 when (event) {
-                    is MainViewUIEvent.SendWordFromNotification -> sendWordToFragment(event.word)
+                    else -> {}
                 }
             }
         }
     }
-
-    private fun sendWordToFragment(word: String) {
-        binding.viewPager.post {
-            val fragment = supportFragmentManager.findFragmentByTag("f0") as? WordListFragment
-            fragment?.scrollToExistWord(word)
-        }
-    }
-
 
     private fun initPermission() {
         notificationPermissionLauncher = NotificationPermissionLauncher(
@@ -84,8 +74,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private fun setupPager() {
         val pages = listOf(
-            Page(R.id.learn, "Mother day", 0),
-            Page(R.id.setting, "Note Settings", 1)
+            PageItem(R.id.learn, "Mother day", 0),
+            PageItem(R.id.setting, "Note Settings", 1)
         )
 
         binding.bottomNavView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_UNLABELED

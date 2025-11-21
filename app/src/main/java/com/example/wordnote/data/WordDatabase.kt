@@ -4,26 +4,35 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.wordnote.data.dao.CategoryDao
+import com.example.wordnote.data.dao.WordCategoryCrossRefDao
 import com.example.wordnote.data.dao.WordDao
+import com.example.wordnote.data.entities.CategoryEntity
+import com.example.wordnote.data.entities.WordCategoryCrossRef
 import com.example.wordnote.data.entities.WordEntity
 
 @Database(
-    entities = [WordEntity::class],
-    version = 4
+    entities = [
+        WordEntity::class,
+        CategoryEntity::class,
+        WordCategoryCrossRef::class],
+    version = 3
 )
-abstract class WordDatabase : RoomDatabase() {
-    abstract val dao: WordDao
+abstract class AppDatabase : RoomDatabase() {
+    abstract val wordDao: WordDao
+    abstract val categoryDao: CategoryDao
+    abstract val wordCategoryDao: WordCategoryCrossRefDao
 
     companion object {
         @Volatile
-        private var INSTANCE: WordDatabase? = null
+        private var INSTANCE: AppDatabase? = null
 
-        fun getInstance(context: Context): WordDatabase {
+        fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    WordDatabase::class.java,
-                    "word_database"
+                    AppDatabase::class.java,
+                    "app_database"
                 ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance

@@ -24,7 +24,7 @@ object NotificationHelper {
 
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("WORD_FROM_NOTIFICATION", word) //note
+            putExtra("WORD_FROM_NOTIFICATION", word)
         }
 
         val pendingIntent = PendingIntent.getActivity(

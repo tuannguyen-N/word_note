@@ -11,6 +11,7 @@ data class WordEntity(
     val level: Int = 0,
     val note: String = "",
     val addedTime: Long? = null,
+    val nextTriggerTime: Long = 0,
 
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0

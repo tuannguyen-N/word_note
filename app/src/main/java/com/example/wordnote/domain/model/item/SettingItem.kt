@@ -1,18 +1,18 @@
-package com.example.wordnote.domain.model
+package com.example.wordnote.domain.model.item
 
 import com.example.wordnote.R
 import com.example.wordnote.ui.fragment.setting.SettingAction
 
-data class ActivitySettingData(
+data class SettingItem(
     val icon: Int,
     val title: Int,
     val detail: Int,
     val action: SettingAction
 ) {
     companion object {
-        fun getList(): List<ActivitySettingData> =
+        fun getList(): List<SettingItem> =
             listOf(
-                ActivitySettingData(
+                SettingItem(
                     R.drawable.ic_notification_setting,
                     title = R.string.note_alerts,
                     detail = R.string.configure_how_your_nalerts_are_received,

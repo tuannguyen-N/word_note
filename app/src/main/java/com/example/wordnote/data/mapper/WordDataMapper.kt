@@ -1,7 +1,9 @@
 package com.example.wordnote.data.mapper
 
 import com.example.wordnote.adapter.AMeaningData
+import com.example.wordnote.data.entities.CategoryEntity
 import com.example.wordnote.data.entities.WordEntity
+import com.example.wordnote.domain.model.CategoryData
 import com.example.wordnote.domain.model.DefinitionData
 import com.example.wordnote.domain.model.MeaningData
 import com.example.wordnote.domain.model.WordData
@@ -40,6 +42,7 @@ fun WordData.toEntity(): WordEntity =
 
 fun WordEntity.toData(): WordData =
     WordData(
+        id = id,
         word = word.replaceFirstChar { it.uppercase() },
         level = level,
         phonetic = phonetic,
@@ -67,3 +70,12 @@ fun WordData.toListMeaningData(): List<AMeaningData> {
     }
     return listMeaning
 }
+
+//------------ category ---------------/
+
+fun CategoryEntity.toData(): CategoryData =
+    CategoryData(
+        id = id,
+        name = name,
+        description = description,
+    )

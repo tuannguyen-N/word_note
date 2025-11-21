@@ -2,11 +2,12 @@
 <resources>
 
     <style name="Base.Theme.Wordnote" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:colorControlHighlight">#1AFFFFFF</item>
-
+        <item name="android:colorControlHighlight">@color/black</item>
     </style>
 
-    <style name="Theme.Wordnote" parent="Base.Theme.Wordnote" />
+    <style name="Theme.Wordnote" parent="Base.Theme.Wordnote">
+
+    </style>
 
     <style name="AppBaseDialogTheme" parent="Theme.Design.BottomSheetDialog">
         <item name="android:navigationBarColor">@android:color/transparent</item>

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/bg_card_setting"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     android:padding="14dp">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -21,9 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:fontFamily="@font/proximasoft_bold"
+        android:fontFamily="@font/proximasoft_semi_bold"
         android:text="@string/note_alerts"
-        android:textColor="@color/white"
+        android:textColor="@color/black1"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_notification" />
@@ -33,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/proximasoft_thin"
+        android:textColor="@color/black1"
         android:text="@string/configure_how_your_nalerts_are_received"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

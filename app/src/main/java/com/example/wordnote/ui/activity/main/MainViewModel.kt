@@ -15,12 +15,8 @@ class MainViewModel : ViewModel() {
 
     fun onAction(action: MainAction) {
         when(action) {
-            is MainAction.SendWordFromNotification -> performSendWordFromNotification(action.word)
+            else -> {}
         }
-    }
-
-    private fun performSendWordFromNotification(word: String) {
-        sendUiEvent(MainViewUIEvent.SendWordFromNotification(word))
     }
 
     fun sendUiEvent(event: MainViewUIEvent) {

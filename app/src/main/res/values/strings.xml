@@ -25,4 +25,8 @@
     <string name="configure_how_your_nalerts_are_received">Configure how your \nalerts are received</string>
     <string name="app_notifications">App Notifications</string>
     <string name="receive_mobile_app_notifications">Receive mobile app notifications</string>
+    <string name="name_category">Name Category</string>
+    <string name="_0_word">0</string>
+    <string name="any_description">Any description ?</string>
+    <string name="enter_a_new_category">Enter a new category</string>
 </resources>

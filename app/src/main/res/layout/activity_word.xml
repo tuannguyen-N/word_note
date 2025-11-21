@@ -7,19 +7,69 @@
     android:background="@color/background"
     android:orientation="vertical">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/application_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="56dp"
+        android:paddingHorizontal="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/proximasoft_semi_bold"
+            android:includeFontPadding="false"
+            android:text="@string/name_category"
+            android:textAlignment="center"
+            android:textColor="@color/black1"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:padding="5dp"
+            android:id="@+id/btnAddWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_add"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/application_bar"
         tools:itemCount="6"
         tools:listitem="@layout/item_word" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,20 +80,11 @@
             layout="@layout/layout_level" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:padding="5dp"
             android:id="@+id/btnSort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/filter_list_24px"
-            app:layout_constraintBottom_toTopOf="@id/btnAddWord"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btnAddWord"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/icon_add"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:src="@drawable/filter_list_24px" />
 
     </LinearLayout>
 
@@ -62,7 +103,7 @@
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/viewNodata"
+        android:id="@+id/viewNoData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -83,9 +124,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/proximasoft_regular"
             android:text="@string/no_word"
-            android:textColor="@color/white"
+            android:textColor="@color/gray"
             android:textSize="13sp" />
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

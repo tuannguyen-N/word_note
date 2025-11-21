@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wordnote.adapter.SettingAdapter
 import com.example.wordnote.databinding.FragmentSettingBinding
-import com.example.wordnote.domain.model.ActivitySettingData
+import com.example.wordnote.domain.model.item.SettingItem
 import com.example.wordnote.ui.activity.setting.note_alerts.NoteAlertSettingActivity
 import com.example.wordnote.ui.fragment.BaseFragment
 
@@ -34,7 +34,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
             setHasFixedSize(true)
         }
 
-        settingAdapter.setItemList(ActivitySettingData.getList())
+        settingAdapter.setItemList(SettingItem.getList())
     }
 
     private fun openAc(activity: Activity) {
