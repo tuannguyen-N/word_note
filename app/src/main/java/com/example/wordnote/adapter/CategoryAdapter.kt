@@ -20,7 +20,7 @@ class CategoryAdapter(
         holder: BaseViewHolder
     ) {
         ItemCategoryBinding.bind(view).apply {
-            tvTitle.text = item.name
+            tvTitle.text = item.name.replaceFirstChar { it.uppercase() }
             tvDescription.text = item.description
             btnDelete.visibility = View.GONE
             tvWordLv1.text = item.numberWordLevel1.toString()
@@ -46,7 +46,7 @@ class CategoryAdapter(
         }
     }
 
-    fun refresh(){
+    fun refresh() {
         notifyDataSetChanged()
     }
 }

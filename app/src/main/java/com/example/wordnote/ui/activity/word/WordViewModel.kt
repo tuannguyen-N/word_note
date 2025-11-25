@@ -1,14 +1,15 @@
 package com.example.wordnote.ui.activity.word
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.model.WordState
-import com.example.wordnote.domain.usecase.ScheduleWordUseCase
-import com.example.wordnote.util.Result
-import com.example.wordnote.util.SortType
-import com.example.wordnote.util.SpeakingManager
+import com.example.wordnote.utils.Result
+import com.example.wordnote.utils.SortType
+import com.example.wordnote.utils.SpeakingManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,6 @@ import kotlinx.coroutines.launch
 class WordViewModel(
     private val localWordUseCase: LocalWordUseCase,
     private val speakingManager: SpeakingManager,
-    private val scheduleWordUseCase: ScheduleWordUseCase
 ) : ViewModel() {
 
     private val _uiEvent = MutableSharedFlow<WordUIEvent>()
@@ -88,6 +88,26 @@ class WordViewModel(
             is WordAction.OnUpdateLevel -> performUpdateLevel(action.word)
 
             is WordAction.OnUpdateNote -> performUpdateNote(action.word)
+
+            is WordAction.OnStartStudying -> performStartStudying(action.word)
+
+            is WordAction.OnStopStudying -> performStopStudying(action.wordId)
+        }
+    }
+
+    private fun performStopStudying(wordId: Int) {
+        viewModelScope.launch {
+            localWordUseCase.stopStudying(wordId)
+        }
+    }
+
+    private fun performStartStudying(word: WordData) {
+        viewModelScope.launch {
+            Log.e("ádfasdfasdf", "performStartStudying: ${localWordUseCase.countStudyingWords()}", )
+            if (localWordUseCase.countStudyingWords() >= AppPreferences.maxWords)
+                sendUIEvent(WordUIEvent.ShowFullStudyingWords)
+            else
+                localWordUseCase.startStudying(word)
         }
     }
 
@@ -100,7 +120,7 @@ class WordViewModel(
     private fun performUpdateLevel(word: WordData) {
         viewModelScope.launch {
             localWordUseCase.updateLevel(word)
-            scheduleWordUseCase.scheduleWord(word)
+//            scheduleWordUseCase.scheduleWord(word)
         }
     }
 
@@ -146,7 +166,7 @@ class WordViewModel(
             is Result.Error -> sendUIEvent(WordUIEvent.ShowToast("Can't save word: $word"))
             is Result.NotFound -> sendUIEvent(WordUIEvent.ShowToast("Not found: $word"))
             is Result.Success -> {
-                if (result.word?.level != 0) scheduleWordUseCase.scheduleWord(result.word!!)
+//                if (result.word?.level != 0) scheduleWordUseCase.scheduleWord(result.word!!)
             }
 
             is Result.AlreadyExists -> sendUIEvent(WordUIEvent.ScrollToExistWord(word))

@@ -6,50 +6,51 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         android:background="@drawable/bg_dialog"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingHorizontal="30dp"
-        android:paddingVertical="20dp">
+        android:paddingTop="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/proximasoft_semi_bold"
             android:includeFontPadding="false"
-            android:text="Are you sure?"
+            android:text="@string/are_you_sure"
             android:textColor="@color/black"
             android:textSize="28sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="This action will delete all words \nin this category."
+            android:layout_marginVertical="5dp"
+            android:text="@string/this_action_will_delete_all_words_nin_this_category"
             android:textAlignment="center"
             android:textColor="@color/gray" />
 
         <TextView
             android:id="@+id/btnDelete"
-            android:layout_width="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="30dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/background_delete"
             android:paddingHorizontal="30dp"
-            android:paddingVertical="10dp"
-            android:text="Delete This Category"
+            android:paddingVertical="15dp"
+            android:text="@string/delete_this_category"
             android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/btnClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:padding="15dp"
             android:includeFontPadding="false"
-            android:text="Close Menu"
+            android:text="@string/close_menu"
             android:textColor="@color/gray"
             android:textSize="15sp" />
     </LinearLayout>

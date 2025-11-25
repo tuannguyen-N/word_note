@@ -21,13 +21,15 @@ import com.example.wordnote.databinding.ActivityWordBinding
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.model.WordState
 import com.example.wordnote.domain.usecase.LocalWordUseCase
-import com.example.wordnote.domain.usecase.ScheduleWordUseCase
 import com.example.wordnote.ui.activity.BaseActivity
+import com.example.wordnote.ui.activity.setting.note_alerts.NoteAlertSettingActivity
 import com.example.wordnote.ui.dialog.AddWordDialog
+import com.example.wordnote.ui.dialog.CatDialog
 import com.example.wordnote.ui.dialog.DetailDefinitionDialog
-import com.example.wordnote.util.SortType
-import com.example.wordnote.util.SpeakingManager
-import com.example.wordnote.util.shakeView
+import com.example.wordnote.ui.dialog.FullWordsBottomSheet
+import com.example.wordnote.utils.SortType
+import com.example.wordnote.utils.SpeakingManager
+import com.example.wordnote.utils.shakeView
 import kotlinx.coroutines.launch
 
 class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::inflate) {
@@ -46,10 +48,10 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                     AppDatabase.getInstance(this).wordDao,
                     AppDatabase.getInstance(this).wordCategoryDao,
                     RetrofitInstance.api
-                )
+                ),
+                AlarmScheduler(this)
             ),
             SpeakingManager(this),
-            ScheduleWordUseCase(AlarmScheduler(this))
         )
     }
 
@@ -63,8 +65,11 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         onClickTvWord = { word ->
             wordViewModel.onAction(WordAction.OnSpeakingWord(word))
         },
-        onClickLevel = {
-            wordViewModel.onAction(WordAction.OnUpdateLevel(it))
+        onStartStudying = { word ->
+            wordViewModel.onAction(WordAction.OnStartStudying(word))
+        },
+        onStopStudying = { wordId ->
+            wordViewModel.onAction(WordAction.OnStopStudying(wordId))
         }
     )
 
@@ -148,10 +153,20 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                         is WordUIEvent.ShowToast -> showToast(event.message)
                         is WordUIEvent.HideLevelContainer -> hideLevelContainer()
                         is WordUIEvent.ScrollToExistWord -> scrollToExistWord(event.word)
+                        is WordUIEvent.ShowFullStudyingWords -> showFullStudyingWordsBottomSheet()
                     }
                 }
             }
         }
+    }
+
+    private fun showFullStudyingWordsBottomSheet() {
+        val bottomSheet = FullWordsBottomSheet(
+            onGoToSetting = {
+                startActivity(Intent(this, NoteAlertSettingActivity::class.java))
+            }
+        )
+        bottomSheet.show(supportFragmentManager, "FullWordsBottomSheet")
     }
 
     fun scrollToExistWord(word: String) {

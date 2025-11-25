@@ -7,9 +7,8 @@ import com.example.wordnote.data.entities.WordCategoryCrossRef
 import com.example.wordnote.data.mapper.toData
 import com.example.wordnote.data.mapper.toEntity
 import com.example.wordnote.domain.model.WordData
-import com.example.wordnote.util.Result
-import com.example.wordnote.util.WordLevel
-import com.example.wordnote.util.getDelay
+import com.example.wordnote.utils.Result
+import com.example.wordnote.utils.getDelay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.collections.map
@@ -19,13 +18,21 @@ class WordRepository(
     private val wordCategoryDao: WordCategoryCrossRefDao? = null,
     private val api: WordAPI? = null
 ) {
+    suspend fun getWordById(id: Int): WordData {
+        return dao.getWordById(id)?.toData() ?: throw Exception("Word not found")
+    }
+
     suspend fun upsertWord(rawWord: String, level: Int, categoryId: Int?): Result {
         return try {
             val word = rawWord.trim().lowercase()
             val existingWord = dao.getWord(word)
 
             if (existingWord != null) {
-                if (categoryId != null && wordCategoryDao!!.isWordInCategory(existingWord.id, categoryId) > 0)
+                if (categoryId != null && wordCategoryDao!!.isWordInCategory(
+                        existingWord.id,
+                        categoryId
+                    ) > 0
+                )
                     return Result.AlreadyExists
 
                 val categories = wordCategoryDao!!.getCategoriesOfWord(existingWord.id)
@@ -71,6 +78,18 @@ class WordRepository(
         dao.updateNote(word.id!!, word.note)
     }
 
+    suspend fun updateStudiedTime(wordId: Int, time: Long) {
+        dao.updateStudiedTime(wordId, time)
+    }
+
+    suspend fun updateScore(wordId: Int, score: Int) {
+        dao.updateScore(wordId, score)
+    }
+
+    suspend fun getAllWordsSync(): List<WordData> = dao.getAllWordsSync().map { it.toData() }
+
+    suspend fun getWordByStudiedTime(): List<WordData> = dao.getWordByStudiedTime().map { it.toData() }
+
     fun getWordsOrderedByWord(): Flow<List<WordData>> =
         dao.getWordsOrderedByWord().map { list -> list.map { it.toData() } }
 
@@ -82,4 +101,14 @@ class WordRepository(
 
     fun getWordsByCategoryAndLevel(id: Int, level: Int): Flow<List<WordData>> =
         dao.getWordsByCategoryAndLevel(id, level).map { list -> list.map { it.toData() } }
+
+    suspend fun updateRemainingTime(wordId: Int, remainingTime: Long) {
+        dao.updateRemainingTime(wordId, remainingTime)
+    }
+
+    suspend fun updateNextTrigger(wordId: Int, nextTrigger: Long) {
+        dao.updateNextTrigger(wordId, nextTrigger)
+    }
+
+    suspend fun countStudyingWords(): Int = dao.countStudyingWords()
 }

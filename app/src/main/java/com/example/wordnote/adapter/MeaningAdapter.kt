@@ -1,5 +1,6 @@
 package com.example.wordnote.adapter
 
+import android.annotation.SuppressLint
 import android.view.View
 import com.example.wordnote.R
 import com.example.wordnote.databinding.ItemMeaningBinding
@@ -15,6 +16,7 @@ data class AMeaningData(
 class MeaningAdapter : BaseAdapter<AMeaningData>() {
     override fun doGetViewType(position: Int): Int = R.layout.item_meaning
 
+    @SuppressLint("SetTextI18n")
     override fun doBindViewHolder(
         view: View,
         item: AMeaningData,

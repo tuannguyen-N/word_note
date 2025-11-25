@@ -37,7 +37,11 @@ fun WordData.toEntity(): WordEntity =
         level = level,
         phonetic = phonetic,
         meaningsJson = Converters().fromMeanings(meanings),
-        addedTime = addedTime
+        addedTime = addedTime,
+        startStudiedTime = startStudiedTime,
+        score = score,
+        remainingTime = remainingTime,
+        nextTriggerTime = nextTriggerTime
     )
 
 fun WordEntity.toData(): WordData =
@@ -48,7 +52,11 @@ fun WordEntity.toData(): WordData =
         phonetic = phonetic,
         meanings = Converters().toMeanings(meaningsJson),
         note = note,
-        addedTime = addedTime
+        addedTime = addedTime,
+        startStudiedTime = startStudiedTime,
+        score = score,
+        remainingTime = remainingTime,
+        nextTriggerTime = nextTriggerTime
     )
 
 fun WordData.toListMeaningData(): List<AMeaningData> {

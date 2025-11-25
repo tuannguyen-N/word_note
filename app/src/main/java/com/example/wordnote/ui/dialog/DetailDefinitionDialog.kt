@@ -23,6 +23,13 @@ class DetailDefinitionDialog(
         setUpView()
         setUpRecycler()
         setUpEditText()
+        setOnClick()
+    }
+
+    private fun setOnClick() {
+        binding.btnClose.setOnClickListener {
+            dismiss()
+        }
     }
 
     private fun setUpEditText() {

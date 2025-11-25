@@ -1,4 +1,4 @@
-package com.example.wordnote.util
+package com.example.wordnote.utils
 
 import android.animation.ObjectAnimator
 import android.view.View

@@ -7,43 +7,48 @@ import androidx.core.content.ContextCompat
 import com.example.wordnote.data.AppDatabase
 import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.data.mapper.toData
-import com.example.wordnote.domain.model.WordData
+import com.example.wordnote.manager.WordLevelManager
 import com.example.wordnote.service.SpeakingService
-import com.example.wordnote.util.NotificationHelper
-import com.example.wordnote.util.nextTrigger
-import com.example.wordnote.util.toWordLevelOrNull
+import com.example.wordnote.utils.NotificationHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WordReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (!AppPreferences.canPostNotifications) return
 
         val wordId = intent.getIntExtra(EXTRA_ID, -1)
-        val word = intent.getStringExtra(EXTRA_WORD) ?: return
-        val note = intent.getStringExtra(EXTRA_NOTE)
-        val definition = intent.getStringExtra(EXTRA_DEFINITION) ?: return
-        val level = intent.getIntExtra(EXTRA_LEVEL, -1)
-        val level1 = level.toWordLevelOrNull() ?: return
-
-        NotificationHelper.showWordNotification(context, word, note, definition)
-
+        if (wordId == -1) return
         val dao = AppDatabase.getInstance(context).wordDao
+        val levelManager = WordLevelManager()
 
         CoroutineScope(Dispatchers.IO).launch {
-            val delay = level1.delayMillis
-            val next = System.currentTimeMillis() + delay
+            val wordData = dao.getWordById(wordId)?.toData() ?: return@launch
+            val word = wordData.word
+            val note = wordData.note
+            val definition = wordData.meanings.firstOrNull()
+                ?.definitions?.firstOrNull()
+                ?.definition ?: ""
 
-            dao.updateLevel(wordId, level, next)
+            withContext(Dispatchers.Main) {
+                val notificationId = wordData.id!!
+                val stillActive = NotificationHelper.isNotificationActive(context, notificationId)
+                if (!stillActive) {
+                    NotificationHelper.showWordNotification(context, wordData)
+                }
+                context.startSpeakingService(word, note, definition)
+            }
 
+            val newLevel = levelManager.calculateLevelFromScore(wordData.score)
+            val nextTrigger = levelManager.nextTriggerTime(newLevel)
+            dao.updateLevel(wordId, newLevel.ordinal + 1, nextTrigger)
             AlarmScheduler(context).scheduleWord(
-                dao.getWordById(wordId)!!.toData(),
-                next
+                wordData,
+                nextTrigger
             )
         }
-
-        context.startSpeakingService(word, note, definition)
     }
 
     companion object {

@@ -22,6 +22,7 @@
     <string name="meaning_fuk_fuk_fuk">Meaning: fuk fuk fuk</string>
     <string name="note">No note</string>
     <string name="note_alerts">Note Alerts</string>
+    <string name="word_alerts_setting">Word Alert Settings</string>
     <string name="configure_how_your_nalerts_are_received">Configure how your \nalerts are received</string>
     <string name="app_notifications">App Notifications</string>
     <string name="receive_mobile_app_notifications">Receive mobile app notifications</string>
@@ -29,4 +30,16 @@
     <string name="_0_word">0</string>
     <string name="any_description">Any description ?</string>
     <string name="enter_a_new_category">Enter a new category</string>
+    <string name="this_action_will_delete_all_words_nin_this_category">This action will delete all words \nin this category.</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="delete_this_category">Delete This Category</string>
+    <string name="close_menu">Close Menu</string>
+    <string name="too_much_word_can_make_annoying">Too many words can make annoying</string>
+    <string name="the_time_repeat">The time repeat</string>
+    <string name="_15_minutes">15 minutes</string>
+    <string name="max_learning_words">Max learning words</string>
+    <string name="the_learning_word_list_was_full">The learning word list was full</string>
+    <string name="go_to_setting">Go to Setting</string>
+    <string name="no_i_don_t_want_to_learn_this_word">No, I don\'t want to learn this word:))</string>
+    <string name="current_learning_word">Current Learning Word</string>
 </resources>

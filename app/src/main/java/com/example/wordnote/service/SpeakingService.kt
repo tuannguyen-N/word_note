@@ -8,8 +8,8 @@ import android.os.IBinder
 import android.os.Looper
 import androidx.core.app.NotificationCompat
 import com.example.wordnote.R
-import com.example.wordnote.util.QueueManager
-import com.example.wordnote.util.SpeakingManager
+import com.example.wordnote.utils.QueueManager
+import com.example.wordnote.utils.SpeakingManager
 
 class SpeakingService : Service() {
     private lateinit var speakingManager: SpeakingManager

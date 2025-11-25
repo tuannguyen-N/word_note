@@ -6,7 +6,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wordnote.adapter.CategoryAdapter
 import com.example.wordnote.data.AppDatabase
@@ -19,7 +18,7 @@ import com.example.wordnote.ui.dialog.AddCategoryDialog
 import com.example.wordnote.ui.dialog.ConfirmDeleteDialog
 import com.example.wordnote.ui.dialog.EditCategoryDialog
 import com.example.wordnote.ui.fragment.BaseFragment
-import com.example.wordnote.util.shakeView
+import com.example.wordnote.utils.shakeView
 import kotlinx.coroutines.launch
 
 class CategoryFragment : BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::inflate) {

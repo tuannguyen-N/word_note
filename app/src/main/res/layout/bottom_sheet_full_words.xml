@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="34dp"
+        android:src="@drawable/_4" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/proximasoft_semi_bold"
+        android:includeFontPadding="false"
+        android:text="@string/the_learning_word_list_was_full"
+        android:textColor="@color/black1"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="36dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/proximasoft_regular"
+        android:text="Your learning list is full. Please go to Settings or take no action :0"
+        android:textAlignment="center"
+        android:textColor="@color/gray"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/btnGoToSetting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="28dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_enter"
+        android:fontFamily="@font/proximasoft_semi_bold"
+        android:includeFontPadding="false"
+        android:paddingVertical="20dp"
+        android:text="@string/go_to_setting"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/btnDoNothing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/proximasoft_semi_bold"
+        android:paddingVertical="15dp"
+        android:text="@string/no_i_don_t_want_to_learn_this_word"
+        android:textColor="@color/item"
+        android:textSize="16sp" />
+
+</LinearLayout>

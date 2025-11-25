@@ -6,8 +6,8 @@ import android.content.Intent
 import com.example.wordnote.data.AppDatabase
 import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.data.mapper.toData
-import com.example.wordnote.util.NotificationHelper
-import com.example.wordnote.util.getDelay
+import com.example.wordnote.utils.NotificationHelper
+import com.example.wordnote.utils.getDelay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class BootReceiver : BroadcastReceiver() {
 
         CoroutineScope(Dispatchers.IO).launch {
 
-            val words = dao.getAllWordsSync()
+            val words = dao.getWordByStudiedTime()
             val now = System.currentTimeMillis()
 
             for (w in words) {
@@ -30,16 +30,11 @@ class BootReceiver : BroadcastReceiver() {
                 if (w.nextTriggerTime <= now) {
                     NotificationHelper.showWordNotification(
                         context,
-                        word.word,
-                        word.note,
-                        word.meanings.first().definitions.first().definition
+                        word
                     )
-
                     val next = now + getDelay(w.level)
                     dao.updateLevel(w.id, w.level, next)
-
                     AlarmScheduler(context).scheduleWord(w.toData(), next)
-
                 } else {
                     AlarmScheduler(context).scheduleWord(w.toData(), w.nextTriggerTime)
                 }

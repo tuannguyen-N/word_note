@@ -1,6 +1,5 @@
-package com.example.wordnote.util
+package com.example.wordnote.utils
 
-import com.example.wordnote.domain.model.CategoryData
 import com.example.wordnote.domain.model.WordData
 
 sealed interface Result {

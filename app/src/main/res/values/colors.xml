@@ -6,11 +6,13 @@
     <color name="green">#05695f</color>
     <color name="black">#111619</color>
     <color name="black1">#535059</color>
+    <color name="hint">#D2CED9</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white1">#fbfbfb</color>
     <color name="background">#FDFCFF</color>
     <color name="background1">#FFEAFD</color>
     <color name="item">#FF8BBC</color>
+    <color name="fontPig">#CCFF8BBC</color>
     <color name="item_white">#e5f0ff</color>
     <color name="yellow">#fecd54</color>
     <color name="transparent">#00000000</color>

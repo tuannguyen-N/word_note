@@ -31,8 +31,14 @@ interface WordDao {
     @Query("UPDATE wordentity SET note = :note WHERE id = :wordId")
     suspend fun updateNote(wordId: Int, note: String)
 
+    @Query("UPDATE wordentity SET startStudiedTime = :time WHERE id = :wordId")
+    suspend fun updateStudiedTime(wordId: Int, time: Long)
+
     @Query("SELECT changes()")
     suspend fun getChangedRowCount(): Int
+
+    @Query("UPDATE wordentity SET score = :score WHERE id = :wordId")
+    suspend fun updateScore(wordId: Int, score: Int)
 
     @Query("SELECT * FROM wordentity ORDER BY word ASC")
     fun getWordsOrderedByWord(): Flow<List<WordEntity>>
@@ -40,22 +46,38 @@ interface WordDao {
     @Query("SELECT * FROM WordEntity ORDER BY word ASC")
     suspend fun getAllWordsSync(): List<WordEntity>
 
+    @Query("SELECT * FROM WordEntity WHERE startStudiedTime>0")
+    suspend fun getWordByStudiedTime(): List<WordEntity>
+
     @Query("SELECT * FROM wordentity WHERE level = :level")
     fun getWordsByLevel(level: Int): Flow<List<WordEntity>>
 
     @Transaction
-    @Query("""
+    @Query(
+        """
     SELECT WordEntity.* FROM WordEntity
     INNER JOIN WordCategoryCrossRef ON WordEntity.id = WordCategoryCrossRef.wordId
     WHERE WordCategoryCrossRef.categoryId = :categoryId
-""")
+"""
+    )
     fun getWordsByCategory(categoryId: Int): Flow<List<WordEntity>>
 
     @Transaction
-    @Query("""
+    @Query(
+        """
     SELECT WordEntity.* FROM WordEntity
     INNER JOIN WordCategoryCrossRef ON WordEntity.id = WordCategoryCrossRef.wordId
     WHERE WordCategoryCrossRef.categoryId = :categoryId AND WordEntity.level = :level
-""")
+"""
+    )
     fun getWordsByCategoryAndLevel(categoryId: Int, level: Int): Flow<List<WordEntity>>
+
+    @Query("UPDATE wordentity SET remainingTime = :remainingTime WHERE id = :wordId")
+    suspend fun updateRemainingTime(wordId: Int, remainingTime: Long)
+
+    @Query("UPDATE wordentity SET nextTriggerTime = :nextTrigger WHERE id = :wordId")
+    suspend fun updateNextTrigger(wordId: Int, nextTrigger: Long)
+
+    @Query("SELECT COUNT(*) FROM WordEntity WHERE startStudiedTime>0 AND level <2")
+    suspend fun countStudyingWords(): Int
 }

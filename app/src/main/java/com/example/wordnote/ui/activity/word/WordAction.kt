@@ -1,7 +1,7 @@
 package com.example.wordnote.ui.activity.word
 
 import com.example.wordnote.domain.model.WordData
-import com.example.wordnote.util.SortType
+import com.example.wordnote.utils.SortType
 
 sealed interface WordAction {
     class OnOpenDetailWordDialog(val word: WordData) : WordAction
@@ -12,4 +12,6 @@ sealed interface WordAction {
     data class OnUpdateLevel(val word: WordData): WordAction
     data class OnSortWords(val sortType: SortType) : WordAction
     data class OnUpdateNote(val word: WordData): WordAction
+    data class OnStartStudying(val word: WordData): WordAction
+    data class OnStopStudying(val wordId: Int): WordAction
 }

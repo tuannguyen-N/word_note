@@ -11,8 +11,8 @@ import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.databinding.ActivityMainBinding
 import com.example.wordnote.domain.model.item.PageItem
 import com.example.wordnote.ui.activity.BaseActivity
-import com.example.wordnote.util.NotificationPermissionLauncher
-import com.example.wordnote.util.PermissionResult
+import com.example.wordnote.utils.NotificationPermissionLauncher
+import com.example.wordnote.utils.PermissionResult
 import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

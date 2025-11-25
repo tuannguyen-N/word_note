@@ -12,7 +12,7 @@ class AddWordDialog(
     private val onEnter: (String, Int) -> Unit,
 ) : BaseDialog<DialogAddWordBinding>(DialogAddWordBinding::inflate) {
 
-    private var selectedLevel: Int = -1
+    private var selectedLevel: Int = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

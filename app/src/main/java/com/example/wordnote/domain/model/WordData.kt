@@ -5,10 +5,13 @@ data class WordData(
     val word: String,
     val phonetic: String,
     val meanings: List<MeaningData>,
-    var level: Int = 0,
+    var level: Int = 1,
     var note: String = "",
+    var score: Int = 0,
     var addedTime: Long? = null,
-    var nextTriggerTime: Long = 0
+    var startStudiedTime: Long = 0,
+    var nextTriggerTime: Long = 0,
+    var remainingTime: Long = 0
 )
 
 data class MeaningData(

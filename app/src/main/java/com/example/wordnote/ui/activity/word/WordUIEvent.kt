@@ -8,4 +8,5 @@ sealed interface WordUIEvent {
     class ShowToast(val message: String) : WordUIEvent
     object HideLevelContainer: WordUIEvent
     data class ScrollToExistWord(val word: String): WordUIEvent
+    object ShowFullStudyingWords: WordUIEvent
 }

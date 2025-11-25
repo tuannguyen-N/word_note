@@ -1,4 +1,4 @@
-package com.example.wordnote.util
+package com.example.wordnote.manager
 
 import java.util.LinkedList
 

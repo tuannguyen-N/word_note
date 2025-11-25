@@ -1,4 +1,4 @@
-package com.example.wordnote.util
+package com.example.wordnote.utils
 
 import android.content.Context
 import android.speech.tts.TextToSpeech

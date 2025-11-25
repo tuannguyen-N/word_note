@@ -11,10 +11,6 @@ class AlarmScheduler(private val context: Context) {
     fun scheduleWord(word: WordData, triggerAt: Long) {
         val intent = Intent(context, WordReceiver::class.java).apply {
             putExtra("ID", word.id)
-            putExtra("WORD", word.word)
-            putExtra("NOTE", word.note)
-            putExtra("DEFINITION", word.meanings.first().definitions.first().definition)
-            putExtra("LEVEL", word.level)
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
@@ -30,5 +26,20 @@ class AlarmScheduler(private val context: Context) {
             triggerAt,
             pendingIntent
         )
+    }
+
+    fun stopScheduleWord(wordId: Int) {
+        val intent = Intent(context, WordReceiver::class.java).apply {
+            putExtra("ID", wordId)
+        }
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            wordId,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarm.cancel(pendingIntent)
     }
 }

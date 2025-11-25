@@ -16,7 +16,7 @@ import com.example.wordnote.data.entities.WordEntity
         WordEntity::class,
         CategoryEntity::class,
         WordCategoryCrossRef::class],
-    version = 3
+    version = 6
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract val wordDao: WordDao

@@ -4,7 +4,7 @@ import com.example.wordnote.data.dao.CategoryDao
 import com.example.wordnote.data.entities.CategoryEntity
 import com.example.wordnote.data.mapper.toData
 import com.example.wordnote.domain.model.CategoryData
-import com.example.wordnote.util.Result
+import com.example.wordnote.utils.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
