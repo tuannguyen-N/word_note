@@ -36,6 +36,14 @@ class NoteAlertSettingUseCase(
         }
     }
 
+    suspend fun updateNextTrigger(wordId: Int, newTrigger: Long){
+        wordRepository.updateNextTrigger(wordId, newTrigger)
+    }
+
+    fun scheduleWord(word: WordData){
+        alarmScheduler.scheduleWord(word, word.nextTriggerTime)
+    }
+
     suspend fun countStudyingWord(): Int = wordRepository.countStudyingWords()
 
     fun stopAlarm(wordId: Int) {

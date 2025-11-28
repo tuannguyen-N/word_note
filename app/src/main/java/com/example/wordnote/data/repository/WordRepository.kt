@@ -1,5 +1,6 @@
 package com.example.wordnote.data.repository
 
+import android.util.Log
 import com.example.wordnote.data.api.WordAPI
 import com.example.wordnote.data.dao.WordCategoryCrossRefDao
 import com.example.wordnote.data.dao.WordDao
@@ -22,7 +23,7 @@ class WordRepository(
         return dao.getWordById(id)?.toData() ?: throw Exception("Word not found")
     }
 
-    suspend fun upsertWord(rawWord: String, level: Int, categoryId: Int?): Result {
+    suspend fun upsertWord(rawWord: String, categoryId: Int?): Result {
         return try {
             val word = rawWord.trim().lowercase()
             val existingWord = dao.getWord(word)
@@ -35,11 +36,11 @@ class WordRepository(
                 )
                     return Result.AlreadyExists
 
-                val categories = wordCategoryDao!!.getCategoriesOfWord(existingWord.id)
+                val category = wordCategoryDao!!.getCategoriesOfWord(existingWord.id)
 
                 return Result.AlreadyExistsInCategories(
                     word = existingWord.toData(),
-                    categoryNames = categories.map { it.name }
+                    category = category.toData(),
                 )
             }
 
@@ -49,7 +50,7 @@ class WordRepository(
             }
 
             val data = response.first().toData()
-                .copy(level = level, addedTime = System.currentTimeMillis())
+                .copy(addedTime = System.currentTimeMillis())
 
             val wordId = dao.upsertWord(data.toEntity()).toInt()
 
@@ -61,12 +62,13 @@ class WordRepository(
             Result.Success(data.copy(id = wordId))
 
         } catch (e: Exception) {
+            Log.e("upsertWord", "upsertWord: ${e.message}", )
             Result.Error(e.message ?: "Unknown error")
         }
     }
 
-    suspend fun deleteWord(word: WordData) {
-        dao.deleteWord(word.id!!)
+    suspend fun deleteWord(wordId: Int) {
+        dao.deleteWord(wordId)
     }
 
     suspend fun updateLevel(word: WordData) {

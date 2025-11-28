@@ -76,4 +76,11 @@ dependencies {
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    //time piker
+    implementation("nl.joery.timerangepicker:timerangepicker:1.0.0")
+    //glide
+    implementation("com.github.bumptech.glide:glide:5.0.5")
+    implementation("jp.wasabeef:glide-transformations:4.3.0")
+
+    implementation(libs.keyboardvisibilityevent)
 }

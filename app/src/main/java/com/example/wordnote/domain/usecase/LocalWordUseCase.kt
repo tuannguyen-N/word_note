@@ -11,11 +11,11 @@ class LocalWordUseCase(
     private val wordRepository: WordRepository,
     private val alarmScheduler: AlarmScheduler? = null
 ) {
-    suspend fun upsertWord(word: String, level: Int, categoryId: Int): Result =
-        wordRepository.upsertWord(word, level, categoryId)
+    suspend fun upsertWord(word: String, categoryId: Int): Result =
+        wordRepository.upsertWord(word, categoryId)
 
-    suspend fun deleteWord(word: WordData) {
-        wordRepository.deleteWord(word)
+    suspend fun deleteWord(wordId: Int) {
+        wordRepository.deleteWord(wordId)
     }
 
     suspend fun updateLevel(word: WordData) {

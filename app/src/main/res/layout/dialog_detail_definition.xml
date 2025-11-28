@@ -38,18 +38,17 @@
                         android:id="@+id/tvWord"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/proximasoft_semi_bold"
                         android:includeFontPadding="false"
+                        android:textStyle="bold"
                         android:text="@string/word"
                         android:textColor="@color/black"
-                        android:textSize="25sp" />
+                        android:textSize="22sp" />
 
                     <EditText
                         android:id="@+id/etNote"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:fontFamily="@font/proximasoft_regular"
                         android:hint="@string/meaning1"
                         android:imeOptions="actionDone"
                         android:includeFontPadding="false"
@@ -65,7 +64,6 @@
                     android:id="@+id/tvPhonetic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/proximasoft_regular"
                     android:text="@string/asasdasd"
                     android:textColor="@color/blue1"
                     android:textSize="15sp" />
@@ -95,7 +93,6 @@
             android:src="@drawable/ic_x"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/iv_cat"

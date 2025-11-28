@@ -8,15 +8,21 @@ import android.os.IBinder
 import android.os.Looper
 import androidx.core.app.NotificationCompat
 import com.example.wordnote.R
+import com.example.wordnote.alarm.WordReceiver
 import com.example.wordnote.utils.QueueManager
-import com.example.wordnote.utils.SpeakingManager
+import com.example.wordnote.manager.SpeakingManager
 
 class SpeakingService : Service() {
     private lateinit var speakingManager: SpeakingManager
     private var isTtsReady = false
 
+    companion object {
+        var isRunning = false
+    }
+
     override fun onCreate() {
         super.onCreate()
+        isRunning = true
         speakingManager = SpeakingManager(this) {
             isTtsReady = true
             startNext()
@@ -28,23 +34,26 @@ class SpeakingService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val word = intent?.getStringExtra("WORD")
+        val word = intent?.getStringExtra(WordReceiver.EXTRA_WORD) ?: return START_NOT_STICKY
 
-        if (word != null) {
-            QueueManager.add(word)
-            if (isTtsReady) {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    startNext()
-                }, 500)
-            }
+        QueueManager.add(word)
+
+        if (isTtsReady) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                startNext()
+            }, 500)
         }
+
         return START_NOT_STICKY
     }
 
     private fun startNext() {
         val next = QueueManager.next()
         if (next != null) {
-            speakingManager.speak(next)
+            val textToSpeak = buildString {
+                append(next)
+            }
+            speakingManager.speak(textToSpeak)
         } else {
             stopSelf()
         }
@@ -61,6 +70,7 @@ class SpeakingService : Service() {
     override fun onDestroy() {
         speakingManager.destroy()
         super.onDestroy()
+        isRunning = false
     }
 
     override fun onBind(intent: Intent?): IBinder? = null

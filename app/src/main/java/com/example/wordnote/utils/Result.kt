@@ -1,5 +1,6 @@
 package com.example.wordnote.utils
 
+import com.example.wordnote.domain.model.CategoryData
 import com.example.wordnote.domain.model.WordData
 
 sealed interface Result {
@@ -9,6 +10,6 @@ sealed interface Result {
     data class Error(val message: String) : Result
     data class AlreadyExistsInCategories(
         val word: WordData,
-        val categoryNames: List<String>
+        val category: CategoryData
     ) : Result
 }

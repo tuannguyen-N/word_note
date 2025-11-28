@@ -74,7 +74,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private fun setupPager() {
         val pages = listOf(
-            PageItem(R.id.learn, "Mother day", 0),
+            PageItem(R.id.learn, "Your Category", 0),
             PageItem(R.id.setting, "Note Settings", 1)
         )
 

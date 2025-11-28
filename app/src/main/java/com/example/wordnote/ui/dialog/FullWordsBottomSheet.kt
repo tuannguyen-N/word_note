@@ -5,6 +5,7 @@ import android.view.Gravity
 import android.view.View
 import com.example.wordnote.R
 import com.example.wordnote.databinding.BottomSheetFullWordsBinding
+import com.example.wordnote.utils.loadGlideImage
 
 class FullWordsBottomSheet(
     private val onGoToSetting: () -> Unit,
@@ -22,6 +23,7 @@ class FullWordsBottomSheet(
             setGravity(Gravity.BOTTOM)
             setWindowAnimations(R.style.BottomSheetAnimation)
         }
+        binding.iv1.loadGlideImage(R.drawable._4)
     }
 
     private fun setOnClick() {

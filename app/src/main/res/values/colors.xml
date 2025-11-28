@@ -9,15 +9,20 @@
     <color name="hint">#D2CED9</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white1">#fbfbfb</color>
-    <color name="background">#FDFCFF</color>
+    <color name="background">#FFFFFFFF</color>
     <color name="background1">#FFEAFD</color>
-    <color name="item">#FF8BBC</color>
-    <color name="fontPig">#CCFF8BBC</color>
+    <color name="item">#FFD2F4</color>
+    <color name="bottom_sheet">#FFFFFFFF</color>
+    <color name="btn_enter">#5E5B92</color>
+    <color name="font_green">#253334</color>
     <color name="item_white">#e5f0ff</color>
     <color name="yellow">#fecd54</color>
     <color name="transparent">#00000000</color>
     <color name="orange">#f19c59</color>
     <color name="blue1">#1c828d</color>
-    <color name="gray">#838383</color>
-    <color name="red">#C65D57</color>
+    <color name="gray">#6F6F6F</color>
+    <color name="gray1">#BCBBBB</color>
+    <color name="red">#FF4F47</color>
+    <color name="icon">#f476a3</color>
+    <color name="font_title">#393640</color>
 </resources>

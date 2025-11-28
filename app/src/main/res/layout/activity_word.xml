@@ -31,36 +31,38 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tvNameCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/proximasoft_semi_bold"
             android:includeFontPadding="false"
             android:text="@string/name_category"
             android:textAlignment="center"
-            android:textColor="@color/black1"
+            android:textColor="@color/font_title"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:padding="5dp"
             android:id="@+id/btnAddWord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:src="@drawable/icon_add"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="10dp"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/application_bar"
         tools:itemCount="6"
@@ -69,6 +71,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -79,12 +82,19 @@
             layout="@layout/layout_level" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:padding="5dp"
             android:id="@+id/btnSort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:src="@drawable/filter_list_24px" />
 
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:src="@drawable/icon_search" />
     </LinearLayout>
 
     <FrameLayout
@@ -121,10 +131,48 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/proximasoft_regular"
             android:text="@string/no_word"
             android:textColor="@color/gray"
             android:textSize="13sp" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btnDelete"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/ic_delete"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/container_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_search"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="15dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/icon_search" />
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginStart="9dp"
+            android:background="@null"
+            android:hint="@string/enter_a_word"
+            android:textColor="@color/font_title"
+            android:textColorHint="@color/gray1"
+            android:textSize="16sp" />
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

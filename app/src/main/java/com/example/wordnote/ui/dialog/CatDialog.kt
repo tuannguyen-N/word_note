@@ -3,7 +3,9 @@ package com.example.wordnote.ui.dialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.ViewGroup
+import com.example.wordnote.R
 import com.example.wordnote.databinding.DialogCatBinding
+import com.example.wordnote.utils.loadGlideImage
 
 class CatDialog : BaseDialog<DialogCatBinding>(DialogCatBinding::inflate) {
 
@@ -15,6 +17,7 @@ class CatDialog : BaseDialog<DialogCatBinding>(DialogCatBinding::inflate) {
 
     override fun onStart() {
         super.onStart()
+        binding.iv.loadGlideImage(R.drawable.img_cat_looking)
 
         val window = dialog?.window ?: return
         window.setWindowAnimations(0)

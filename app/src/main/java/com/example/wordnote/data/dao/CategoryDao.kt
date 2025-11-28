@@ -23,6 +23,14 @@ interface CategoryDao {
     @Query("SELECT * FROM categoryentity ORDER BY name ASC")
     fun getCategories(): Flow<List<CategoryEntity>>
 
+    @Query("""
+    DELETE FROM WordEntity 
+    WHERE id IN (
+        SELECT wordId FROM WordCategoryCrossRef WHERE categoryId = :categoryId
+    )
+""")
+    suspend fun deleteWordsByCategory(categoryId: Int)
+
     @Query("SELECT * FROM categoryentity WHERE name = :name")
     suspend fun getCategoryByName(name: String): CategoryEntity?
 
@@ -44,5 +52,4 @@ interface CategoryDao {
     ORDER BY c.name ASC
 """)
     fun getCategoriesWithWordCount(): Flow<List<CategoryData>>
-
 }

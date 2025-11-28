@@ -58,9 +58,21 @@ object NotificationHelper {
             replyPendingIntent
         ).addRemoteInput(remoteInput).build()
 
+        val notificationText: String
+        val inboxStyle = NotificationCompat.InboxStyle()
+
+        if (word.note.isNotEmpty()) {
+            notificationText = "Note: ${word.note}\nMeaning: ${word.meanings.first().definitions.first().definition}"
+        } else {
+            val definitions = word.meanings.flatMap { it.definitions }
+                .map { it.definition }
+                .take(2)
+            definitions.forEach { inboxStyle.addLine(it) }
+            notificationText = definitions.firstOrNull() ?: ""
+        }
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle(word.word)
-            .setContentText(word.note.ifEmpty { word.meanings.first().definitions.first().definition })
+            .setContentTitle("What's this word ?")
+            .setContentText(notificationText)
             .setSmallIcon(R.drawable.image_cry)
             .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.image_cry))
             .setPriority(NotificationCompat.PRIORITY_HIGH)

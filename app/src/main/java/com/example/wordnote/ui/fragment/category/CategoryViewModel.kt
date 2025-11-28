@@ -44,7 +44,7 @@ class CategoryViewModel(
     private fun performEditCategory(id: Int, name: String, description: String) {
         viewModelScope.launch {
             val result = localCategoryUseCase.updateCategory(id, name, description)
-            handleCategoryResult(result, name)
+//            handleCategoryResult(result, name)
         }
     }
 

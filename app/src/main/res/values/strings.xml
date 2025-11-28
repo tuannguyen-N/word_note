@@ -42,4 +42,20 @@
     <string name="go_to_setting">Go to Setting</string>
     <string name="no_i_don_t_want_to_learn_this_word">No, I don\'t want to learn this word:))</string>
     <string name="current_learning_word">Current Learning Word</string>
+    <string name="start_at">Start At</string>
+    <string name="end_at">End At</string>
+    <string name="time_range">Time Range</string>
+    <string name="no_category">No Category</string>
+    <string name="your_learning_list_is_full_please_go_to_settings_or_take_no_action_0">Your learning list is full. Please go to Settings or take no action :0</string>
+    <string name="your_categories">Your Categories</string>
+    <string name="the_time_receive">The time receive</string>
+    <string name="voice_setting">Voice Setting</string>
+    <string name="using_voice">Using Voice</string>
+    <string name="turn_on_off_voice_when_notifying">Turn on/off voice when notifying</string>
+    <string name="united_kingdom">United Kingdom</string>
+    <string name="united_states">United States</string>
+    <string name="korean">Korean</string>
+    <string name="configure_how_your_voice_is_received">Configure how your voice is received</string>
+    <string name="select_voice">Select Voice</string>
+    <string name="go_to_this_list">Go to this list</string>
 </resources>

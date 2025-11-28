@@ -7,6 +7,7 @@ import com.example.wordnote.domain.usecase.NoteAlertSettingUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class NoteAlertViewModel(
     private val noteAlertSettingUseCase: NoteAlertSettingUseCase,
@@ -32,16 +33,67 @@ class NoteAlertViewModel(
             is NoteAlertSettingAction.StopStudying -> {
                 performStopStudying(action.id)
             }
+
+            is NoteAlertSettingAction.SetTimeRange -> {
+                performSetTimeRange(action.startTime, action.endTime)
+            }
         }
     }
 
-    private fun performStartStudying(id: Int){
+    private fun performSetTimeRange(startTime: Int, endTime: Int) {
+        AppPreferences.startTimeNotification = startTime
+        AppPreferences.endTimeNotification = endTime
+        updateWordsNextTriggerAfterTimeRangeChange(startTime, endTime)
+    }
+
+    private fun updateWordsNextTriggerAfterTimeRangeChange(newStart: Int, newEnd: Int) {
+        viewModelScope.launch {
+            val words = noteAlertSettingUseCase.getWordByStudiedTime()
+
+            words.forEach { word ->
+
+                val cal = Calendar.getInstance().apply {
+                    timeInMillis = word.nextTriggerTime
+                }
+
+                val triggerMinutes = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE)
+
+                if (triggerMinutes in newStart..newEnd) {
+                    noteAlertSettingUseCase.scheduleWord(word)
+                    return@forEach
+                }
+
+                val randomMinute = if (newStart <= newEnd) {
+                    (newStart..newEnd).random()
+                } else {
+                    val minutesInDay = 24 * 60
+                    ((newStart until minutesInDay) + (0..newEnd)).random()
+                }
+
+                cal.apply {
+                    set(Calendar.HOUR_OF_DAY, randomMinute / 60)
+                    set(Calendar.MINUTE, randomMinute % 60)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }
+
+                val newTriggerTime = cal.timeInMillis
+
+                noteAlertSettingUseCase.stopAlarm(word.id!!)
+                noteAlertSettingUseCase.updateNextTrigger(word.id!!, newTriggerTime)
+                noteAlertSettingUseCase.scheduleWord(word.copy(nextTriggerTime = newTriggerTime))
+            }
+        }
+    }
+
+
+    private fun performStartStudying(id: Int) {
         viewModelScope.launch {
             noteAlertSettingUseCase.startStudying(id)
         }
     }
 
-    private fun performStopStudying(id: Int){
+    private fun performStopStudying(id: Int) {
         viewModelScope.launch {
             noteAlertSettingUseCase.stopStudying(id)
         }

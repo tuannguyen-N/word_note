@@ -9,4 +9,3 @@ object QueueManager {
 
     fun next(): String? = if (queue.isNotEmpty()) queue.poll() else null
 }
-

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/bg_bottom_sheet"
     android:orientation="vertical"
     android:padding="15dp">
@@ -15,9 +15,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/proximasoft_semi_bold"
             android:includeFontPadding="false"
-            android:text="The time receive"
+            android:text="@string/the_time_receive"
             android:textColor="@color/black1"
             android:textSize="20sp" />
 
@@ -27,18 +26,107 @@
             android:layout_weight="1" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_x" />
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="20dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
-    </LinearLayout>
+        <nl.joery.timerangepicker.TimeRangePicker
+            android:id="@+id/timeRangePicker"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trp_clockFace="APPLE"
+            app:trp_clockLabelColor="@color/black1"
+            app:trp_clockTickColor="@color/black1"
+            app:trp_endTime="16:00"
+            app:trp_maxDuration="18:00"
+            app:trp_sliderRangeGradientEnd="#6A5AF9"
+            app:trp_sliderRangeGradientMiddle="@color/item"
+            app:trp_sliderRangeGradientStart="#FFA726"
+            app:trp_startTime="6:00"
+            app:trp_stepTimeMinutes="10"
+            app:trp_thumbIconEnd="@drawable/icon_sun"
+            app:trp_thumbIconSize="20dp"
+            app:trp_thumbIconStart="@drawable/icon_sun"
+            app:trp_thumbSize="25dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/container_time_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_at"
+                    android:textColor="@color/black1" />
+
+                <TextView
+                    android:id="@+id/tvStartAt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6:00"
+                    android:textColor="@color/black1"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/containerTimeEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/container_time_start">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/end_at"
+                    android:textColor="@color/black1" />
+
+                <TextView
+                    android:id="@+id/tvEndAt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="16:00"
+                    android:textColor="@color/black1"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

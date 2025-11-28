@@ -14,9 +14,18 @@ import com.example.wordnote.domain.model.response.WordResponseItem
 fun WordResponseItem.toData(): WordData =
     WordData(
         word = word,
-        phonetic = phonetic,
+        phonetic = resolvePhonetic(),
         meanings = meanings.map { it.toData() }
     )
+
+fun WordResponseItem.resolvePhonetic(): String {
+    return phonetic
+        ?.takeIf { it.isNotBlank() }
+        ?: phonetics
+            ?.firstOrNull { !it.text.isNullOrBlank() }
+            ?.text
+        ?: ""
+}
 
 fun Meaning.toData(): MeaningData =
     MeaningData(

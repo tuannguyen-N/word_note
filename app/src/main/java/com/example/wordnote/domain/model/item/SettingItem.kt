@@ -17,6 +17,12 @@ data class SettingItem(
                     title = R.string.note_alerts,
                     detail = R.string.configure_how_your_nalerts_are_received,
                     action = SettingAction.OpenNoteAlertSetting
+                ),
+                SettingItem(
+                    R.drawable.ic_volume,
+                    title = R.string.voice_setting,
+                    detail = R.string.configure_how_your_voice_is_received,
+                    action = SettingAction.OpenVoiceSetting
                 )
             )
     }

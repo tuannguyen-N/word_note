@@ -18,6 +18,27 @@ object AppPreferences {
         editor.apply()
     }
 
+    private const val CURRENT_COUNTRY_VOICE = "current_country_voice"
+    var codeVoice: String?
+        get() = preferences.getString(CURRENT_COUNTRY_VOICE, "us")
+        set(value) = preferences.edit{
+            it.putString(CURRENT_COUNTRY_VOICE, value)
+        }
+
+    private const val START_TIME_NOTIFICATION = "start_time"
+    var startTimeNotification: Int
+        get() = preferences.getInt(START_TIME_NOTIFICATION, 420) //7am
+        set(value) = preferences.edit {
+            it.putInt(START_TIME_NOTIFICATION, value)
+        }
+
+    private const val END_TIME_NOTIFICATION = "end_time"
+    var endTimeNotification: Int
+        get() = preferences.getInt(END_TIME_NOTIFICATION, 1260) //9.00pm
+        set(value) = preferences.edit {
+            it.putInt(END_TIME_NOTIFICATION, value)
+        }
+
     private const val KEY_MAX_WORDS = "max_words"
     var maxWords: Int
         get() = preferences.getInt(KEY_MAX_WORDS, 10)
@@ -27,7 +48,7 @@ object AppPreferences {
 
     private const val TIME_LEVEL_1 = "time_level_1"
     var timeLevel1: Long
-        get() = preferences.getLong(TIME_LEVEL_1, 20 * 1000L) // 30'
+        get() = preferences.getLong(TIME_LEVEL_1, 30 * 1000L) // 30'
         set(value) = preferences.edit {
             it.putLong(TIME_LEVEL_1, value)
         }
@@ -48,7 +69,7 @@ object AppPreferences {
 
     private const val TIME_LEVEL_4 = "time_level_3"
     var timeLevel4: Long
-        get() = preferences.getLong(TIME_LEVEL_4, 7 * 24 * 60 * 60 * 1000L) // a week
+        get() = preferences.getLong(TIME_LEVEL_4, 30 * 24 * 60 * 60 * 1000L) // a month
         set(value) = preferences.edit {
             it.putLong(TIME_LEVEL_4, value)
         }
@@ -114,5 +135,15 @@ object AppPreferences {
         )
         set(value) = preferences.edit {
             it.putBoolean(CAN_POST_NOTIFICATIONS.first, value)
+        }
+
+    private val CAN_SPEAKING_VOICE_NOTIFICATION = Pair("can_speaking_voice_notification", true)
+    var canSpeakingVoiceNotification: Boolean
+        get() = preferences.getBoolean(
+            CAN_SPEAKING_VOICE_NOTIFICATION.first,
+            CAN_SPEAKING_VOICE_NOTIFICATION.second
+        )
+        set(value) = preferences.edit {
+            it.putBoolean(CAN_SPEAKING_VOICE_NOTIFICATION.first, value)
         }
 }

@@ -1,5 +1,6 @@
 package com.example.wordnote.ui.activity.setting.note_alerts
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -16,9 +17,12 @@ import com.example.wordnote.domain.usecase.NoteAlertSettingUseCase
 import com.example.wordnote.ui.activity.BaseActivity
 import com.example.wordnote.ui.components.SeekBar
 import com.example.wordnote.ui.dialog.CatDialog
+import com.example.wordnote.ui.dialog.EditTimeBottomSheet
 import com.example.wordnote.ui.dialog.WordAvailableDialog
+import com.example.wordnote.utils.Utils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import nl.joery.timerangepicker.TimeRangePicker
 
 class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
     ActivityNoteAlertSettingBinding::inflate
@@ -35,8 +39,8 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        onClickListener()
         setupView()
+        onClickListener()
         collectUIEvent()
         setUpViewCompose()
     }
@@ -80,6 +84,9 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
     private fun setupView() {
         binding.apply {
             switchAppNotification.isChecked = AppPreferences.canPostNotifications
+            val startTime = Utils.formatTimeMinutes(AppPreferences.startTimeNotification)
+            val endTime = Utils.formatTimeMinutes(AppPreferences.endTimeNotification)
+            btnEditTime.text = "$startTime - $endTime"
         }
     }
 
@@ -91,7 +98,27 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
             switchAppNotification.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.onAction(NoteAlertSettingAction.SetNotificationPost(isChecked))
             }
+            btnEditTime.setOnClickListener {
+                openEditTimeBottomSheet()
+            }
         }
+    }
+
+    private fun openEditTimeBottomSheet(){
+        val bs = EditTimeBottomSheet(
+            onEditTime = {startTime, endTime->
+                updateTimeView(startTime, endTime)
+            },
+            onDoneEditTime = {startTime, endTime->
+                viewModel.onAction(NoteAlertSettingAction.SetTimeRange(startTime, endTime))
+            }
+        )
+        bs.show(supportFragmentManager, "EditTimeBottomSheet")
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateTimeView(startTime: TimeRangePicker.Time, endTime: TimeRangePicker.Time){
+        binding.btnEditTime.text = "${Utils.formatTime(startTime.hour, startTime.minute)} - ${Utils.formatTime(endTime.hour, endTime.minute)}"
     }
 
     private fun setUpViewCompose() {

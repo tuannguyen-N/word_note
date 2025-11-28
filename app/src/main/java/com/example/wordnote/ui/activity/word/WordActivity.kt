@@ -1,9 +1,13 @@
 package com.example.wordnote.ui.activity.word
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.animation.DecelerateInterpolator
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -18,25 +22,30 @@ import com.example.wordnote.data.AppDatabase
 import com.example.wordnote.data.api.RetrofitInstance
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.databinding.ActivityWordBinding
+import com.example.wordnote.domain.model.CategoryData
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.model.WordState
 import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.ui.activity.BaseActivity
 import com.example.wordnote.ui.activity.setting.note_alerts.NoteAlertSettingActivity
 import com.example.wordnote.ui.dialog.AddWordDialog
-import com.example.wordnote.ui.dialog.CatDialog
 import com.example.wordnote.ui.dialog.DetailDefinitionDialog
 import com.example.wordnote.ui.dialog.FullWordsBottomSheet
 import com.example.wordnote.utils.SortType
-import com.example.wordnote.utils.SpeakingManager
-import com.example.wordnote.utils.shakeView
+import com.example.wordnote.manager.SpeakingManager
+import com.example.wordnote.ui.dialog.ExistWordDialog
+import com.example.wordnote.utils.Utils
+import com.example.wordnote.utils.animateDown
+import com.example.wordnote.utils.animateUp
+import com.example.wordnote.utils.followKeyboard
 import kotlinx.coroutines.launch
 
 class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::inflate) {
     companion object {
-        fun goToActivity(context: Context, categoryId: Int) {
+        fun goToActivity(context: Context, category: CategoryData) {
             val intent = Intent(context, WordActivity::class.java)
-            intent.putExtra("CATEGORY_ID", categoryId)
+            intent.putExtra("CATEGORY_ID", category.id)
+            intent.putExtra("CATEGORY_NAME", category.name)
             context.startActivity(intent)
         }
     }
@@ -59,9 +68,6 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         onAction = {
             wordViewModel.onAction(WordAction.OnOpenDetailWordDialog(it))
         },
-        onDelete = {
-            wordViewModel.onAction(WordAction.OnDeleteWord(it))
-        },
         onClickTvWord = { word ->
             wordViewModel.onAction(WordAction.OnSpeakingWord(word))
         },
@@ -70,16 +76,28 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         },
         onStopStudying = { wordId ->
             wordViewModel.onAction(WordAction.OnStopStudying(wordId))
+        },
+        onSelectedMode = {
+            if (it) showDeleteButton()
+            else hideDeleteButton()
         }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setUpView()
         handleIntent()
         setUpRecyclerView()
         setOnClick()
         collectState()
         collectUIEvent()
+        setupHideKeyboardOnTouchOutside()
+    }
+
+    private fun setUpView() {
+//        binding.root.followKeyboard(binding.containerSearch)
+        binding.tvNameCategory.text =
+            intent.getStringExtra("CATEGORY_NAME").toString().replaceFirstChar { it.uppercase() }
     }
 
     private fun setOnClick() {
@@ -94,6 +112,17 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                 levelContainer.root.visibility =
                     if (levelContainer.root.isVisible) View.GONE else View.VISIBLE
             }
+
+            btnDelete.setOnClickListener {
+                wordViewModel.onAction(WordAction.OnDeleteWords(wordAdapter.getTickedItem()))
+            }
+
+            btnSearch.setOnClickListener {
+                binding.containerSearch.visibility = View.VISIBLE
+                binding.etSearch.requestFocus()
+                showKeyboard(binding.etSearch)
+            }
+
             setupLevelButtons()
         }
     }
@@ -154,10 +183,35 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                         is WordUIEvent.HideLevelContainer -> hideLevelContainer()
                         is WordUIEvent.ScrollToExistWord -> scrollToExistWord(event.word)
                         is WordUIEvent.ShowFullStudyingWords -> showFullStudyingWordsBottomSheet()
+                        is WordUIEvent.HideDeleteButton -> hideDeleteButton()
+                        is WordUIEvent.ShowExistWordDialog -> showExistWordDialog(event.category)
                     }
                 }
             }
         }
+    }
+
+    private fun showExistWordDialog(category: CategoryData) {
+        val dialog = ExistWordDialog(
+            category = category,
+            onGoToThisList = {
+                onChangeList(it)
+            }
+        )
+        dialog.show(supportFragmentManager, "ExistWordDialog")
+    }
+
+    private fun onChangeList(category: CategoryData) {
+        wordViewModel.setCategoryId(category.id!!)
+        binding.tvNameCategory.text = category.name.replaceFirstChar { it.uppercase() }
+    }
+
+    private fun hideDeleteButton() {
+        binding.btnDelete.animateDown()
+    }
+
+    private fun showDeleteButton() {
+        binding.btnDelete.animateUp()
     }
 
     private fun showFullStudyingWordsBottomSheet() {
@@ -178,7 +232,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
 
                 binding.recyclerView.postDelayed({
                     val holder = binding.recyclerView.findViewHolderForAdapterPosition(index)
-                    holder?.itemView?.let { shakeView(it) }
+                    holder?.itemView?.let { Utils.shakeView(it) }
                 }, 400)
             }
         }
@@ -194,8 +248,8 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
 
     private fun showAddWordDialog() {
         val dialog = AddWordDialog(
-            onEnter = { word, level ->
-                wordViewModel.onAction(WordAction.OnSaveWord(word, level))
+            onEnter = { word ->
+                wordViewModel.onAction(WordAction.OnSaveWord(word))
             }
         )
         supportFragmentManager.commit(allowStateLoss = false) {
@@ -221,6 +275,37 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         binding.recyclerView.apply {
             adapter = wordAdapter
             layoutManager = LinearLayoutManager(this@WordActivity)
+        }
+    }
+
+    private fun showKeyboard(view: View) {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupHideKeyboardOnTouchOutside() {
+        binding.root.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                hideKeyboard()
+            }
+            false
+        }
+
+        binding.containerSearch.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                return@setOnTouchListener true
+            }
+            false
+        }
+    }
+
+    private fun hideKeyboard() {
+        val view = currentFocus
+        if (view != null) {
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+            view.clearFocus()
         }
     }
 }

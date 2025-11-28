@@ -1,5 +1,6 @@
 package com.example.wordnote.ui.activity.word
 
+import com.example.wordnote.domain.model.CategoryData
 import com.example.wordnote.domain.model.WordData
 
 sealed interface WordUIEvent {
@@ -9,4 +10,6 @@ sealed interface WordUIEvent {
     object HideLevelContainer: WordUIEvent
     data class ScrollToExistWord(val word: String): WordUIEvent
     object ShowFullStudyingWords: WordUIEvent
+    object HideDeleteButton: WordUIEvent
+    data class ShowExistWordDialog(val category: CategoryData): WordUIEvent
 }

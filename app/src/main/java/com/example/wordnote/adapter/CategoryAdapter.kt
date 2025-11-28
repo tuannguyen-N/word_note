@@ -7,7 +7,7 @@ import com.example.wordnote.domain.model.CategoryData
 import com.example.wordnote.domain.model.item.CategoryItem
 
 class CategoryAdapter(
-    private val onClickItem: (Int) -> Unit = {},
+    private val onClickItem: (CategoryData) -> Unit = {},
     private val onDelete: (Int) -> Unit,
     private val onEdit: (CategoryData) -> Unit
 ) : BaseAdapter<CategoryData>() {
@@ -28,7 +28,7 @@ class CategoryAdapter(
             tvWordLv3.text = item.numberWordLevel3.toString()
 
             root.setOnClickListener {
-                onClickItem(item.id!!)
+                onClickItem(item)
             }
             root.setOnLongClickListener {
                 btnDelete.visibility = View.VISIBLE
@@ -42,7 +42,6 @@ class CategoryAdapter(
             btnEdit.setOnClickListener {
                 onEdit(item)
             }
-
         }
     }
 

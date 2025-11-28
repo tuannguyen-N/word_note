@@ -18,7 +18,7 @@ import com.example.wordnote.ui.dialog.AddCategoryDialog
 import com.example.wordnote.ui.dialog.ConfirmDeleteDialog
 import com.example.wordnote.ui.dialog.EditCategoryDialog
 import com.example.wordnote.ui.fragment.BaseFragment
-import com.example.wordnote.utils.shakeView
+import com.example.wordnote.utils.Utils
 import kotlinx.coroutines.launch
 
 class CategoryFragment : BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::inflate) {
@@ -33,8 +33,8 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>(FragmentCategoryB
     }
 
     private val categoryAdapter = CategoryAdapter(
-        onClickItem = { categoryId ->
-            WordActivity.goToActivity(requireContext(), categoryId)
+        onClickItem = { category ->
+            WordActivity.goToActivity(requireContext(), category)
         },
         onDelete = { categoryId ->
             showConfirmDeleteDialog(categoryId)
@@ -57,6 +57,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>(FragmentCategoryB
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 categoryViewModel.state.collect {
                     categoryAdapter.setItemList(it.categories)
+                    binding.viewNoData.visibility = if (it.categories.isEmpty()) View.VISIBLE else View.GONE
                 }
             }
         }
@@ -82,7 +83,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>(FragmentCategoryB
                 smoothScrollToPosition(index)
                 postDelayed({
                     val holder = this.findViewHolderForAdapterPosition(index)
-                    holder?.itemView?.let { shakeView(it) }
+                    holder?.itemView?.let { Utils.shakeView(it) }
                 }, 400)
             }
         }
@@ -108,7 +109,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>(FragmentCategoryB
 
     private fun showAddCategoryDialog() {
         val dialog = AddCategoryDialog(
-            onEnterClick = { categoryName, description ->
+            onEnter = { categoryName, description ->
                 categoryViewModel.onAction(CategoryAction.OnSaveCategory(categoryName, description))
             }
         )
@@ -119,7 +120,13 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>(FragmentCategoryB
         val dialog = EditCategoryDialog(
             category = category,
             onEnterClick = { categoryName, description ->
-                categoryViewModel.onAction(CategoryAction.OnEditCategory(category.id!!, categoryName, description))
+                categoryViewModel.onAction(
+                    CategoryAction.OnEditCategory(
+                        category.id!!,
+                        categoryName,
+                        description
+                    )
+                )
             }
         )
         dialog.show(childFragmentManager, "edit_category_dialog")

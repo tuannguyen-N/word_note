@@ -27,6 +27,6 @@ interface WordCategoryCrossRefDao{
         ON CategoryEntity.id = WordCategoryCrossRef.categoryId
     WHERE WordCategoryCrossRef.wordId = :wordId
 """)
-    suspend fun getCategoriesOfWord(wordId: Int): List<CategoryEntity>
+    suspend fun getCategoriesOfWord(wordId: Int): CategoryEntity
 
 }

@@ -22,6 +22,9 @@ interface WordDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertWord(word: WordEntity): Long
 
+    @Query("DELETE FROM wordentity")
+    suspend fun deleteAllWords()
+
     @Query("DELETE FROM wordentity WHERE id = :wordId")
     suspend fun deleteWord(wordId: Int)
 

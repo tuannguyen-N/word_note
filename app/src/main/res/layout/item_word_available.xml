@@ -9,7 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="15dp"
-        android:fontFamily="@font/proximasoft_regular"
         android:text="The Word"
         android:textColor="@color/black1"
         android:textSize="18sp"

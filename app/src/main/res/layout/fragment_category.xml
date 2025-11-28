@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,20 +8,52 @@
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="5dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_weight="1"
         app:spanCount="2"
         tools:itemCount="5"
         tools:listitem="@layout/item_category" />
 
     <androidx.appcompat.widget.AppCompatImageView
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/btnAddCategory"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="end"
         android:layout_marginEnd="10dp"
         android:src="@drawable/ic_add" />
-</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/viewNoData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_no_data" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_category"
+            android:textColor="@color/gray"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

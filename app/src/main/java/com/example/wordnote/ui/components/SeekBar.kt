@@ -28,7 +28,7 @@ import kotlin.math.roundToInt
 fun SeekBar(
     value: Float,
     onValueChange: (Float) -> Unit,
-    onValueChangeFinish: ()-> Unit,
+    onValueChangeFinish: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Slider(
@@ -51,14 +51,14 @@ fun SeekBar(
                     .height(28.dp)
                     .width(15.dp)
                     .background(Color.White, shape = CircleShape)
-                    .border(2.dp, colorResource(R.color.item), CircleShape),
+                    .border(2.dp, colorResource(R.color.icon), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Box(
                     modifier = Modifier
                         .width(2.dp)
                         .height(7.dp)
-                        .background(colorResource(R.color.item), shape = RoundedCornerShape(1.dp))
+                        .background(colorResource(R.color.icon), shape = RoundedCornerShape(1.dp))
                 )
             }
         },
@@ -74,7 +74,7 @@ fun SeekBar(
                     modifier = Modifier
                         .fillMaxHeight()
                         .fillMaxWidth((value - 1f) / 3f)
-                        .background(color = colorResource(R.color.item))
+                        .background(color = colorResource(R.color.icon))
                 )
             }
         },

@@ -8,71 +8,86 @@ import com.example.wordnote.domain.model.WordData
 
 class WordAdapter(
     private val onAction: (WordData) -> Unit,
-    private val onDelete: (WordData) -> Unit,
     private val onClickTvWord: (String) -> Unit,
     private val onStartStudying: (WordData) -> Unit,
-    private val onStopStudying: (Int) -> Unit
+    private val onStopStudying: (Int) -> Unit,
+    private val onSelectedMode: (Boolean) -> Unit,
 ) : BaseAdapter<WordData>() {
+    private val tickedIds = mutableSetOf<Int>()
+    private var selectionMode = false
+
     override fun doGetViewType(position: Int): Int = R.layout.item_word
 
     override fun doBindViewHolder(
         view: View, item: WordData, position: Int, holder: BaseViewHolder
     ) {
         val binding = ItemWordBinding.bind(view)
-        binding.bindWord(item)
-        binding.bindView(item)
-        binding.bindActions(item)
-        binding.bindStudied(item, position)
-    }
+        val id = item.id!!
 
-    private fun ItemWordBinding.bindWord(item: WordData) {
-        tvWord.text = item.word
-        tvPhonetic.text = item.phonetic
+        binding.btnTick.visibility = if (selectionMode) View.VISIBLE else View.GONE
+        binding.btnTick.setImageResource(
+            if (id in tickedIds) R.drawable.icon_ticked
+            else R.drawable.icon_unticked
+        )
 
-        tvWord.setOnClickListener {
-            onClickTvWord(item.word)
+        binding.tvWord.text = item.word
+        binding.tvPhonetic.text = item.phonetic
+        binding.tvNote.text = item.note.ifEmpty { view.context.getString(R.string.note) }
+
+        binding.btnLevel1.alpha = if (item.level == 1) 1f else 0.2f
+        binding.btnLevel2.alpha = if (item.level == 2) 1f else 0.2f
+        binding.btnLevel3.alpha = if (item.level == 3) 1f else 0.2f
+
+        binding.btnStartStudying.updateStudyIcon(item.startStudiedTime > 0)
+        binding.btnStartStudying.isEnabled = item.level < 2
+        binding.btnStartStudying.setOnClickListener {
+            if (item.startStudiedTime <= 0) onStartStudying(item)
+            else onStopStudying(id)
+            notifyItemChanged(position, false)
         }
-    }
 
-    private fun ItemWordBinding.bindView(item: WordData) {
-        if (item.note.isNotEmpty())
-            tvNote.text = item.note
-        else
-            tvNote.setText(R.string.note)
-        btnLevel1.alpha = if (item.level == 1) 1f else 0.2f
-        btnLevel2.alpha = if (item.level == 2) 1f else 0.2f
-        btnLevel3.alpha = if (item.level == 3) 1f else 0.2f
-    }
-
-    private fun ItemWordBinding.bindActions(item: WordData) {
-        btnDelete.visibility = View.GONE
-
-        root.setOnClickListener { onAction(item) }
-
-        root.setOnLongClickListener {
-            btnDelete.visibility = View.VISIBLE
+        binding.root.setOnLongClickListener {
+            if (!selectionMode) {
+                selectionMode = true
+                tickedIds.add(id)
+                onSelectedMode(selectionMode)
+                notifyDataSetChanged()
+            }
             true
         }
 
-        btnDelete.setOnClickListener {
-            btnDelete.visibility = View.GONE
-            onDelete(item)
+        binding.root.setOnClickListener {
+            if (selectionMode) toggleItem(id, position)
+            else onAction(item)
+        }
+
+        binding.btnTick.setOnClickListener {
+            toggleItem(id, position)
+        }
+
+        binding.tvWord.setOnClickListener {
+            if (!selectionMode) onClickTvWord(item.word)
         }
     }
 
-    private fun ItemWordBinding.bindStudied(item: WordData, position: Int) {
-        btnStartStudying.updateStudyIcon(item.startStudiedTime > 0)
-        if (item.level < 2) {
-            btnStartStudying.isEnabled = true
-            btnStartStudying.setOnClickListener {
-                if (item.startStudiedTime <= 0) onStartStudying(item)
-                else onStopStudying(item.id!!)
-                notifyItemChanged(position)
-            }
+    private fun toggleItem(id: Int, position: Int) {
+        if (id in tickedIds) tickedIds.remove(id)
+        else tickedIds.add(id)
+
+        if (tickedIds.isEmpty()) {
+            onDone()
         } else {
-            btnStartStudying.isEnabled = false
-            btnStartStudying.setOnClickListener(null)
+            notifyItemChanged(position, false)
         }
+    }
+
+    fun getTickedItem(): Set<Int> = tickedIds
+
+    fun onDone(){
+        selectionMode = false
+        tickedIds.clear()
+        onSelectedMode(false)
+        notifyDataSetChanged()
     }
 
     private fun ImageView.updateStudyIcon(isStudied: Boolean) {

@@ -9,7 +9,7 @@ import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.model.WordState
 import com.example.wordnote.utils.Result
 import com.example.wordnote.utils.SortType
-import com.example.wordnote.utils.SpeakingManager
+import com.example.wordnote.manager.SpeakingManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -79,7 +79,7 @@ class WordViewModel(
 
             is WordAction.OnSpeakingWord -> performSpeakingWord(action.word)
 
-            is WordAction.OnSaveWord -> performSaveWord(action.word, action.level)
+            is WordAction.OnSaveWord -> performSaveWord(action.word)
 
             is WordAction.OnSortWords -> performSortWords(action.sortType)
 
@@ -92,6 +92,17 @@ class WordViewModel(
             is WordAction.OnStartStudying -> performStartStudying(action.word)
 
             is WordAction.OnStopStudying -> performStopStudying(action.wordId)
+
+            is WordAction.OnDeleteWords -> performDeleteWords(action.words)
+        }
+    }
+
+    private fun performDeleteWords(words: Set<Int>) {
+        viewModelScope.launch {
+            words.forEach {
+                localWordUseCase.deleteWord(it)
+            }
+            sendUIEvent(WordUIEvent.HideDeleteButton)
         }
     }
 
@@ -103,7 +114,7 @@ class WordViewModel(
 
     private fun performStartStudying(word: WordData) {
         viewModelScope.launch {
-            Log.e("ádfasdfasdf", "performStartStudying: ${localWordUseCase.countStudyingWords()}", )
+            Log.e("ádfasdfasdf", "performStartStudying: ${localWordUseCase.countStudyingWords()}")
             if (localWordUseCase.countStudyingWords() >= AppPreferences.maxWords)
                 sendUIEvent(WordUIEvent.ShowFullStudyingWords)
             else
@@ -137,7 +148,7 @@ class WordViewModel(
 
     private fun performDeleteWord(word: WordData) {
         viewModelScope.launch {
-            localWordUseCase.deleteWord(word)
+            localWordUseCase.deleteWord(word.id!!)
         }
     }
 
@@ -145,24 +156,24 @@ class WordViewModel(
         speakingManager.speak(word)
     }
 
-    private fun performSaveWord(word: String, level: Int) {
+    private fun performSaveWord(word: String) {
         val words = word.split(",").map { it.trim() }.filter { it.isNotBlank() }
         viewModelScope.launch {
             performShowLoading(true)
             words.forEach {
-                upsertWord(it, level)
+                upsertWord(it)
             }
             performShowLoading(false)
         }
     }
 
-    private suspend fun upsertWord(word: String, level: Int) {
+    private suspend fun upsertWord(word: String) {
         val categoryId = _categoryId.value
         if (categoryId == null) {
             sendUIEvent(WordUIEvent.ShowToast("Missing category"))
             return
         }
-        when (val result = localWordUseCase.upsertWord(word, level, categoryId)) {
+        when (val result = localWordUseCase.upsertWord(word, categoryId)) {
             is Result.Error -> sendUIEvent(WordUIEvent.ShowToast("Can't save word: $word"))
             is Result.NotFound -> sendUIEvent(WordUIEvent.ShowToast("Not found: $word"))
             is Result.Success -> {
@@ -171,7 +182,7 @@ class WordViewModel(
 
             is Result.AlreadyExists -> sendUIEvent(WordUIEvent.ScrollToExistWord(word))
             is Result.AlreadyExistsInCategories ->
-                sendUIEvent(WordUIEvent.ShowToast("Already exists in: ${result.categoryNames}"))
+                sendUIEvent(WordUIEvent.ShowExistWordDialog(result.category))
         }
     }
 

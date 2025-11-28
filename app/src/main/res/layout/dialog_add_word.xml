@@ -17,19 +17,37 @@
         android:paddingTop="20dp"
         android:paddingBottom="10dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/font_title"
+            android:layout_gravity="start"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Enter a word or words"/>
         <EditText
             android:id="@+id/etWord"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/background_et_border"
-            android:fontFamily="@font/proximasoft_regular"
-            android:hint="@string/enter_a_word"
+            android:hint="Oh my god...."
             android:includeFontPadding="false"
             android:inputType="text"
             android:padding="18dp"
-            android:textColor="@color/black1"
-            android:textColorHint="@color/black1" />
+            android:textColor="@color/font_title"
+            android:textColorHint="@color/gray1" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="5dp"
+            android:text=":D?? you enter a empty word???"
+            android:textColor="@color/red" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,7 +92,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
-                android:fontFamily="@font/proximasoft_regular"
                 android:padding="5dp"
                 android:text="@string/cancel"
                 android:textColor="@color/black1"
@@ -84,7 +101,6 @@
                 android:id="@+id/enterBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/proximasoft_regular"
                 android:padding="5dp"
                 android:text="@string/enter"
                 android:textColor="@color/black1"

@@ -10,13 +10,15 @@ import com.example.wordnote.adapter.SettingAdapter
 import com.example.wordnote.databinding.FragmentSettingBinding
 import com.example.wordnote.domain.model.item.SettingItem
 import com.example.wordnote.ui.activity.setting.note_alerts.NoteAlertSettingActivity
+import com.example.wordnote.ui.activity.setting.voice.VoiceSettingActivity
 import com.example.wordnote.ui.fragment.BaseFragment
 
 class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBinding::inflate) {
     private val settingAdapter = SettingAdapter(
         onClickAc = { action ->
             when (action) {
-                SettingAction.OpenNoteAlertSetting -> openAc(NoteAlertSettingActivity())
+                is SettingAction.OpenNoteAlertSetting -> openAc(NoteAlertSettingActivity())
+                is SettingAction.OpenVoiceSetting -> openAc(VoiceSettingActivity())
             }
         }
     )

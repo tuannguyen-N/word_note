@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wordnote">
         <activity
+            android:name=".ui.activity.setting.voice.VoiceSettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.word.WordActivity"
             android:exported="false" />
         <activity
@@ -34,19 +37,17 @@
         <receiver
             android:name=".alarm.WordReceiver"
             android:exported="false" />
-
         <receiver
             android:name=".alarm.WordReplyReceiver"
             android:exported="false" />
-
-<!--        <receiver-->
-<!--            android:name=".alarm.BootReceiver"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.BOOT_COMPLETED" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
+        <receiver
+            android:name=".alarm.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".ui.activity.main.MainActivity"
@@ -60,4 +61,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>
