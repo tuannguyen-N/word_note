@@ -62,7 +62,8 @@ object NotificationHelper {
         val inboxStyle = NotificationCompat.InboxStyle()
 
         if (word.note.isNotEmpty()) {
-            notificationText = "Note: ${word.note}\nMeaning: ${word.meanings.first().definitions.first().definition}"
+            notificationText =
+                "Note: ${word.note}\nMeaning: ${word.meanings.first().definitions.first().definition}"
         } else {
             val definitions = word.meanings.flatMap { it.definitions }
                 .map { it.definition }
@@ -73,7 +74,7 @@ object NotificationHelper {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle("What's this word ?")
             .setContentText(notificationText)
-            .setSmallIcon(R.drawable.image_cry)
+            .setSmallIcon(R.drawable.icon_notification)
             .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.image_cry))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
@@ -96,9 +97,8 @@ object NotificationHelper {
         }
     }
 
-    fun isNotificationActive(context: Context, notificationId: Int): Boolean {
-        val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val active = nm.activeNotifications ?: return false
-        return active.any { it.id == notificationId }
+    fun isNotificationActive(context: Context, id: Int): Boolean {
+        val nm = context.getSystemService(NotificationManager::class.java)
+        return nm?.activeNotifications?.any { it.id == id } == true
     }
 }

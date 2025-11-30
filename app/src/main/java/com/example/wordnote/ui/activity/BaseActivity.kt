@@ -1,12 +1,15 @@
 package com.example.wordnote.ui.activity
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.SystemBarStyle
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.Insets
@@ -91,7 +94,6 @@ open class BaseActivity<VBinding : ViewBinding>(private val bindingProvider: (La
     open fun onInsets(systemBars: Insets, navigationBars: Insets) {
         mBaseBinding.topBarCoverView.updateLayoutParams { height = systemBars.top }
         mBaseBinding.bottomBarCoverView.updateLayoutParams { height = 0 }
-
     }
     protected open fun hideSystemNavigationBar(){
         WindowCompat.setDecorFitsSystemWindows(window, false)

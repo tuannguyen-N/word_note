@@ -52,10 +52,16 @@ class WordViewModel(
                 }
             }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
+    private val _searchQuery = MutableStateFlow("")
+    private val _filterWords = combine(_words,_searchQuery){words, query->
+        if (query.isBlank()) words
+        else words.filter { it.word.contains(query, ignoreCase = true) }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
     private val _state = MutableStateFlow(WordState(isLoading = true))
-    val state = combine(_state, _sortType, _words) { state, sortType, words ->
+    val state = combine(_state, _sortType, _filterWords) { state, sortType, filterWords ->
         state.copy(
-            words = words, sortType = sortType
+            words = filterWords, sortType = sortType
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), WordState())
 
@@ -94,7 +100,13 @@ class WordViewModel(
             is WordAction.OnStopStudying -> performStopStudying(action.wordId)
 
             is WordAction.OnDeleteWords -> performDeleteWords(action.words)
+
+            is WordAction.OnSearchWord -> performSearchWord(action.query)
         }
+    }
+
+    private fun performSearchWord(query: String){
+        _searchQuery.value = query
     }
 
     private fun performDeleteWords(words: Set<Int>) {
@@ -179,7 +191,6 @@ class WordViewModel(
             is Result.Success -> {
 //                if (result.word?.level != 0) scheduleWordUseCase.scheduleWord(result.word!!)
             }
-
             is Result.AlreadyExists -> sendUIEvent(WordUIEvent.ScrollToExistWord(word))
             is Result.AlreadyExistsInCategories ->
                 sendUIEvent(WordUIEvent.ShowExistWordDialog(result.category))

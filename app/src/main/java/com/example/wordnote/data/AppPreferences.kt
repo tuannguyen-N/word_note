@@ -21,7 +21,7 @@ object AppPreferences {
     private const val CURRENT_COUNTRY_VOICE = "current_country_voice"
     var codeVoice: String?
         get() = preferences.getString(CURRENT_COUNTRY_VOICE, "us")
-        set(value) = preferences.edit{
+        set(value) = preferences.edit {
             it.putString(CURRENT_COUNTRY_VOICE, value)
         }
 
@@ -48,7 +48,7 @@ object AppPreferences {
 
     private const val TIME_LEVEL_1 = "time_level_1"
     var timeLevel1: Long
-        get() = preferences.getLong(TIME_LEVEL_1, 30 * 1000L) // 30'
+        get() = preferences.getLong(TIME_LEVEL_1, 30 * 60 * 1000L) // 30'
         set(value) = preferences.edit {
             it.putLong(TIME_LEVEL_1, value)
         }

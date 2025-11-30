@@ -9,49 +9,54 @@ import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.data.mapper.toData
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.manager.QueueManager
-import com.example.wordnote.manager.WordLevelManager
 import com.example.wordnote.service.SpeakingService
 import com.example.wordnote.utils.NotificationHelper
+import com.example.wordnote.utils.WordLevel
+import com.example.wordnote.utils.nextTrigger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class WordReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
 
+    override fun onReceive(context: Context, intent: Intent) {
         val wordId = intent.getIntExtra(EXTRA_ID, -1)
         if (wordId == -1) return
+
         val dao = AppDatabase.getInstance(context).wordDao
-        val levelManager = WordLevelManager()
+        val alarmScheduler = AlarmScheduler(context)
 
         CoroutineScope(Dispatchers.IO).launch {
             val wordData = dao.getWordById(wordId)?.toData() ?: return@launch
 
-            withContext(Dispatchers.Main) {
-                val notificationId = wordData.id!!
-                val stillActive = NotificationHelper.isNotificationActive(context, notificationId)
-                if (!stillActive) {
-                    NotificationHelper.showWordNotification(context, wordData)
-                }
-                if (AppPreferences.canSpeakingVoiceNotification){
-                    QueueManager.add(wordData.word)
-                    if (!SpeakingService.isRunning){
-                        context.startSpeakingService(wordData)
-                    }
+            val notificationId = wordData.id!!
+            val isActive = NotificationHelper.isNotificationActive(context, notificationId)
+
+            // Show notification only if not showing
+            if (!isActive) {
+                NotificationHelper.showWordNotification(context, wordData)
+            }
+
+            // Speaking service
+            if (AppPreferences.canSpeakingVoiceNotification) {
+                QueueManager.add(wordData.word)
+                if (!SpeakingService.isRunning) {
+                    context.startSpeakingService(wordData)
                 }
             }
 
-            val newLevel = levelManager.calculateLevelFromScore(wordData.score)
-            val nextTrigger = levelManager.nextTriggerTime(newLevel)
+            // Level calculation
+            val newLevel = WordLevel.fromScore(wordData.score)
+            val nextTrigger = newLevel.nextTrigger
 
+            // Update DB
             dao.updateLevel(wordId, newLevel.ordinal + 1, nextTrigger)
 
-            if (newLevel.ordinal + 1 == 5) return@launch
-            AlarmScheduler(context).scheduleWord(
-                wordData,
-                nextTrigger
-            )
+            // Stop if max level
+            if (newLevel > WordLevel.LEVEL_4) return@launch
+
+            // Reschedule alarm
+            alarmScheduler.scheduleWord(wordData, nextTrigger)
         }
     }
 

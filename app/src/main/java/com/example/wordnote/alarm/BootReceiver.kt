@@ -7,38 +7,45 @@ import com.example.wordnote.data.AppDatabase
 import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.data.mapper.toData
 import com.example.wordnote.utils.NotificationHelper
+import com.example.wordnote.utils.WordLevel
 import com.example.wordnote.utils.getDelay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class BootReceiver : BroadcastReceiver() {
+
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (!AppPreferences.canPostNotifications) return
-        if (intent?.action != Intent.ACTION_BOOT_COMPLETED) return
         if (context == null) return
+        if (intent?.action != Intent.ACTION_BOOT_COMPLETED) return
+        if (!AppPreferences.canPostNotifications) return
 
         val dao = AppDatabase.getInstance(context).wordDao
+        val alarmScheduler = AlarmScheduler(context)
+        val now = System.currentTimeMillis()
 
         CoroutineScope(Dispatchers.IO).launch {
+            val list = dao.getWordByStudiedTime()
 
-            val words = dao.getWordByStudiedTime()
-            val now = System.currentTimeMillis()
+            for (entity in list) {
+                val data = entity.toData()
 
-            for (w in words) {
-                val word = w.toData()
-                if (w.nextTriggerTime <= now) {
-                    NotificationHelper.showWordNotification(
-                        context,
-                        word
-                    )
-                    val next = now + getDelay(w.level)
-                    dao.updateLevel(w.id, w.level, next)
-                    AlarmScheduler(context).scheduleWord(w.toData(), next)
+                if (entity.nextTriggerTime <= now) {
+                    withContext(Dispatchers.Main) {
+                        NotificationHelper.showWordNotification(context, data)
+                    }
+
+                    val level = WordLevel.fromScore(entity.score)
+                    val next = now + level.getDelay()
+
+                    dao.updateLevel(entity.id, level.ordinal + 1, next)
+                    alarmScheduler.scheduleWord(data, next)
                 } else {
-                    AlarmScheduler(context).scheduleWord(w.toData(), w.nextTriggerTime)
+                    alarmScheduler.scheduleWord(data, entity.nextTriggerTime)
                 }
             }
         }
     }
 }
+

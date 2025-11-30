@@ -5,7 +5,6 @@ import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.utils.Result
 import com.example.wordnote.utils.WordLevel
-import com.example.wordnote.utils.nextTrigger
 
 class LocalWordUseCase(
     private val wordRepository: WordRepository,
@@ -29,10 +28,13 @@ class LocalWordUseCase(
     suspend fun startStudying(word: WordData) {
         val currentTime = System.currentTimeMillis()
         val timeLevel = WordLevel.fromScore(word.score)
+        val nextTrigger = currentTime + timeLevel.getDelay()
+
         wordRepository.updateStudiedTime(word.id!!, currentTime)
-        wordRepository.updateNextTrigger(word.id, timeLevel.nextTrigger)
-        alarmScheduler?.scheduleWord(word, timeLevel.nextTrigger)
+        wordRepository.updateNextTrigger(word.id, nextTrigger)
+        alarmScheduler?.scheduleWord(word, nextTrigger)
     }
+
 
     suspend fun stopStudying(wordId: Int) {
         wordRepository.updateStudiedTime(wordId, 0)
@@ -48,5 +50,5 @@ class LocalWordUseCase(
     fun getWordsByCategoryAndLevel(id: Int, level: Int) =
         wordRepository.getWordsByCategoryAndLevel(id, level)
 
-    suspend fun countStudyingWords() : Int = wordRepository.countStudyingWords()
+    suspend fun countStudyingWords(): Int = wordRepository.countStudyingWords()
 }

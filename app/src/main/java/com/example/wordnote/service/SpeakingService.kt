@@ -35,7 +35,6 @@ class SpeakingService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val word = intent?.getStringExtra(WordReceiver.EXTRA_WORD) ?: return START_NOT_STICKY
-
         QueueManager.add(word)
 
         if (isTtsReady) {

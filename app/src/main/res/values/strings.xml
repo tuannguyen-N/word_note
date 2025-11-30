@@ -58,4 +58,8 @@
     <string name="configure_how_your_voice_is_received">Configure how your voice is received</string>
     <string name="select_voice">Select Voice</string>
     <string name="go_to_this_list">Go to this list</string>
+    <string name="_20_words">20 words</string>
+    <string name="_10_words">10 words</string>
+    <string name="_15_words">15 words</string>
+    <string name="_5_words">5 words</string>
 </resources>

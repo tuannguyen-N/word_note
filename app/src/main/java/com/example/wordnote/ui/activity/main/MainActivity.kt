@@ -27,7 +27,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onCreate(savedInstanceState)
         setupPager()
         listenUIEvent()
-        initPermission()
         handleIntent()
     }
 
@@ -39,26 +38,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
         }
-    }
-
-    private fun initPermission() {
-        notificationPermissionLauncher = NotificationPermissionLauncher(
-            caller = this,
-            activityProvider = { this },
-            onResult = { result ->
-                when (result) {
-                    PermissionResult.Denied -> showToast("Was not Granted")
-                    PermissionResult.Granted -> {
-                        showToast("Granted")
-                        AppPreferences.canPostNotifications = true
-                    }
-
-                    PermissionResult.NeedOpenSettings -> showToast("Need Open Settings")
-                    PermissionResult.ShowRationaleDialog -> showToast("Show Rationale Dialog")
-                }
-            }
-        )
-        if (!notificationPermissionLauncher.isPermissionGranted()) notificationPermissionLauncher.requestPermission()
     }
 
     private fun handleIntent() {

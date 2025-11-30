@@ -46,7 +46,7 @@ class WordAdapter(
             notifyItemChanged(position, false)
         }
 
-        binding.root.setOnLongClickListener {
+        binding.container.setOnLongClickListener {
             if (!selectionMode) {
                 selectionMode = true
                 tickedIds.add(id)
@@ -56,7 +56,7 @@ class WordAdapter(
             true
         }
 
-        binding.root.setOnClickListener {
+        binding.container.setOnClickListener {
             if (selectionMode) toggleItem(id, position)
             else onAction(item)
         }

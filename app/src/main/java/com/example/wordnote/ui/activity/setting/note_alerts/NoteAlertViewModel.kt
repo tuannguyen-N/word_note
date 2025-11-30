@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.domain.usecase.NoteAlertSettingUseCase
+import com.example.wordnote.utils.TimeLevel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -14,7 +15,6 @@ class NoteAlertViewModel(
 ) : ViewModel() {
     private val _uiEvent = MutableSharedFlow<NoteAlertSettingUIEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
-
 
     fun onAction(action: NoteAlertSettingAction) {
         when (action) {
@@ -37,6 +37,19 @@ class NoteAlertViewModel(
             is NoteAlertSettingAction.SetTimeRange -> {
                 performSetTimeRange(action.startTime, action.endTime)
             }
+
+            is NoteAlertSettingAction.ReplaceTime -> {
+                performReplaceTimeLevel(action.level, action.amount)
+            }
+        }
+    }
+
+    private fun performReplaceTimeLevel(level: TimeLevel, amount: Int) {
+        val millis = amount * level.unitInMillis
+        when (level) {
+            TimeLevel.LEVEL_1 -> AppPreferences.timeLevel1 = millis
+            TimeLevel.LEVEL_2 -> AppPreferences.timeLevel2 = millis
+            TimeLevel.LEVEL_3 -> AppPreferences.timeLevel3 = millis
         }
     }
 

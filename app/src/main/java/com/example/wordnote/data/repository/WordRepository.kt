@@ -5,11 +5,13 @@ import com.example.wordnote.data.api.WordAPI
 import com.example.wordnote.data.dao.WordCategoryCrossRefDao
 import com.example.wordnote.data.dao.WordDao
 import com.example.wordnote.data.entities.WordCategoryCrossRef
+import com.example.wordnote.data.entities.WordEntity
 import com.example.wordnote.data.mapper.toData
 import com.example.wordnote.data.mapper.toEntity
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.utils.Result
 import com.example.wordnote.utils.getDelay
+import com.example.wordnote.utils.normalizeWord
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.collections.map
@@ -25,46 +27,53 @@ class WordRepository(
 
     suspend fun upsertWord(rawWord: String, categoryId: Int?): Result {
         return try {
-            val word = rawWord.trim().lowercase()
-            val existingWord = dao.getWord(word)
-
-            if (existingWord != null) {
-                if (categoryId != null && wordCategoryDao!!.isWordInCategory(
-                        existingWord.id,
-                        categoryId
-                    ) > 0
-                )
-                    return Result.AlreadyExists
-
-                val category = wordCategoryDao!!.getCategoriesOfWord(existingWord.id)
-
-                return Result.AlreadyExistsInCategories(
-                    word = existingWord.toData(),
-                    category = category.toData(),
-                )
+            val word = rawWord.normalizeWord()
+            val existing = dao.getWord(word)
+            if (existing != null) {
+                return handleExistingWord(existing, categoryId)
             }
 
-            val response = api!!.getWordMeaning(word)
-            if (response.isEmpty()) {
-                return Result.NotFound
-            }
+            val meaning = fetchMeaningFromApi(word)
+                ?: return Result.NotFound
 
-            val data = response.first().toData()
-                .copy(addedTime = System.currentTimeMillis())
+            val wordId = insertNewWord(meaning, categoryId)
 
-            val wordId = dao.upsertWord(data.toEntity()).toInt()
-
-            categoryId?.let {
-                wordCategoryDao!!.insert(
-                    WordCategoryCrossRef(wordId, categoryId)
-                )
-            }
-            Result.Success(data.copy(id = wordId))
-
+            Result.Success(meaning.copy(id = wordId))
         } catch (e: Exception) {
-            Log.e("upsertWord", "upsertWord: ${e.message}", )
+            Log.e("upsertWord", "Error: ${e.message}")
             Result.Error(e.message ?: "Unknown error")
         }
+    }
+
+    private suspend fun handleExistingWord(
+        entity: WordEntity,
+        categoryId: Int?
+    ): Result {
+
+        if (categoryId != null &&
+            (wordCategoryDao?.isWordInCategory(entity.id, categoryId) ?: 0) > 0
+        ) {
+            return Result.AlreadyExists
+        }
+
+        val categories = wordCategoryDao?.getCategoriesOfWord(entity.id)?.toData()
+        return Result.AlreadyExistsInCategories(entity.toData(), categories!!)
+    }
+
+    private suspend fun fetchMeaningFromApi(word: String): WordData? {
+        val result = api?.getWordMeaning(word).orEmpty()
+        return result.firstOrNull()?.toData()?.copy(
+            addedTime = System.currentTimeMillis()
+        )
+    }
+
+    private suspend fun insertNewWord(data: WordData, categoryId: Int?): Int {
+        val newId = dao.upsertWord(data.toEntity()).toInt()
+
+        categoryId?.let {
+            wordCategoryDao?.insert(WordCategoryCrossRef(newId, it))
+        }
+        return newId
     }
 
     suspend fun deleteWord(wordId: Int) {

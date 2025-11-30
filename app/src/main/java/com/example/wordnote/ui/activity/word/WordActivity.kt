@@ -6,11 +6,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wordnote.adapter.WordAdapter
 import com.example.wordnote.alarm.AlarmScheduler
 import com.example.wordnote.data.AppDatabase
+import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.data.api.RetrofitInstance
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.databinding.ActivityWordBinding
@@ -26,18 +27,20 @@ import com.example.wordnote.domain.model.CategoryData
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.model.WordState
 import com.example.wordnote.domain.usecase.LocalWordUseCase
+import com.example.wordnote.manager.SpeakingManager
 import com.example.wordnote.ui.activity.BaseActivity
 import com.example.wordnote.ui.activity.setting.note_alerts.NoteAlertSettingActivity
 import com.example.wordnote.ui.dialog.AddWordDialog
 import com.example.wordnote.ui.dialog.DetailDefinitionDialog
-import com.example.wordnote.ui.dialog.FullWordsBottomSheet
-import com.example.wordnote.utils.SortType
-import com.example.wordnote.manager.SpeakingManager
 import com.example.wordnote.ui.dialog.ExistWordDialog
+import com.example.wordnote.ui.dialog.FullWordsBottomSheet
+import com.example.wordnote.utils.NotificationPermissionLauncher
+import com.example.wordnote.utils.PermissionResult
+import com.example.wordnote.utils.SortType
 import com.example.wordnote.utils.Utils
 import com.example.wordnote.utils.animateDown
 import com.example.wordnote.utils.animateUp
-import com.example.wordnote.utils.followKeyboard
+import com.example.wordnote.utils.followKeyboardAndEdge
 import kotlinx.coroutines.launch
 
 class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::inflate) {
@@ -49,6 +52,8 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
             context.startActivity(intent)
         }
     }
+
+    private lateinit var notificationPermissionLauncher: NotificationPermissionLauncher
 
     private val wordViewModel: WordViewModel by viewModels {
         WordViewModelFactory(
@@ -72,7 +77,11 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
             wordViewModel.onAction(WordAction.OnSpeakingWord(word))
         },
         onStartStudying = { word ->
-            wordViewModel.onAction(WordAction.OnStartStudying(word))
+            if (!notificationPermissionLauncher.isPermissionGranted()) {
+                notificationPermissionLauncher.requestPermission()
+            } else {
+                wordViewModel.onAction(WordAction.OnStartStudying(word))
+            }
         },
         onStopStudying = { wordId ->
             wordViewModel.onAction(WordAction.OnStopStudying(wordId))
@@ -85,21 +94,27 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initNotificationPermissionLauncher()
         setUpView()
         handleIntent()
         setUpRecyclerView()
         setOnClick()
         collectState()
         collectUIEvent()
-        setupHideKeyboardOnTouchOutside()
     }
 
     private fun setUpView() {
-//        binding.root.followKeyboard(binding.containerSearch)
+        binding.root.followKeyboardAndEdge(
+            target = binding.containerSearch,
+            topCover = mBaseBinding.topBarCoverView,
+            bottomCover = mBaseBinding.bottomBarCoverView
+        )
+
         binding.tvNameCategory.text =
             intent.getStringExtra("CATEGORY_NAME").toString().replaceFirstChar { it.uppercase() }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setOnClick() {
         binding.apply {
             btnBack.setOnClickListener { finish() }
@@ -117,13 +132,21 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                 wordViewModel.onAction(WordAction.OnDeleteWords(wordAdapter.getTickedItem()))
             }
 
-            btnSearch.setOnClickListener {
-                binding.containerSearch.visibility = View.VISIBLE
-                binding.etSearch.requestFocus()
-                showKeyboard(binding.etSearch)
+            setupLevelButtons()
+
+            recyclerView.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    etSearch.clearFocus()
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
+                }
+                false
             }
 
-            setupLevelButtons()
+            etSearch.addTextChangedListener { editable ->
+                val query = editable.toString().trim()
+                wordViewModel.onAction(WordAction.OnSearchWord(query))
+            }
         }
     }
 
@@ -278,34 +301,22 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         }
     }
 
-    private fun showKeyboard(view: View) {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-    }
+    private fun initNotificationPermissionLauncher() {
+        notificationPermissionLauncher = NotificationPermissionLauncher(
+            caller = this,
+            activityProvider = { this },
+            onResult = { result ->
+                when (result) {
+                    PermissionResult.Denied -> showToast("Was not Granted")
+                    PermissionResult.Granted -> {
+                        showToast("Granted")
+                        AppPreferences.canPostNotifications = true
+                    }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setupHideKeyboardOnTouchOutside() {
-        binding.root.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                hideKeyboard()
+                    PermissionResult.NeedOpenSettings -> showToast("Need Open Settings to show notification")
+                    PermissionResult.ShowRationaleDialog -> showToast("Show Rationale Dialog")
+                }
             }
-            false
-        }
-
-        binding.containerSearch.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                return@setOnTouchListener true
-            }
-            false
-        }
-    }
-
-    private fun hideKeyboard() {
-        val view = currentFocus
-        if (view != null) {
-            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-            view.clearFocus()
-        }
+        )
     }
 }

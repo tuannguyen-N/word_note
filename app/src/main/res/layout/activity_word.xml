@@ -69,49 +69,6 @@
         tools:listitem="@layout/item_word" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <include
-            android:id="@+id/level_container"
-            layout="@layout/layout_level" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btnSort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:src="@drawable/filter_list_24px" />
-
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btnSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:src="@drawable/icon_search" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#80000000"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/white" />
-    </FrameLayout>
-
-    <LinearLayout
         android:id="@+id/viewNoData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -147,32 +104,77 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <LinearLayout
         android:id="@+id/container_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_search"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="15dp"
-        android:visibility="gone"
+        android:paddingVertical="7dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:src="@drawable/icon_search" />
-
-        <EditText
-            android:id="@+id/etSearch"
+        <LinearLayout
+            android:id="@+id/layout_search"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginStart="9dp"
-            android:background="@null"
-            android:hint="@string/enter_a_word"
-            android:textColor="@color/font_title"
-            android:textColorHint="@color/gray1"
-            android:textSize="16sp" />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:background="@drawable/bg_search"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="15dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/icon_search" />
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginStart="9dp"
+                android:background="@null"
+                android:hint="@string/enter_a_word"
+                android:inputType="text"
+                android:textColor="@color/font_title"
+                android:textColorHint="@color/gray1"
+                android:textSize="16sp" />
+        </LinearLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="7dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/container_search"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <include
+            android:id="@+id/level_container"
+            layout="@layout/layout_level" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:src="@drawable/filter_list_24px" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/white" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

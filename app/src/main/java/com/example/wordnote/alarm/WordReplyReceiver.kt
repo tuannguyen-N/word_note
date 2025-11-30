@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class WordReplyReceiver(
 ) : BroadcastReceiver() {
-
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context == null || intent == null) return
         val wordRepository = WordRepository(AppDatabase.getInstance(context).wordDao)
