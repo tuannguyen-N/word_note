@@ -21,11 +21,12 @@
             android:textStyle="bold"
             android:text="@string/are_you_sure"
             android:textColor="@color/black"
-            android:textSize="22sp" />
+            android:textSize="28sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:layout_marginVertical="5dp"
             android:text="@string/this_action_will_delete_all_words_nin_this_category"
             android:textAlignment="center"
@@ -40,6 +41,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/background_delete"
             android:paddingHorizontal="30dp"
+            android:textSize="15sp"
             android:paddingVertical="18dp"
             android:text="@string/delete_this_category"
             android:textColor="@color/white" />
@@ -51,7 +53,7 @@
             android:padding="15dp"
             android:includeFontPadding="false"
             android:text="@string/close_menu"
-            android:textColor="@color/font_title"
+            android:textColor="@color/gray"
             android:textSize="15sp" />
     </LinearLayout>
 

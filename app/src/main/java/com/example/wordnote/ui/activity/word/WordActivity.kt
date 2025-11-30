@@ -73,7 +73,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         onAction = {
             wordViewModel.onAction(WordAction.OnOpenDetailWordDialog(it))
         },
-        onClickTvWord = { word ->
+        onSpeaking = { word ->
             wordViewModel.onAction(WordAction.OnSpeakingWord(word))
         },
         onStartStudying = { word ->

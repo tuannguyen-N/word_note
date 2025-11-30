@@ -15,6 +15,7 @@ import com.example.wordnote.manager.SpeakingManager
 class SpeakingService : Service() {
     private lateinit var speakingManager: SpeakingManager
     private var isTtsReady = false
+    private var isSpeaking = false
 
     companion object {
         var isRunning = false
@@ -28,6 +29,7 @@ class SpeakingService : Service() {
             startNext()
         }
         speakingManager.onDoneCallback = {
+            isSpeaking = false
             startNext()
         }
         startForeground(1, buildSilentNotification())
@@ -38,21 +40,18 @@ class SpeakingService : Service() {
         QueueManager.add(word)
 
         if (isTtsReady) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                startNext()
-            }, 500)
+            startNext()
         }
-
         return START_NOT_STICKY
     }
 
+
     private fun startNext() {
+        if (isSpeaking) return
         val next = QueueManager.next()
         if (next != null) {
-            val textToSpeak = buildString {
-                append(next)
-            }
-            speakingManager.speak(textToSpeak)
+            isSpeaking = true
+            speakingManager.speak(next)
         } else {
             stopSelf()
         }

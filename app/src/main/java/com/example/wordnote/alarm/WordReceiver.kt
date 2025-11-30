@@ -40,19 +40,13 @@ class WordReceiver : BroadcastReceiver() {
             // Speaking service
             if (AppPreferences.canSpeakingVoiceNotification) {
                 QueueManager.add(wordData.word)
-                if (!SpeakingService.isRunning) {
-                    context.startSpeakingService(wordData)
-                }
+                context.startSpeakingService(wordData)
             }
 
-            // Level calculation
             val newLevel = WordLevel.fromScore(wordData.score)
             val nextTrigger = newLevel.nextTrigger
 
-            // Update DB
             dao.updateLevel(wordId, newLevel.ordinal + 1, nextTrigger)
-
-            // Stop if max level
             if (newLevel > WordLevel.LEVEL_4) return@launch
 
             // Reschedule alarm

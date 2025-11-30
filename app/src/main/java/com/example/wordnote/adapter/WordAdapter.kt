@@ -1,5 +1,6 @@
 package com.example.wordnote.adapter
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ImageView
 import com.example.wordnote.R
@@ -8,16 +9,18 @@ import com.example.wordnote.domain.model.WordData
 
 class WordAdapter(
     private val onAction: (WordData) -> Unit,
-    private val onClickTvWord: (String) -> Unit,
+    private val onSpeaking: (String) -> Unit,
     private val onStartStudying: (WordData) -> Unit,
     private val onStopStudying: (Int) -> Unit,
     private val onSelectedMode: (Boolean) -> Unit,
+
 ) : BaseAdapter<WordData>() {
     private val tickedIds = mutableSetOf<Int>()
     private var selectionMode = false
 
     override fun doGetViewType(position: Int): Int = R.layout.item_word
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun doBindViewHolder(
         view: View, item: WordData, position: Int, holder: BaseViewHolder
     ) {
@@ -65,8 +68,8 @@ class WordAdapter(
             toggleItem(id, position)
         }
 
-        binding.tvWord.setOnClickListener {
-            if (!selectionMode) onClickTvWord(item.word)
+        binding.btnSpeaking.setOnClickListener {
+            if (!selectionMode) onSpeaking(item.word)
         }
     }
 
