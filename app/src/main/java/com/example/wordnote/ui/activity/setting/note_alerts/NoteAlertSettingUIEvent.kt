@@ -5,5 +5,6 @@ import com.example.wordnote.domain.model.WordData
 sealed interface NoteAlertSettingUIEvent{
     data class ResetSeekBar(val oldValue: Float): NoteAlertSettingUIEvent
     object ShowDialogMeme: NoteAlertSettingUIEvent
+    object ShowWowDialog: NoteAlertSettingUIEvent
     data class ShowDialogWordAvailable(val list: List<WordData>): NoteAlertSettingUIEvent
 }

@@ -73,10 +73,6 @@ class WordViewModel(
         }
     }
 
-    fun setCategoryId(id: Int) {
-        _categoryId.value = id
-    }
-
     fun onAction(action: WordAction) {
         when (action) {
             is WordAction.OnOpenDetailWordDialog -> performOpenDetailWordDialog(action.word)
@@ -102,7 +98,13 @@ class WordViewModel(
             is WordAction.OnDeleteWords -> performDeleteWords(action.words)
 
             is WordAction.OnSearchWord -> performSearchWord(action.query)
+
+            is WordAction.InitCategory -> performInitCategory(action.id)
         }
+    }
+
+    private fun performInitCategory(id: Int){
+        _categoryId.value = id
     }
 
     private fun performSearchWord(query: String){
@@ -209,7 +211,7 @@ class WordViewModel(
         sendUIEvent(WordUIEvent.ShowDetailWordDialog(word))
     }
 
-    fun sendUIEvent(event: WordUIEvent) {
+    private fun sendUIEvent(event: WordUIEvent) {
         viewModelScope.launch {
             _uiEvent.emit(event)
         }

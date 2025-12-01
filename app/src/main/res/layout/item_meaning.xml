@@ -17,17 +17,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:text="(v)"
-            android:textColor="@color/blue1"
-            android:textSize="15sp"
+            android:background="@drawable/bg_tv_noun"
+            android:includeFontPadding="false"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="2dp"
+            android:text="Noun"
+            android:textColor="@color/white"
+            android:textSize="10sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvDefinition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/meaning_fuk_fuk_fuk"
             android:includeFontPadding="false"
+            android:text="@string/meaning_fuk_fuk_fuk"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -38,12 +42,12 @@
         android:id="@+id/tvExample"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="3dp"
         android:text="@string/you_know_what_about_life"
-        android:textColor="@color/blue1"
+        android:textColor="@color/orange"
         android:textSize="12sp"
-        android:layout_marginStart="5dp"
-        android:visibility="gone"
-        android:textStyle="italic|bold" />
+        android:textStyle="italic|bold"
+        android:visibility="gone" />
 
 </LinearLayout>

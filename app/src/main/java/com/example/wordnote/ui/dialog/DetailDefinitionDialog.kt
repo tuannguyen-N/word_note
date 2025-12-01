@@ -56,7 +56,7 @@ class DetailDefinitionDialog(
             layoutManager = LinearLayoutManager(requireContext())
             adapter = meaningAdapter
         }
-        meaningAdapter.setItemList(word.toListMeaningData())
+        meaningAdapter.setItemList(word.toListMeaningData(4))
     }
 
     private fun hideKeyboard(view: View) {

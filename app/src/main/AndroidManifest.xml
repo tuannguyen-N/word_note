@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wordnote">
         <activity
+            android:name=".ui.activity.spelling_bee.SpellingBeeActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.setting.voice.VoiceSettingActivity"
             android:exported="false" />
         <activity

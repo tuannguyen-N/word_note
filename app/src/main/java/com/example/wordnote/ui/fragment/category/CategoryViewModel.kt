@@ -19,7 +19,7 @@ class CategoryViewModel(
     private val _uiEvent = MutableSharedFlow<CategoryUIEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
-    val _categories = localCategoryUseCase.getCategoriesWithWordLevel()
+    private val _categories = localCategoryUseCase.getCategoriesWithWordLevel()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private val _state = MutableStateFlow(CategoryState())

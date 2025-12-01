@@ -38,8 +38,6 @@ import com.example.wordnote.utils.NotificationPermissionLauncher
 import com.example.wordnote.utils.PermissionResult
 import com.example.wordnote.utils.SortType
 import com.example.wordnote.utils.Utils
-import com.example.wordnote.utils.animateDown
-import com.example.wordnote.utils.animateUp
 import com.example.wordnote.utils.followKeyboardAndEdge
 import kotlinx.coroutines.launch
 
@@ -85,10 +83,6 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         },
         onStopStudying = { wordId ->
             wordViewModel.onAction(WordAction.OnStopStudying(wordId))
-        },
-        onSelectedMode = {
-            if (it) showDeleteButton()
-            else hideDeleteButton()
         }
     )
 
@@ -128,9 +122,9 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                     if (levelContainer.root.isVisible) View.GONE else View.VISIBLE
             }
 
-            btnDelete.setOnClickListener {
-                wordViewModel.onAction(WordAction.OnDeleteWords(wordAdapter.getTickedItem()))
-            }
+//            btnDelete.setOnClickListener {
+//                wordViewModel.onAction(WordAction.OnDeleteWords(wordAdapter.getTickedItem()))
+//            }
 
             setupLevelButtons()
 
@@ -225,16 +219,17 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
     }
 
     private fun onChangeList(category: CategoryData) {
-        wordViewModel.setCategoryId(category.id!!)
+        wordViewModel.onAction(WordAction.InitCategory(category.id!!))
+
         binding.tvNameCategory.text = category.name.replaceFirstChar { it.uppercase() }
     }
 
     private fun hideDeleteButton() {
-        binding.btnDelete.animateDown()
+//        binding.btnDelete.animateDown()
     }
 
     private fun showDeleteButton() {
-        binding.btnDelete.animateUp()
+//        binding.btnDelete.animateUp()
     }
 
     private fun showFullStudyingWordsBottomSheet() {
@@ -291,7 +286,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
 
     private fun handleIntent() {
         val categoryId = intent.getIntExtra("CATEGORY_ID", -1)
-        wordViewModel.setCategoryId(categoryId)
+        wordViewModel.onAction(WordAction.InitCategory(categoryId))
     }
 
     private fun setUpRecyclerView() {
@@ -312,7 +307,6 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                         showToast("Granted")
                         AppPreferences.canPostNotifications = true
                     }
-
                     PermissionResult.NeedOpenSettings -> showToast("Need Open Settings to show notification")
                     PermissionResult.ShowRationaleDialog -> showToast("Show Rationale Dialog")
                 }

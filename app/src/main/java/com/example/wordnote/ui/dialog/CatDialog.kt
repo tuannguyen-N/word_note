@@ -7,7 +7,9 @@ import com.example.wordnote.R
 import com.example.wordnote.databinding.DialogCatBinding
 import com.example.wordnote.utils.loadGlideImage
 
-class CatDialog : BaseDialog<DialogCatBinding>(DialogCatBinding::inflate) {
+class CatDialog(
+    private val imageResource: Int
+) : BaseDialog<DialogCatBinding>(DialogCatBinding::inflate) {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -17,7 +19,7 @@ class CatDialog : BaseDialog<DialogCatBinding>(DialogCatBinding::inflate) {
 
     override fun onStart() {
         super.onStart()
-        binding.iv.loadGlideImage(R.drawable.img_cat_looking)
+        binding.iv.loadGlideImage(imageResource)
 
         val window = dialog?.window ?: return
         window.setWindowAnimations(0)

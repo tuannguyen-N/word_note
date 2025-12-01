@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.lifecycleScope
+import com.example.wordnote.R
 import com.example.wordnote.alarm.AlarmScheduler
 import com.example.wordnote.data.AppDatabase
 import com.example.wordnote.data.AppPreferences
@@ -60,12 +61,18 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
                 when (event) {
                     is NoteAlertSettingUIEvent.ResetSeekBar -> resetSeekBar(event.oldValue)
                     is NoteAlertSettingUIEvent.ShowDialogMeme -> showMeme()
+                    is NoteAlertSettingUIEvent.ShowWowDialog -> showWowDialog()
                     is NoteAlertSettingUIEvent.ShowDialogWordAvailable -> {
                         showDialogWordAvailable(event.list)
                     }
                 }
             }
         }
+    }
+
+    private fun showWowDialog() {
+        val dialog = CatDialog(R.drawable.image_wow)
+        dialog.show(supportFragmentManager, "CatDialog")
     }
 
     private fun showDialogWordAvailable(list: List<WordData>) {
@@ -82,7 +89,7 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
     }
 
     private fun showMeme() {
-        val dialog = CatDialog()
+        val dialog = CatDialog(R.drawable.img_cat_looking)
         dialog.show(supportFragmentManager, "CatDialog")
     }
 
@@ -90,6 +97,7 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
         seekBarValue.value = oldValue
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupView() {
         binding.apply {
             switchAppNotification.isChecked = AppPreferences.canPostNotifications

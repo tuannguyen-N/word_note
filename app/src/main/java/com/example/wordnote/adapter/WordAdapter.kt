@@ -11,12 +11,14 @@ class WordAdapter(
     private val onAction: (WordData) -> Unit,
     private val onSpeaking: (String) -> Unit,
     private val onStartStudying: (WordData) -> Unit,
-    private val onStopStudying: (Int) -> Unit,
-    private val onSelectedMode: (Boolean) -> Unit,
-
+    private val onStopStudying: (Int) -> Unit
 ) : BaseAdapter<WordData>() {
-    private val tickedIds = mutableSetOf<Int>()
-    private var selectionMode = false
+
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+//        val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
+//        val binding = ItemWordBinding.bind(view)
+//        return WordViewHolder(binding)
+//    }
 
     override fun doGetViewType(position: Int): Int = R.layout.item_word
 
@@ -26,12 +28,6 @@ class WordAdapter(
     ) {
         val binding = ItemWordBinding.bind(view)
         val id = item.id!!
-
-        binding.btnTick.visibility = if (selectionMode) View.VISIBLE else View.GONE
-        binding.btnTick.setImageResource(
-            if (id in tickedIds) R.drawable.icon_ticked
-            else R.drawable.icon_unticked
-        )
 
         binding.tvWord.text = item.word
         binding.tvPhonetic.text = item.phonetic
@@ -49,48 +45,13 @@ class WordAdapter(
             notifyItemChanged(position, false)
         }
 
-        binding.container.setOnLongClickListener {
-            if (!selectionMode) {
-                selectionMode = true
-                tickedIds.add(id)
-                onSelectedMode(selectionMode)
-                notifyDataSetChanged()
-            }
-            true
-        }
-
-        binding.container.setOnClickListener {
-            if (selectionMode) toggleItem(id, position)
-            else onAction(item)
-        }
-
-        binding.btnTick.setOnClickListener {
-            toggleItem(id, position)
+        binding.containerForeground.setOnClickListener {
+            onAction(item)
         }
 
         binding.btnSpeaking.setOnClickListener {
-            if (!selectionMode) onSpeaking(item.word)
+            onSpeaking(item.word)
         }
-    }
-
-    private fun toggleItem(id: Int, position: Int) {
-        if (id in tickedIds) tickedIds.remove(id)
-        else tickedIds.add(id)
-
-        if (tickedIds.isEmpty()) {
-            onDone()
-        } else {
-            notifyItemChanged(position, false)
-        }
-    }
-
-    fun getTickedItem(): Set<Int> = tickedIds
-
-    fun onDone(){
-        selectionMode = false
-        tickedIds.clear()
-        onSelectedMode(false)
-        notifyDataSetChanged()
     }
 
     private fun ImageView.updateStudyIcon(isStudied: Boolean) {

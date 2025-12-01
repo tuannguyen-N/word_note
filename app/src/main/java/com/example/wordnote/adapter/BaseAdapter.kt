@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.Collections
 
 
-class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+open class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
 

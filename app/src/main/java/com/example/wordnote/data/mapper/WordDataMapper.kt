@@ -68,11 +68,11 @@ fun WordEntity.toData(): WordData =
         nextTriggerTime = nextTriggerTime
     )
 
-fun WordData.toListMeaningData(): List<AMeaningData> {
+fun WordData.toListMeaningData(take: Int): List<AMeaningData> {
     val listMeaning = mutableListOf<AMeaningData>()
     meanings.forEach { meaning ->
         val sortedDefinitions = meaning.definitions.sortedByDescending { it.example != null }
-        val limitedDefinitions = sortedDefinitions.take(4)
+        val limitedDefinitions = sortedDefinitions.take(take)
 
         limitedDefinitions.forEach { definitionData ->
             listMeaning.add(

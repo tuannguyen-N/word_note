@@ -26,11 +26,17 @@ class SpeakingManager(
     var onDoneCallback: (() -> Unit)? = null
     private var tts: TextToSpeech? = null
 
+    private var isReady = false
+    private val pendingQueue = mutableListOf<String>()
+
     init {
         tts = TextToSpeech(context, { status ->
             if (status == TextToSpeech.SUCCESS) {
                 tts!!.setSpeechRate(0.8f)
+                isReady = true
                 onReady?.invoke()
+
+                flushPending()
             }
         }, "com.google.android.tts")
 
@@ -48,9 +54,16 @@ class SpeakingManager(
     }
 
     fun speak(word: String) {
+        if (!isReady) {
+            pendingQueue.add(word)
+            return
+        }
+        speakNow(word)
+    }
+
+    private fun speakNow(word: String) {
         val code = AppPreferences.codeVoice
         val locale = CountryVoice.getLocaleByCode(code!!) ?: Locale.US
-
         tts?.language = locale
 
         val targetVoice = when (code) {
@@ -60,17 +73,20 @@ class SpeakingManager(
             else -> null
         }
 
-        if (targetVoice != null) {
-            tts?.voice = targetVoice
-            Log.d("TTS", "Using voice: ${targetVoice.name}")
-        } else {
-            Log.e("TTS", "No specific voice found for $code")
-        }
+        targetVoice?.let { tts?.voice = it }
 
-        tts?.speak(word, TextToSpeech.QUEUE_ADD, null, word)
+        tts?.speak(word, TextToSpeech.QUEUE_FLUSH, null, word)
+    }
+
+    private fun flushPending() {
+        for (w in pendingQueue) {
+            speakNow(w)
+        }
+        pendingQueue.clear()
     }
 
     fun destroy() {
         tts?.shutdown()
     }
 }
+

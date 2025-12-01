@@ -13,6 +13,7 @@ import com.example.wordnote.data.repository.CategoryRepository
 import com.example.wordnote.databinding.FragmentCategoryBinding
 import com.example.wordnote.domain.model.CategoryData
 import com.example.wordnote.domain.usecase.LocalCategoryUseCase
+import com.example.wordnote.ui.activity.spelling_bee.SpellingBeeActivity
 import com.example.wordnote.ui.activity.word.WordActivity
 import com.example.wordnote.ui.dialog.AddCategoryDialog
 import com.example.wordnote.ui.dialog.ConfirmDeleteDialog
@@ -41,6 +42,9 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>(FragmentCategoryB
         },
         onEdit = { category ->
             showEditCategoryDialog(category)
+        },
+        onPlay = {
+            SpellingBeeActivity.goToActivity(requireContext(), it.id!!)
         }
     )
 

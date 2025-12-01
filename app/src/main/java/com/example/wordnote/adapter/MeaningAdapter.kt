@@ -24,12 +24,24 @@ class MeaningAdapter : BaseAdapter<AMeaningData>() {
         holder: BaseViewHolder
     ) {
         ItemMeaningBinding.bind(view).apply {
-            tvPartOfSpeech.text = "(${item.partOfSpeech})"
+            tvPartOfSpeech.text = item.partOfSpeech
             tvDefinition.text = item.definition
+
+            when (tvPartOfSpeech.text) {
+                "verb" -> tvPartOfSpeech.setBackgroundResource(R.drawable.bg_tv_verb)
+                "interjection" -> tvPartOfSpeech.setBackgroundResource(R.drawable.bg_tv_interjection)
+                "adjective" -> tvPartOfSpeech.setBackgroundResource(R.drawable.bg_tv_adj)
+                "adverb" -> tvPartOfSpeech.setBackgroundResource(R.drawable.bg_tv_adv)
+                else -> {
+                    tvPartOfSpeech.setBackgroundResource(R.drawable.bg_tv_noun)
+                }
+            }
+
             if (item.example != null) {
                 tvExample.visibility = View.VISIBLE
                 tvExample.text = "\"${item.example}\""
             }
+
         }
     }
 }

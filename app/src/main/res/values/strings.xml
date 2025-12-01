@@ -62,4 +62,9 @@
     <string name="_10_words">10 words</string>
     <string name="_15_words">15 words</string>
     <string name="_5_words">5 words</string>
+    <string name="definitions">Definitions:</string>
+    <string name="spell_the_word">Spell the word:</string>
+    <string name="spell_it">SPELL IT!</string>
+    <string name="incorrect_try_again">Incorrect, Try Again!</string>
+    <string name="correct">Correct !!</string>
 </resources>

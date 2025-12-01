@@ -9,7 +9,8 @@ import com.example.wordnote.domain.model.item.CategoryItem
 class CategoryAdapter(
     private val onClickItem: (CategoryData) -> Unit = {},
     private val onDelete: (Int) -> Unit,
-    private val onEdit: (CategoryData) -> Unit
+    private val onEdit: (CategoryData) -> Unit,
+    private val onPlay: (CategoryData) -> Unit
 ) : BaseAdapter<CategoryData>() {
     override fun doGetViewType(position: Int): Int = R.layout.item_category
 
@@ -30,6 +31,7 @@ class CategoryAdapter(
             root.setOnClickListener {
                 onClickItem(item)
             }
+
             root.setOnLongClickListener {
                 btnDelete.visibility = View.VISIBLE
                 true
@@ -41,6 +43,9 @@ class CategoryAdapter(
 
             btnEdit.setOnClickListener {
                 onEdit(item)
+            }
+            btnPlay.setOnClickListener {
+                onPlay(item)
             }
         }
     }

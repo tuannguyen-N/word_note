@@ -124,6 +124,9 @@ class NoteAlertViewModel(
                 if (isDecrease && maxWords <= 10) {
                     sendUIEvent(NoteAlertSettingUIEvent.ShowDialogMeme)
                 }
+                if (!isDecrease && maxWords >10){
+                    sendUIEvent(NoteAlertSettingUIEvent.ShowWowDialog)
+                }
             } else {
                 sendUIEvent(NoteAlertSettingUIEvent.ResetSeekBar(currentMax.toFloat() / 5))
                 sendUIEvent(NoteAlertSettingUIEvent.ShowDialogWordAvailable(noteAlertSettingUseCase.getWordByStudiedTime()))

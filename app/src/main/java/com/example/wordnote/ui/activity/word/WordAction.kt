@@ -4,8 +4,8 @@ import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.utils.SortType
 
 sealed interface WordAction {
-    class OnOpenDetailWordDialog(val word: WordData) : WordAction
     object OnShowAddWordDialog : WordAction
+    data class OnOpenDetailWordDialog(val word: WordData) : WordAction
     data class OnSpeakingWord(val word: String) : WordAction
     data class OnSaveWord(val word: String) : WordAction
     data class OnDeleteWord(val word: WordData): WordAction
@@ -16,4 +16,5 @@ sealed interface WordAction {
     data class OnStopStudying(val wordId: Int): WordAction
     data class OnDeleteWords(val words: Set<Int>): WordAction
     data class OnSearchWord(val query: String): WordAction
+    data class InitCategory(val id: Int): WordAction
 }
