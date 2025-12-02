@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import com.example.wordnote.R
 import com.example.wordnote.databinding.DialogAddCategoryBinding
+import com.example.wordnote.utils.loadGlideImage
 
 class AddCategoryDialog(
     private val onEnter: (String, String) -> Unit
@@ -13,6 +14,7 @@ class AddCategoryDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setOnClick()
+        binding.ivCat.loadGlideImage(R.drawable.happy_cat)
     }
 
     private fun setOnClick() {

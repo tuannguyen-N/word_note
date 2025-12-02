@@ -6,10 +6,12 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.wordnote.R
 import com.example.wordnote.adapter.MeaningAdapter
 import com.example.wordnote.databinding.DialogDetailDefinitionBinding
 import com.example.wordnote.data.mapper.toListMeaningData
 import com.example.wordnote.domain.model.WordData
+import com.example.wordnote.utils.loadGlideImage
 
 class DetailDefinitionDialog(
     private val word: WordData,
@@ -45,6 +47,7 @@ class DetailDefinitionDialog(
 
     private fun setUpView() {
         binding.apply {
+            ivCat.loadGlideImage(R.drawable.img_cat_learning)
             tvWord.text = word.word
             tvPhonetic.text = word.phonetic
             if (word.note.isNotEmpty()) etNote.setText(word.note)

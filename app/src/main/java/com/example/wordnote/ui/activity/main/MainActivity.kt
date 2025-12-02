@@ -14,6 +14,7 @@ import com.example.wordnote.domain.model.item.PageItem
 import com.example.wordnote.ui.activity.BaseActivity
 import com.example.wordnote.utils.NotificationPermissionLauncher
 import com.example.wordnote.utils.PermissionResult
+import com.example.wordnote.utils.loadGlideImage
 import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setUpView()
         setupPager()
         listenUIEvent()
         handleIntent()
@@ -82,5 +84,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     binding.applicationBar.visibility = View.VISIBLE
             }
         })
+    }
+
+    private fun setUpView(){
+        binding.apply {
+            ivCat.loadGlideImage(R.drawable.cat)
+        }
     }
 }

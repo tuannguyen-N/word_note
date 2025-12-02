@@ -32,9 +32,9 @@
             android:layout_weight="1" />
 
         <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/ivCat"
             android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/cat" />
+            android:layout_height="70dp" />
     </LinearLayout>
 
     <androidx.viewpager2.widget.ViewPager2

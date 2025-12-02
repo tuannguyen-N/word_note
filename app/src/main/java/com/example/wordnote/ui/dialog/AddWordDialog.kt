@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import com.example.wordnote.R
 import com.example.wordnote.databinding.DialogAddWordBinding
 import com.example.wordnote.domain.model.WordData
+import com.example.wordnote.utils.loadGlideImage
 
 class AddWordDialog(
     private val onEnter: (String) -> Unit,
@@ -22,6 +23,7 @@ class AddWordDialog(
     }
 
     private fun setUpView() {
+        binding.ivCat.loadGlideImage(R.drawable.happy_cat)
         binding.etWord.requestFocus()
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         val imm =
