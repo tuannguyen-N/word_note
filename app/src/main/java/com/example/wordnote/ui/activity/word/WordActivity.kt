@@ -83,6 +83,9 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         },
         onStopStudying = { wordId ->
             wordViewModel.onAction(WordAction.OnStopStudying(wordId))
+        },
+        onDeleteWord = { wordId ->
+            wordViewModel.onAction(WordAction.OnDeleteWord(wordId))
         }
     )
 
@@ -200,7 +203,6 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                         is WordUIEvent.HideLevelContainer -> hideLevelContainer()
                         is WordUIEvent.ScrollToExistWord -> scrollToExistWord(event.word)
                         is WordUIEvent.ShowFullStudyingWords -> showFullStudyingWordsBottomSheet()
-                        is WordUIEvent.HideDeleteButton -> hideDeleteButton()
                         is WordUIEvent.ShowExistWordDialog -> showExistWordDialog(event.category)
                     }
                 }
@@ -222,14 +224,6 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         wordViewModel.onAction(WordAction.InitCategory(category.id!!))
 
         binding.tvNameCategory.text = category.name.replaceFirstChar { it.uppercase() }
-    }
-
-    private fun hideDeleteButton() {
-//        binding.btnDelete.animateDown()
-    }
-
-    private fun showDeleteButton() {
-//        binding.btnDelete.animateUp()
     }
 
     private fun showFullStudyingWordsBottomSheet() {
@@ -293,6 +287,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         binding.recyclerView.apply {
             adapter = wordAdapter
             layoutManager = LinearLayoutManager(this@WordActivity)
+//            ItemTouchHelper(SwipeHelper()).attachToRecyclerView(this)
         }
     }
 
@@ -303,11 +298,14 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
             onResult = { result ->
                 when (result) {
                     PermissionResult.Denied -> showToast("Was not Granted")
+
                     PermissionResult.Granted -> {
                         showToast("Granted")
                         AppPreferences.canPostNotifications = true
                     }
+
                     PermissionResult.NeedOpenSettings -> showToast("Need Open Settings to show notification")
+
                     PermissionResult.ShowRationaleDialog -> showToast("Show Rationale Dialog")
                 }
             }

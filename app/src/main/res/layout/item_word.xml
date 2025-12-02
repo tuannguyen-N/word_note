@@ -1,128 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clipToPadding="false"
-    android:clipChildren="false"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/containerActions"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_delete"
-        android:gravity="end">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/icon_delete_white" />
-
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/containerForeground"
+    <com.zerobranch.layout.SwipeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_item_word"
-        android:paddingVertical="10dp">
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:draggedItem="@id/containerForeground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rightItem="@id/containerActions"
+        app:swipeDirection="left">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btnSpeaking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:padding="5dp"
-            android:src="@drawable/ic_volume_high"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/container_tv"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_delete" />
 
         <LinearLayout
-            android:id="@+id/container_tv"
+            android:id="@+id/containerActions"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btnSpeaking"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:paddingHorizontal="30dp">
 
-            <TextView
-                android:id="@+id/tvWord"
+            <ImageView
+                android:id="@+id/btnDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:includeFontPadding="false"
-                android:text="@string/demo"
-                android:textColor="@color/font_green"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvPhonetic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="/asdfasdfasdf/"
-                android:textColor="@color/blue1"
-                android:textStyle="italic" />
-
-            <TextView
-                android:id="@+id/tvNote"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:text="@string/note"
-                android:textColor="@color/gray"
-                android:textSize="15sp" />
+                android:src="@drawable/icon_delete_white" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerForeground"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
+            android:background="@drawable/bg_item_word"
+            android:paddingVertical="10dp">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnLevel1"
+                android:id="@+id/btnSpeaking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:alpha="0.2"
-                android:src="@drawable/vocab_level_1" />
+                android:layout_marginStart="10dp"
+                android:padding="5dp"
+                android:src="@drawable/ic_volume_high"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_tv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnLevel2"
+            <LinearLayout
+                android:id="@+id/container_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnSpeaking"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvWord"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="@string/demo"
+                    android:textColor="@color/font_green"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvPhonetic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/asdfasdfasdf/"
+                    android:textColor="@color/blue1"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/tvNote"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/note"
+                    android:textColor="@color/gray"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:alpha="0.2"
-                android:src="@drawable/vocab_level_2" />
+                android:gravity="center_vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnLevel3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:alpha="0.2"
-                android:src="@drawable/vocab_level_3" />
-        </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnLevel1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:alpha="0.2"
+                    android:src="@drawable/vocab_level_1" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnLevel2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:alpha="0.2"
+                    android:src="@drawable/vocab_level_2" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnLevel3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:alpha="0.2"
+                    android:src="@drawable/vocab_level_3" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.zerobranch.layout.SwipeLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/btn_start_studying"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_gravity="end"
-        android:src="@drawable/ic_fire" />
+        android:src="@drawable/ic_fire"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

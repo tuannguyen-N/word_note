@@ -31,8 +31,8 @@ class EditTimeBottomSheet(
     }
 
     private fun setUpView() = with(binding.timeRangePicker) {
-        startTimeMinutes = AppPreferences.startTimeNotification.toInt()
-        endTimeMinutes   = AppPreferences.endTimeNotification.toInt()
+        startTimeMinutes = AppPreferences.startTimeNotification
+        endTimeMinutes   = AppPreferences.endTimeNotification
         binding.tvStartAt.text = formatTime(startTime.hour, startTime.minute)
         binding.tvEndAt.text = formatTime(endTime.hour, endTime.minute)
     }

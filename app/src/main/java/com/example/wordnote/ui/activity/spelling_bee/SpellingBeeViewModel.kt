@@ -1,25 +1,17 @@
 package com.example.wordnote.ui.activity.spelling_bee
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordnote.domain.model.SpellingBeeState
-import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.manager.SpeakingManager
 import com.example.wordnote.manager.SpellingBeeGameEngine
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -28,103 +20,103 @@ class SpellingBeeViewModel(
     private val speakingManager: SpeakingManager
 ) : ViewModel() {
 
+    private val _state = MutableStateFlow(SpellingBeeState())
+    val state = _state.asStateFlow()
+
     private val _uiEvent = MutableSharedFlow<SpellingBeeUIEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
-    private fun sendUIEvent(event: SpellingBeeUIEvent) {
-        viewModelScope.launch { _uiEvent.emit(event) }
-    }
+    private lateinit var engine: SpellingBeeGameEngine
 
-    private val _categoryId = MutableStateFlow<Int?>(null)
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private val wordsFlow = _categoryId
-        .filterNotNull()
-        .flatMapLatest { id -> localWordUseCase.getWordsByCategory(id) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
-    private val _state = MutableStateFlow(SpellingBeeState())
-    val state = combine(wordsFlow, _state) { words, state ->
-        state.copy(words = words)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SpellingBeeState())
-
-    private var engine: SpellingBeeGameEngine? = null
-
-    fun onAction(action: SpellingBeeAction) {
+    fun onAction(action: SpellingBeeAction) = viewModelScope.launch {
         when (action) {
             is SpellingBeeAction.InitWord -> initGame(action.categoryId)
-            is SpellingBeeAction.OnSubmit -> submitWord(action.input)
-            is SpellingBeeAction.OnSpeakingCurrentWord -> performSpeakingCurrentWord()
+            is SpellingBeeAction.OnSubmit -> submit(action.input)
+            is SpellingBeeAction.OnSpeakingCurrentWord -> speakCurrent()
+            is SpellingBeeAction.OnShowAnswers -> showAnswers()
         }
     }
 
-    private fun performSpeakingCurrentWord() {
+    private suspend fun initGame(categoryId: Int) {
+        _state.update { it.copy(categoryId = categoryId, isBusy = true) }
+
+        val words = localWordUseCase.getWordsByCategory(categoryId).first()
+        engine = SpellingBeeGameEngine(words)
+
+        val first = engine.nextWord()
+
+        _state.update {
+            it.copy(
+                words = words,
+                currentWord = first,
+                isBusy = false
+            )
+        }
+
+        first?.let { speak(it.word) }
+    }
+
+    private suspend fun submit(input: String) {
+        val st = _state.value
+        if (!st.isSubmitEnabled || st.isBusy) return
+
+        if (engine.verify(input)) {
+            _state.update { it.copy(isSubmitEnabled = false, isBusy = true) }
+            _uiEvent.emit(SpellingBeeUIEvent.OnCorrect)
+
+            delay(1000)
+            moveToNextWord()
+        } else {
+            val incorrect = st.incorrectionCount + 1
+            _uiEvent.emit(SpellingBeeUIEvent.OnInCorrect)
+
+            _state.update {
+                it.copy(
+                    incorrectionCount = incorrect,
+                    isShowAnswers = incorrect >= 3
+                )
+            }
+        }
+    }
+
+    private suspend fun moveToNextWord() {
+        val next = engine.nextWord()
+        if (next == null) {
+            finishGame()
+        } else {
+            _state.update {
+                it.copy(
+                    currentWord = next,
+                    isSubmitEnabled = true,
+                    isShowAnswers = false,
+                    incorrectionCount = 0,
+                    isBusy = false
+                )
+            }
+            _uiEvent.emit(SpellingBeeUIEvent.OnNextWord)
+            speak(next.word)
+        }
+    }
+
+    private suspend fun showAnswers() {
+        _state.update { it.copy(isBusy = true, isSubmitEnabled = false) }
+
+        val current = _state.value.currentWord ?: return
+        _uiEvent.emit(SpellingBeeUIEvent.ShowAnswersUI(current.word))
+
+        delay(3000)
+        moveToNextWord()
+    }
+
+    private fun speakCurrent() {
         state.value.currentWord?.let { speak(it.word) }
     }
 
-    private fun initGame(categoryId: Int) {
-        _categoryId.value = categoryId
+    private fun speak(w: String) = speakingManager.speak(w)
 
-        viewModelScope.launch {
-            val list = wordsFlow.filter { it.isNotEmpty() }.first()
-            engine = SpellingBeeGameEngine(list)
-
-            val firstWord = engine?.nextWord()
-            updateCurrentWord(firstWord)
-        }
-    }
-
-    private fun submitWord(input: String) {
-        val game = engine ?: return
-        if (!_state.value.isSubmitEnabled) return
-
-        if (game.verify(input)) {
-            processCorrectAnswer(game)
-        } else {
-            processIncorrectAnswer()
-        }
-    }
-
-    private fun processIncorrectAnswer() {
-        sendUIEvent(SpellingBeeUIEvent.OnInCorrect)
-    }
-
-    private fun processCorrectAnswer(game: SpellingBeeGameEngine) =
-        viewModelScope.launch {
-            disableSubmitInteraction()
-
-            sendUIEvent(SpellingBeeUIEvent.OnCorrect)
-            delay(1000)
-            sendUIEvent(SpellingBeeUIEvent.OnNextWord)
-
-            val next = game.nextWord()
-            if (next == null) finishGame()
-            else updateCurrentWord(next)
-            enableSubmitInteraction()
-        }
-
-
-    private fun disableSubmitInteraction() {
-        _state.update { it.copy(isSubmitEnabled = false) }
-    }
-
-    private fun enableSubmitInteraction() {
-        _state.update { it.copy(isSubmitEnabled = true) }
-    }
-
-    private fun updateCurrentWord(word: WordData?) {
-        _state.update {
-            it.copy(currentWord = word)
-        }
-        word ?: return
-        speak(word.word)
-    }
-
-    private fun finishGame() {
-        sendUIEvent(SpellingBeeUIEvent.OnFinish)
-    }
-
-    private fun speak(word: String) {
-        speakingManager.speak(word)
+    private suspend fun finishGame() {
+        _state.update { it.copy(isFinished = true, isBusy = false) }
+        _uiEvent.emit(SpellingBeeUIEvent.OnFinish)
     }
 }
+

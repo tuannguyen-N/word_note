@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +20,7 @@ import com.example.wordnote.data.mapper.toListMeaningData
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.databinding.ActivitySpellingBeeBinding
 import com.example.wordnote.domain.model.SpellingBeeState
+import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.manager.SpeakingManager
 import com.example.wordnote.ui.activity.BaseActivity
@@ -33,7 +35,7 @@ class SpellingBeeActivity :
             context.startActivity(intent)
         }
     }
-    
+
     private val speakingManager by lazy { SpeakingManager(this) }
     private val sbViewModel: SpellingBeeViewModel by viewModels {
         SpellingBeeViewModelFactory(
@@ -74,6 +76,10 @@ class SpellingBeeActivity :
                     true
                 } else false
             }
+
+            btnShowAnswers.setOnClickListener {
+                sbViewModel.onAction(SpellingBeeAction.OnShowAnswers)
+            }
         }
     }
 
@@ -88,9 +94,8 @@ class SpellingBeeActivity :
                 launch {
                     sbViewModel.state.collect { state ->
                         enableSubmitButton(state.isSubmitEnabled)
-                        state.currentWord?.let {
-                            meaningAdapter.setItemList(it.toListMeaningData(3))
-                        }
+                        setMeaningAdapter(state)
+                        handleButtonAnswersUI(state.isShowAnswers)
                     }
                 }
 
@@ -101,6 +106,7 @@ class SpellingBeeActivity :
                             is SpellingBeeUIEvent.OnInCorrect -> showIncorrectUI()
                             is SpellingBeeUIEvent.OnNextWord -> showNextWordUI()
                             is SpellingBeeUIEvent.OnFinish -> showFinishUI()
+                            is SpellingBeeUIEvent.ShowAnswersUI -> showAnswersUI(event.answer)
                         }
                     }
                 }
@@ -108,8 +114,22 @@ class SpellingBeeActivity :
         }
     }
 
-    private fun showFinishUI() {
+    private fun setMeaningAdapter(state: SpellingBeeState) {
+        state.currentWord?.let {
+            meaningAdapter.setItemList(it.toListMeaningData(3))
+        }
+    }
 
+    private fun showAnswersUI(answer: String) {
+        binding.etSpelling.setText(answer)
+    }
+
+    private fun handleButtonAnswersUI(isShowAnswer: Boolean) {
+        binding.btnShowAnswers.visibility = if (isShowAnswer) View.VISIBLE else View.GONE
+    }
+
+    private fun showFinishUI() {
+        showToast("End !!")
     }
 
     private fun enableSubmitButton(shouldEnable: Boolean) {
@@ -150,8 +170,12 @@ class SpellingBeeActivity :
         }
     }
 
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-
+        speakingManager.destroy()
     }
 }

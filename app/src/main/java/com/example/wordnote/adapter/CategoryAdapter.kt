@@ -47,6 +47,10 @@ class CategoryAdapter(
             btnPlay.setOnClickListener {
                 onPlay(item)
             }
+
+            btnPlay.visibility = if (
+                item.numberWordLevel1 + item.numberWordLevel2 + item.numberWordLevel3 == 0
+            ) View.GONE else View.VISIBLE
         }
     }
 

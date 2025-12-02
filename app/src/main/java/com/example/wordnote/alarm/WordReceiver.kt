@@ -1,5 +1,6 @@
 package com.example.wordnote.alarm
 
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 class WordReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
+        val notificationEnabled = context.isNotificationChannelEnabled("word_channel")
         val wordId = intent.getIntExtra(EXTRA_ID, -1)
         if (wordId == -1) return
 
@@ -38,7 +40,7 @@ class WordReceiver : BroadcastReceiver() {
             }
 
             // Speaking service
-            if (AppPreferences.canSpeakingVoiceNotification) {
+            if (notificationEnabled && AppPreferences.canSpeakingVoiceNotification) {
                 QueueManager.add(wordData.word)
                 context.startSpeakingService(wordData)
             }
@@ -76,4 +78,12 @@ class WordReceiver : BroadcastReceiver() {
         }
         ContextCompat.startForegroundService(this, intent)
     }
+
+    fun Context.isNotificationChannelEnabled(channelId: String): Boolean {
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val channel = manager.getNotificationChannel(channelId)
+        return channel != null && channel.importance != NotificationManager.IMPORTANCE_NONE
+    }
 }
+
+

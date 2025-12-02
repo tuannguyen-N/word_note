@@ -85,7 +85,7 @@ class WordViewModel(
 
             is WordAction.OnSortWords -> performSortWords(action.sortType)
 
-            is WordAction.OnDeleteWord -> performDeleteWord(action.word)
+            is WordAction.OnDeleteWord -> performDeleteWord(action.wordId)
 
             is WordAction.OnUpdateLevel -> performUpdateLevel(action.word)
 
@@ -94,8 +94,6 @@ class WordViewModel(
             is WordAction.OnStartStudying -> performStartStudying(action.word)
 
             is WordAction.OnStopStudying -> performStopStudying(action.wordId)
-
-            is WordAction.OnDeleteWords -> performDeleteWords(action.words)
 
             is WordAction.OnSearchWord -> performSearchWord(action.query)
 
@@ -109,15 +107,6 @@ class WordViewModel(
 
     private fun performSearchWord(query: String){
         _searchQuery.value = query
-    }
-
-    private fun performDeleteWords(words: Set<Int>) {
-        viewModelScope.launch {
-            words.forEach {
-                localWordUseCase.deleteWord(it)
-            }
-            sendUIEvent(WordUIEvent.HideDeleteButton)
-        }
     }
 
     private fun performStopStudying(wordId: Int) {
@@ -160,9 +149,9 @@ class WordViewModel(
         sendUIEvent(WordUIEvent.HideLevelContainer)
     }
 
-    private fun performDeleteWord(word: WordData) {
+    private fun performDeleteWord(wordId: Int) {
         viewModelScope.launch {
-            localWordUseCase.deleteWord(word.id!!)
+            localWordUseCase.deleteWord(wordId)
         }
     }
 

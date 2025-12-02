@@ -10,6 +10,5 @@ sealed interface WordUIEvent {
     object HideLevelContainer: WordUIEvent
     data class ScrollToExistWord(val word: String): WordUIEvent
     object ShowFullStudyingWords: WordUIEvent
-    object HideDeleteButton: WordUIEvent
     data class ShowExistWordDialog(val category: CategoryData): WordUIEvent
 }

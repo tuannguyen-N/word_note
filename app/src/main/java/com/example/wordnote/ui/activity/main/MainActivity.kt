@@ -1,6 +1,7 @@
 package com.example.wordnote.ui.activity.main
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -54,11 +55,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private fun setupPager() {
         val pages = listOf(
             PageItem(R.id.learn, "Your Category", 0),
-            PageItem(R.id.setting, "Note Settings", 1)
+            PageItem(R.id.focus, "", 1),
+            PageItem(R.id.setting, "Note Settings", 2)
         )
-
         binding.bottomNavView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_UNLABELED
-
+        binding.viewPager.isUserInputEnabled = false
         binding.viewPager.apply {
             adapter = MainPagerAdapter(this@MainActivity)
         }
@@ -75,6 +76,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             override fun onPageSelected(position: Int) {
                 binding.bottomNavView.selectedItemId = pages[position].menuId
                 binding.tvApplicationBar.text = pages[position].title
+                if (position == 1)
+                    binding.applicationBar.visibility = View.GONE
+                else
+                    binding.applicationBar.visibility = View.VISIBLE
             }
         })
     }

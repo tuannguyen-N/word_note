@@ -67,4 +67,7 @@
     <string name="spell_it">SPELL IT!</string>
     <string name="incorrect_try_again">Incorrect, Try Again!</string>
     <string name="correct">Correct !!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="end_this_flow">End this Flow?</string>
 </resources>

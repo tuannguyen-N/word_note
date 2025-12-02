@@ -72,7 +72,6 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
     implementation("androidx.fragment:fragment-ktx:1.8.9")
-
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
@@ -81,6 +80,8 @@ dependencies {
     //glide
     implementation("com.github.bumptech.glide:glide:5.0.5")
     implementation("jp.wasabeef:glide-transformations:4.3.0")
-
+    //hide keyboard
     implementation(libs.keyboardvisibilityevent)
+    //swipe
+    implementation("com.github.zerobranch:SwipeLayout:1.3.1")
 }

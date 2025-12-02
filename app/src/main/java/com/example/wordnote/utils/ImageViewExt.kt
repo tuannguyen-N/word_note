@@ -3,6 +3,7 @@ package com.example.wordnote.utils
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import com.bumptech.glide.Glide
 
@@ -16,6 +17,12 @@ fun AppCompatImageView.load0GlideImage(model: Any) {
     Glide.with(context)
         .load(model)
         .frame(0)
+        .into(this)
+}
+
+fun ImageView.loadGlideImage(model: Any){
+    Glide.with(context)
+        .load(model)
         .into(this)
 }
 

@@ -2,7 +2,9 @@ package com.example.wordnote.ui.dialog
 
 import android.os.Bundle
 import android.view.View
+import com.example.wordnote.R
 import com.example.wordnote.databinding.DialogConfirmDeleteBinding
+import com.example.wordnote.utils.loadGlideImage
 
 class ConfirmDeleteDialog(
     private val onConfirm: ()->Unit,
@@ -11,7 +13,7 @@ class ConfirmDeleteDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setUpView()
         setOnClick()
     }
 
@@ -24,5 +26,9 @@ class ConfirmDeleteDialog(
             onClose()
             dismiss()
         }
+    }
+
+    private fun setUpView(){
+        binding.image.loadGlideImage(R.drawable.image_are_usabt)
     }
 }

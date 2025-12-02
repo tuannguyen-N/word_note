@@ -4,4 +4,5 @@ sealed interface SpellingBeeAction {
     data class InitWord(val categoryId: Int) : SpellingBeeAction
     data class OnSubmit(val input: String): SpellingBeeAction
     object OnSpeakingCurrentWord: SpellingBeeAction
+    object OnShowAnswers: SpellingBeeAction
 }

@@ -1,24 +1,41 @@
 package com.example.wordnote.utils
 
+import android.annotation.SuppressLint
 import android.graphics.Canvas
-import android.util.Log
-import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordnote.R
-import com.example.wordnote.adapter.BaseViewHolder
 import com.example.wordnote.adapter.WordAdapter
-import com.example.wordnote.databinding.ItemWordBinding
-import kotlin.math.max
-import kotlin.math.min
 
-//interface SwipeViewHolder {
-//    fun getForeground(): View
-//}
+//class SwipeHelper : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+//    override fun onMove(
+//        rv: RecyclerView,
+//        vh: RecyclerView.ViewHolder,
+//        target: RecyclerView.ViewHolder
+//    ) = false
 //
-//class WordViewHolder(
-//    val binding: ItemWordBinding
-//) : BaseViewHolder(binding.root), SwipeViewHolder {
+//    override fun onSwiped(vh: RecyclerView.ViewHolder, direction: Int) {
+//    }
 //
-//    override fun getForeground(): View = binding.containerForeground
+//    override fun onChildDraw(
+//        c: Canvas,
+//        rv: RecyclerView,
+//        vh: RecyclerView.ViewHolder,
+//        dX: Float,
+//        dY: Float,
+//        actionState: Int,
+//        isCurrentlyActive: Boolean
+//    ) {
+//        val holder = vh as WordAdapter.WordViewHolder
+//        val foreground = holder.binding.containerForeground
+//        val background = holder.binding.containerActions
+//
+//        val maxReveal = background.width
+//        val newDX = dX.coerceIn(-maxReveal.toFloat(), 0f)
+//
+//        getDefaultUIUtil().onDraw(
+//            c, rv, foreground, newDX, dY,
+//            actionState, isCurrentlyActive
+//        )
+//    }
+//
 //}

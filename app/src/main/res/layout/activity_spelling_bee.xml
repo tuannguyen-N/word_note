@@ -46,10 +46,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:layout_marginTop="10sp"
+        android:id="@+id/containerGame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10sp"
         android:background="@drawable/bg_spelling_bee"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
@@ -159,5 +160,20 @@
             tools:listitem="@layout/item_meaning" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/btnShowAnswers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_delete"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
+        android:text="Show Answers"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/containerGame" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

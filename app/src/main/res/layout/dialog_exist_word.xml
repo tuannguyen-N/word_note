@@ -23,9 +23,9 @@
             android:id="@+id/iv_4"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/_4"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

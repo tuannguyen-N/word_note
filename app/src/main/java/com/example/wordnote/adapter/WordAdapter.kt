@@ -1,8 +1,12 @@
 package com.example.wordnote.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
 import com.example.wordnote.R
 import com.example.wordnote.databinding.ItemWordBinding
 import com.example.wordnote.domain.model.WordData
@@ -11,14 +15,9 @@ class WordAdapter(
     private val onAction: (WordData) -> Unit,
     private val onSpeaking: (String) -> Unit,
     private val onStartStudying: (WordData) -> Unit,
-    private val onStopStudying: (Int) -> Unit
+    private val onStopStudying: (Int) -> Unit,
+    private val onDeleteWord: (Int) -> Unit
 ) : BaseAdapter<WordData>() {
-
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-//        val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
-//        val binding = ItemWordBinding.bind(view)
-//        return WordViewHolder(binding)
-//    }
 
     override fun doGetViewType(position: Int): Int = R.layout.item_word
 
@@ -51,6 +50,10 @@ class WordAdapter(
 
         binding.btnSpeaking.setOnClickListener {
             onSpeaking(item.word)
+        }
+
+        binding.btnDelete.setOnClickListener {
+            onDeleteWord(item.id)
         }
     }
 
