@@ -2,6 +2,8 @@ package com.example.wordnote.ui.activity.main
 
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,14 +25,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val mainViewModel: MainViewModel by viewModels {
         MainViewModelFactory()
     }
-    private lateinit var notificationPermissionLauncher: NotificationPermissionLauncher
+    private var shakeAnimation: Animation? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setUpView()
         setupPager()
         listenUIEvent()
-        handleIntent()
     }
 
     private fun listenUIEvent() {
@@ -43,22 +43,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
-    private fun handleIntent() {
-//        val wordFromNotification = intent.getStringExtra("WORD_FROM_NOTIFICATION")
-//        if (!wordFromNotification.isNullOrEmpty()) {
-//            mainViewModel.onAction(MainAction.SendWordFromNotification(wordFromNotification))
-//        }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
     private fun setupPager() {
         val pages = listOf(
-            PageItem(R.id.learn, "Your Category", 0),
-            PageItem(R.id.focus, "", 1),
-            PageItem(R.id.setting, "Note Settings", 2)
+            PageItem(R.id.learn, "Your Category", 0, R.drawable.image_teacher),
+            PageItem(R.id.focus, "", 1, R.drawable.cat),
+            PageItem(R.id.setting, "Note Settings", 2, R.drawable.cat)
         )
         binding.bottomNavView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_UNLABELED
         binding.viewPager.isUserInputEnabled = false
@@ -70,6 +59,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             pages.find { it.menuId == item.itemId }?.let { page ->
                 binding.tvApplicationBar.text = page.title
                 binding.viewPager.setCurrentItem(page.index, true)
+                binding.ivCat.loadGlideImage(page.imageRes)
             }
             true
         }
@@ -78,17 +68,29 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             override fun onPageSelected(position: Int) {
                 binding.bottomNavView.selectedItemId = pages[position].menuId
                 binding.tvApplicationBar.text = pages[position].title
+
                 if (position == 1)
                     binding.applicationBar.visibility = View.GONE
                 else
                     binding.applicationBar.visibility = View.VISIBLE
+
+                if (position == 0) {
+                    startShakeForever()
+                } else {
+                    stopShake()
+                }
             }
         })
     }
 
-    private fun setUpView(){
-        binding.apply {
-            ivCat.loadGlideImage(R.drawable.cat)
+    private fun startShakeForever() {
+        if (shakeAnimation == null) {
+            shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake_infinite)
         }
+        binding.ivCat.startAnimation(shakeAnimation)
+    }
+
+    private fun stopShake() {
+        binding.ivCat.clearAnimation()
     }
 }

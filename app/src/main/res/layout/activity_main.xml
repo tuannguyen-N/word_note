@@ -32,6 +32,8 @@
             android:layout_weight="1" />
 
         <pl.droidsonroids.gif.GifImageView
+            android:src="@drawable/cat"
+            android:scaleType="fitCenter"
             android:id="@+id/ivCat"
             android:layout_width="70dp"
             android:layout_height="70dp" />

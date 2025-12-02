@@ -48,7 +48,7 @@ class SpellingBeeActivity :
         )
     }
 
-    private val meaningAdapter = MeaningAdapter()
+    private val meaningAdapter = MeaningAdapter(shouldShowExample = false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

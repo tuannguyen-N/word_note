@@ -132,7 +132,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.appcompat.widget.AppCompatImageView
+                    <pl.droidsonroids.gif.GifImageView
                         android:id="@+id/imgUS"
                         android:layout_width="match_parent"
                         android:layout_height="180dp"
@@ -173,8 +173,7 @@
                         android:id="@+id/imgUK"
                         android:layout_width="match_parent"
                         android:layout_height="180dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/image_uk" />
+                        android:scaleType="centerCrop" />
 
                 </androidx.cardview.widget.CardView>
 

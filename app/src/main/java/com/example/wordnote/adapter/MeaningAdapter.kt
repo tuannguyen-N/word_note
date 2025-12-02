@@ -13,7 +13,9 @@ data class AMeaningData(
     val synonyms: List<String>?,
 )
 
-class MeaningAdapter : BaseAdapter<AMeaningData>() {
+class MeaningAdapter(
+    private val shouldShowExample: Boolean = true,
+) : BaseAdapter<AMeaningData>() {
     override fun doGetViewType(position: Int): Int = R.layout.item_meaning
 
     @SuppressLint("SetTextI18n")
@@ -37,7 +39,7 @@ class MeaningAdapter : BaseAdapter<AMeaningData>() {
                 }
             }
 
-            if (item.example != null) {
+            if (item.example != null && shouldShowExample) {
                 tvExample.visibility = View.VISIBLE
                 tvExample.text = "\"${item.example}\""
             }

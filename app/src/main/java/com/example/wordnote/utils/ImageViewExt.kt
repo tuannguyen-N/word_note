@@ -6,6 +6,10 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestListener
+import javax.sql.DataSource
 
 fun AppCompatImageView.loadGlideImage(model: Any) {
     Glide.with(context)
@@ -25,6 +29,34 @@ fun ImageView.loadGlideImage(model: Any){
         .load(model)
         .into(this)
 }
+
+fun ImageView.loadGif(model: Any, onLoaded: (com.bumptech.glide.load.resource.gif.GifDrawable?) -> Unit = {}) {
+    Glide.with(context)
+        .asGif()
+        .load(model)
+        .listener(object : RequestListener<GifDrawable> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: com.bumptech.glide.request.target.Target<GifDrawable?>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+
+            override fun onResourceReady(
+                resource: GifDrawable?,
+                model: Any?,
+                target: com.bumptech.glide.request.target.Target<GifDrawable?>?,
+                dataSource: com.bumptech.glide.load.DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+        })
+        .into(this)
+}
+
 
 fun AppCompatImageView.animateUp() {
     visibility = View.VISIBLE
