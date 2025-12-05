@@ -70,4 +70,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="end_this_flow">End this Flow?</string>
+    <string name="notification_time_at_first">Notification time at first</string>
+    <string name="munites">munites</string>
+    <string name="_10_00_10_00">10:00 - 10:00</string>
 </resources>

@@ -15,6 +15,7 @@ import com.example.wordnote.R
 import com.example.wordnote.alarm.AlarmScheduler
 import com.example.wordnote.data.AppDatabase
 import com.example.wordnote.data.AppPreferences
+import com.example.wordnote.data.repository.QuiteHourRepository
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.databinding.ActivityNoteAlertSettingBinding
 import com.example.wordnote.domain.model.WordData
@@ -39,9 +40,11 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
 ) {
     private val seekBarValue = MutableStateFlow(AppPreferences.maxWords.toFloat() / 5)
     private val viewModel: NoteAlertViewModel by viewModels {
+        val appDatabase = AppDatabase.getInstance(this@NoteAlertSettingActivity)
         NoteAlertSettingViewModelFactory(
             NoteAlertSettingUseCase(
-                WordRepository(AppDatabase.getInstance(this).wordDao),
+                WordRepository(appDatabase.wordDao),
+                QuiteHourRepository(appDatabase.quiteHourDao),
                 AlarmScheduler(this)
             )
         )
@@ -106,8 +109,6 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
             btnEditTime.text = "$startTime - $endTime"
 
             etLv1.setText(AppPreferences.timeLevel1.toUnit(TimeLevel.LEVEL_1).toString())
-            etLv2.setText(AppPreferences.timeLevel2.toUnit(TimeLevel.LEVEL_2).toString())
-            etLv3.setText(AppPreferences.timeLevel3.toUnit(TimeLevel.LEVEL_3).toString())
         }
     }
 
@@ -124,8 +125,6 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
             }
 
             setupLevelInput(binding.etLv1, TimeLevel.LEVEL_1, 1440) // max a days
-            setupLevelInput(binding.etLv2, TimeLevel.LEVEL_2, 7)    // max 1 week
-            setupLevelInput(binding.etLv3, TimeLevel.LEVEL_3, 4)    // max 1 month
         }
     }
 

@@ -26,8 +26,8 @@ class WordAvailableAdapter(
     private fun ItemWordAvailableBinding.setUpView(item: WordData) {
         tvWord.text = item.word
         btnLearning.setImageResource(
-            if (item.startStudiedTime > 0) R.drawable.icon_fire_clicked
-            else R.drawable.ic_fire
+            if (item.startStudiedTime > 0) R.drawable.icon_studying
+            else R.drawable.icon_studying_no_click
         )
     }
 

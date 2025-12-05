@@ -20,7 +20,7 @@
         android:id="@+id/btnLearning"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/icon_fire_clicked"
+        android:src="@drawable/icon_studying"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

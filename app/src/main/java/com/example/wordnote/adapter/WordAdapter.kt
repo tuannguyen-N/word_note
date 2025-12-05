@@ -59,8 +59,8 @@ class WordAdapter(
 
     private fun ImageView.updateStudyIcon(isStudied: Boolean) {
         setImageResource(
-            if (isStudied) R.drawable.icon_fire_clicked
-            else R.drawable.ic_fire
+            if (isStudied) R.drawable.icon_studying
+            else R.drawable.icon_studying_no_click
         )
     }
 }

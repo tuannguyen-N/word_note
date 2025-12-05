@@ -103,8 +103,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
     private fun setUpView() {
         binding.root.followKeyboardAndEdge(
             target = binding.containerSearch,
-            topCover = mBaseBinding.topBarCoverView,
-            bottomCover = mBaseBinding.bottomBarCoverView
+            topCover = mBaseBinding.topBarCoverView
         )
 
         binding.tvNameCategory.text =

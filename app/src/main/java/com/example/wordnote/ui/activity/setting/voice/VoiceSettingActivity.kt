@@ -88,7 +88,6 @@ class VoiceSettingActivity :
         setColor(target, tv)
     }
 
-
     private fun changeCountryVoice(code: String) {
         AppPreferences.codeVoice = code
     }

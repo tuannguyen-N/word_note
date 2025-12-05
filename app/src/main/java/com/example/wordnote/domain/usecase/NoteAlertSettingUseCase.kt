@@ -1,11 +1,15 @@
 package com.example.wordnote.domain.usecase
 
 import com.example.wordnote.alarm.AlarmScheduler
+import com.example.wordnote.data.entities.QuiteHourEntity
+import com.example.wordnote.data.repository.QuiteHourRepository
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.domain.model.WordData
+import kotlinx.coroutines.flow.Flow
 
 class NoteAlertSettingUseCase(
     private val wordRepository: WordRepository,
+    private val quiteHourRepository: QuiteHourRepository,
     private val alarmScheduler: AlarmScheduler
 ) {
     suspend fun getAllWords(): List<WordData> = wordRepository.getAllWordsSync()
@@ -36,11 +40,11 @@ class NoteAlertSettingUseCase(
         }
     }
 
-    suspend fun updateNextTrigger(wordId: Int, newTrigger: Long){
+    suspend fun updateNextTrigger(wordId: Int, newTrigger: Long) {
         wordRepository.updateNextTrigger(wordId, newTrigger)
     }
 
-    fun scheduleWord(word: WordData){
+    fun scheduleWord(word: WordData) {
         alarmScheduler.scheduleWord(word, word.nextTriggerTime)
     }
 
@@ -48,5 +52,19 @@ class NoteAlertSettingUseCase(
 
     fun stopAlarm(wordId: Int) {
         alarmScheduler.stopScheduleWord(wordId)
+    }
+
+    /** Quite hour **/
+
+    suspend fun getQuiteHour(): Flow<List<QuiteHourEntity>> {
+        return quiteHourRepository.getAllQuiteHour()
+    }
+
+    suspend fun insertQuiteHour(quiteHourEntity: QuiteHourEntity) {
+        quiteHourRepository.insertQuiteHour(quiteHourEntity)
+    }
+
+    suspend fun deleteQuiteHour(id: Int) {
+        quiteHourRepository.deleteQuiteHour(id)
     }
 }

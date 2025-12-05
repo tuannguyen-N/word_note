@@ -138,6 +138,56 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:paddingVertical="18dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/quiteTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quite Time"
+                    android:textColor="@color/font_title"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvAddTheTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add the range time you don't want to get notification"
+                    android:textColor="@color/red"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvQuiteHour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_quite_hour" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="26dp"
+            android:background="@color/gray1" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:paddingVertical="18dp">
 
             <TextView
@@ -160,6 +210,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:text="@string/too_much_word_can_make_annoying"
                 android:textColor="@color/red"
+                android:textSize="12sp"
                 android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_max_words" />
@@ -244,7 +295,7 @@
                 android:id="@+id/tv_level1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lv1 notification time"
+                android:text="@string/notification_time_at_first"
                 android:textColor="@color/font_title"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -281,123 +332,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="munites"
+                android:text="@string/munites"
                 android:textColor="@color/red"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp">
-
-            <TextView
-                android:id="@+id/tv_level2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lv2 notification time"
-                android:textColor="@color/font_title"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <LinearLayout
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/bg_item_time"
-                android:gravity="center"
-                android:paddingHorizontal="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_days"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <EditText
-                    android:id="@+id/etLv2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:background="@null"
-                    android:inputType="number"
-                    android:paddingHorizontal="5dp"
-                    android:text="15"
-                    android:textColor="@color/black1" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_days"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="days"
-                android:textColor="@color/red"
-                android:textStyle="italic"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp">
-
-            <TextView
-                android:id="@+id/tv_level3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lv3 notification time"
-                android:textColor="@color/font_title"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_weeks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="weeks"
-                android:textColor="@color/red"
-                android:textStyle="italic"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/bg_item_time"
-                android:gravity="center"
-                android:paddingHorizontal="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_weeks"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <EditText
-                    android:id="@+id/etLv3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:background="@null"
-                    android:inputType="number"
-                    android:paddingHorizontal="5dp"
-                    android:text="15"
-                    android:textColor="@color/black1" />
-
-            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

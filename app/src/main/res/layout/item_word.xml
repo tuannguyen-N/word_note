@@ -135,7 +135,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_gravity="end"
-        android:src="@drawable/ic_fire"
+        android:src="@drawable/icon_studying_no_click"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
