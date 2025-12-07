@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.domain.model.WordData
-import com.example.wordnote.domain.model.WordState
-import com.example.wordnote.utils.Result
-import com.example.wordnote.utils.SortType
+import com.example.wordnote.domain.model.state.WordState
+import com.example.wordnote.domain.model.Result
+import com.example.wordnote.domain.model.SortType
 import com.example.wordnote.manager.SpeakingManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow

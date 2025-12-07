@@ -1,4 +1,4 @@
-package com.example.wordnote.utils
+package com.example.wordnote.domain.model
 
 sealed interface SortType{
     object WORD: SortType

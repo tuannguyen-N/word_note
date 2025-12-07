@@ -14,7 +14,7 @@ import androidx.core.app.RemoteInput
 import com.example.wordnote.R
 import com.example.wordnote.alarm.WordReplyReceiver
 import com.example.wordnote.domain.model.WordData
-import com.example.wordnote.ui.activity.main.MainActivity
+import com.example.wordnote.ui.activity.spelling_bee.SpellingBeeActivity
 
 object NotificationHelper {
     private const val CHANNEL_ID = "word_channel"
@@ -26,9 +26,9 @@ object NotificationHelper {
     fun showWordNotification(context: Context, word: WordData) {
         createChannel(context)
 
-        val intent = Intent(context, MainActivity::class.java).apply {
+        val intent = Intent(context, SpellingBeeActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("WORD_FROM_NOTIFICATION", word.word)
+            putExtra("WORD_FROM_NOTIFICATION", word.id)
         }
 
         val pendingIntent = PendingIntent.getActivity(

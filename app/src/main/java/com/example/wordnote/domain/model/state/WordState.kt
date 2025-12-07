@@ -1,6 +1,7 @@
-package com.example.wordnote.domain.model
+package com.example.wordnote.domain.model.state
 
-import com.example.wordnote.utils.SortType
+import com.example.wordnote.domain.model.SortType
+import com.example.wordnote.domain.model.WordData
 
 data class WordState (
     val words: List<WordData> = emptyList(),

@@ -2,7 +2,7 @@ package com.example.wordnote.domain.usecase
 
 import com.example.wordnote.data.repository.CategoryRepository
 import com.example.wordnote.domain.model.CategoryData
-import com.example.wordnote.utils.Result
+import com.example.wordnote.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 
 class LocalCategoryUseCase(

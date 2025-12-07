@@ -3,10 +3,8 @@ package com.example.wordnote.ui.activity.spelling_bee
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,11 +17,11 @@ import com.example.wordnote.data.AppDatabase
 import com.example.wordnote.data.mapper.toListMeaningData
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.databinding.ActivitySpellingBeeBinding
-import com.example.wordnote.domain.model.SpellingBeeState
-import com.example.wordnote.domain.model.WordData
+import com.example.wordnote.domain.model.state.SpellingBeeState
 import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.manager.SpeakingManager
 import com.example.wordnote.ui.activity.BaseActivity
+import com.example.wordnote.ui.dialog.EndSpellingBeeDialog
 import kotlinx.coroutines.launch
 
 class SpellingBeeActivity :
@@ -56,6 +54,7 @@ class SpellingBeeActivity :
         initRecyclerView()
         setupClickListeners()
         collectingViewModel()
+        setUpEditText()
     }
 
     private fun setupClickListeners() {
@@ -129,7 +128,13 @@ class SpellingBeeActivity :
     }
 
     private fun showFinishUI() {
-        showToast("End !!")
+        val dialog = EndSpellingBeeDialog(
+            onHome = { finish() },
+            onAgain = {
+                sbViewModel.onAction(SpellingBeeAction.OnPlayAgain)
+            }
+        )
+        dialog.show(supportFragmentManager, "EndSpellingBeeDialog")
     }
 
     private fun enableSubmitButton(shouldEnable: Boolean) {
@@ -138,9 +143,7 @@ class SpellingBeeActivity :
 
     private fun showNextWordUI() = with(binding) {
         etSpelling.text.clear()
-        etSpelling.setBackgroundResource(R.drawable.bg_input_spelling)
-        tvIncorrect.visibility = View.GONE
-        tvCorrect.visibility = View.GONE
+        etSpelling.requestFocus()
     }
 
     private fun showIncorrectUI() = with(binding) {
@@ -155,6 +158,12 @@ class SpellingBeeActivity :
     }
 
     private fun handleInit() {
+        val wordId = intent.getIntExtra("WORD_FROM_NOTIFICATION", -1)
+        if (wordId != -1) {
+            sbViewModel.onAction(SpellingBeeAction.PlayOnlyWord(wordId))
+            return
+        }
+
         val categoryId = intent.getIntExtra("CATEGORY_ID", -1)
         if (categoryId != -1) {
             sbViewModel.onAction(SpellingBeeAction.InitWord(categoryId))
@@ -172,6 +181,16 @@ class SpellingBeeActivity :
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setUpEditText(){
+        binding.etSpelling.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.etSpelling.setBackgroundResource(R.drawable.bg_input_spelling)
+                binding.tvIncorrect.visibility = View.GONE
+                binding.tvCorrect.visibility = View.GONE
+            }
+        }
     }
 
     override fun onDestroy() {

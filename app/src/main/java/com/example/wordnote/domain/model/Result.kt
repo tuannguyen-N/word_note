@@ -1,7 +1,4 @@
-package com.example.wordnote.utils
-
-import com.example.wordnote.domain.model.CategoryData
-import com.example.wordnote.domain.model.WordData
+package com.example.wordnote.domain.model
 
 sealed interface Result {
     data class Success(val word: WordData? = null) : Result

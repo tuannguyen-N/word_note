@@ -1,7 +1,7 @@
 package com.example.wordnote.ui.activity.word
 
 import com.example.wordnote.domain.model.WordData
-import com.example.wordnote.utils.SortType
+import com.example.wordnote.domain.model.SortType
 
 sealed interface WordAction {
     object OnShowAddWordDialog : WordAction

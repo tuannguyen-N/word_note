@@ -2,7 +2,7 @@ package com.example.wordnote.ui.fragment.focus
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wordnote.domain.model.FocusState
+import com.example.wordnote.domain.model.state.FocusState
 import com.example.wordnote.manager.TimerHelper
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

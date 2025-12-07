@@ -7,15 +7,15 @@ import kotlinx.coroutines.flow.Flow
 class QuiteHourRepository(
     private val quiteHourDao: QuiteHourDao
 ) {
-    suspend fun insertQuiteHour(quiteHourEntity: QuiteHourEntity) {
-        quiteHourDao.insertQuiteHour(quiteHourEntity)
+    suspend fun insertQuiteHour(startTime: Long, endTime: Long) {
+        quiteHourDao.insertQuiteHour(QuiteHourEntity(startTime = startTime, endTime = endTime))
     }
 
     suspend fun deleteQuiteHour(id: Int) {
         quiteHourDao.deleteQuiteHour(id)
     }
 
-    suspend fun getAllQuiteHour(): Flow<List<QuiteHourEntity>> {
+    fun getAllQuiteHour(): Flow<List<QuiteHourEntity>> {
         return quiteHourDao.getAllQuiteHour()
     }
 }

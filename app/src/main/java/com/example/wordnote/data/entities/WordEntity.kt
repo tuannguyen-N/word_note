@@ -17,5 +17,5 @@ data class WordEntity(
     val remainingTime: Long = 0,
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
+    val id: Int = 1
 )

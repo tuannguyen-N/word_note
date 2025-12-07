@@ -56,12 +56,12 @@ class NoteAlertSettingUseCase(
 
     /** Quite hour **/
 
-    suspend fun getQuiteHour(): Flow<List<QuiteHourEntity>> {
+    fun getQuiteHour(): Flow<List<QuiteHourEntity>> {
         return quiteHourRepository.getAllQuiteHour()
     }
 
-    suspend fun insertQuiteHour(quiteHourEntity: QuiteHourEntity) {
-        quiteHourRepository.insertQuiteHour(quiteHourEntity)
+    suspend fun insertQuiteHour(startTime: Long, endTime: Long) {
+        quiteHourRepository.insertQuiteHour(startTime, endTime)
     }
 
     suspend fun deleteQuiteHour(id: Int) {

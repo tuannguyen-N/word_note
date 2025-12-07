@@ -4,6 +4,8 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.example.wordnote.data.AppDatabase
 import com.example.wordnote.data.AppPreferences
@@ -19,7 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WordReceiver : BroadcastReceiver() {
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context, intent: Intent) {
         val notificationEnabled = context.isNotificationChannelEnabled("word_channel")
         val wordId = intent.getIntExtra(EXTRA_ID, -1)
@@ -31,16 +33,19 @@ class WordReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.IO).launch {
             val wordData = dao.getWordById(wordId)?.toData() ?: return@launch
 
+            // Check Quiet Time
+            val inQuietTime = isInQuietTime(context)
+
             val notificationId = wordData.id!!
             val isActive = NotificationHelper.isNotificationActive(context, notificationId)
 
-            // Show notification only if not showing
+            //Only show notification when NOT in quiet time
             if (!isActive) {
                 NotificationHelper.showWordNotification(context, wordData)
             }
 
-            // Speaking service
-            if (notificationEnabled && AppPreferences.canSpeakingVoiceNotification) {
+            //Only speak when NOT in quiet time
+            if (!inQuietTime && notificationEnabled && AppPreferences.canSpeakingVoiceNotification) {
                 QueueManager.add(wordData.word)
                 context.startSpeakingService(wordData)
             }
@@ -51,7 +56,6 @@ class WordReceiver : BroadcastReceiver() {
             dao.updateLevel(wordId, newLevel.ordinal + 1, nextTrigger)
             if (newLevel > WordLevel.LEVEL_4) return@launch
 
-            // Reschedule alarm
             alarmScheduler.scheduleWord(wordData, nextTrigger)
         }
     }
@@ -61,7 +65,6 @@ class WordReceiver : BroadcastReceiver() {
         const val EXTRA_WORD = "WORD"
         const val EXTRA_NOTE = "NOTE"
         const val EXTRA_DEFINITION = "DEFINITION"
-        const val EXTRA_LEVEL = "LEVEL"
     }
 
     fun Context.startSpeakingService(wordData: WordData) {
@@ -79,10 +82,26 @@ class WordReceiver : BroadcastReceiver() {
         ContextCompat.startForegroundService(this, intent)
     }
 
-    fun Context.isNotificationChannelEnabled(channelId: String): Boolean {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun Context.isNotificationChannelEnabled(channelId: String): Boolean {
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channel = manager.getNotificationChannel(channelId)
         return channel != null && channel.importance != NotificationManager.IMPORTANCE_NONE
+    }
+
+    private fun isInQuietTime(
+        context: Context,
+        currentTime: Long = System.currentTimeMillis()
+    ): Boolean {
+        val dao = AppDatabase.getInstance(context).quiteHourDao
+        val quietHours = dao.getAllQuiteHourSync()
+
+        for (range in quietHours) {
+            if (currentTime in range.startTime..range.endTime) {
+                return true
+            }
+        }
+        return false
     }
 }
 

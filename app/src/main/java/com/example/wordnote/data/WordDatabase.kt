@@ -19,7 +19,7 @@ import com.example.wordnote.data.entities.WordEntity
         CategoryEntity::class,
         WordCategoryCrossRef::class,
         QuiteHourEntity::class],
-    version = 6
+    version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract val wordDao: WordDao
@@ -36,7 +36,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).fallbackToDestructiveMigration().build()
+                )
+                    .addMigrations()
+                    .build()
                 INSTANCE = instance
                 instance
             }

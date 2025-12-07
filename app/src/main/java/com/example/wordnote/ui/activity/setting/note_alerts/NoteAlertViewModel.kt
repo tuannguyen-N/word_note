@@ -6,7 +6,9 @@ import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.domain.usecase.NoteAlertSettingUseCase
 import com.example.wordnote.utils.TimeLevel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -15,6 +17,12 @@ class NoteAlertViewModel(
 ) : ViewModel() {
     private val _uiEvent = MutableSharedFlow<NoteAlertSettingUIEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
+
+    val quiteHourList = noteAlertSettingUseCase.getQuiteHour().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
 
     fun onAction(action: NoteAlertSettingAction) {
         when (action) {
@@ -41,6 +49,25 @@ class NoteAlertViewModel(
             is NoteAlertSettingAction.ReplaceTime -> {
                 performReplaceTimeLevel(action.level, action.amount)
             }
+
+            is NoteAlertSettingAction.DeleteQuiteHour -> {
+                performDeleteQuiteHour(action.id)
+            }
+
+            is NoteAlertSettingAction.SaveQuiteHour ->
+                performSaveQuiteHour(action.startTime, action.endTime)
+        }
+    }
+
+    private fun performSaveQuiteHour(startTime: Long, endTime: Long) {
+        viewModelScope.launch {
+            noteAlertSettingUseCase.insertQuiteHour(startTime, endTime)
+        }
+    }
+
+    private fun performDeleteQuiteHour(id: Int) {
+        viewModelScope.launch {
+            noteAlertSettingUseCase.deleteQuiteHour(id)
         }
     }
 
@@ -93,7 +120,7 @@ class NoteAlertViewModel(
                 val newTriggerTime = cal.timeInMillis
 
                 noteAlertSettingUseCase.stopAlarm(word.id!!)
-                noteAlertSettingUseCase.updateNextTrigger(word.id!!, newTriggerTime)
+                noteAlertSettingUseCase.updateNextTrigger(word.id, newTriggerTime)
                 noteAlertSettingUseCase.scheduleWord(word.copy(nextTriggerTime = newTriggerTime))
             }
         }
@@ -124,7 +151,7 @@ class NoteAlertViewModel(
                 if (isDecrease && maxWords <= 10) {
                     sendUIEvent(NoteAlertSettingUIEvent.ShowDialogMeme)
                 }
-                if (!isDecrease && maxWords >10){
+                if (!isDecrease && maxWords > 10) {
                     sendUIEvent(NoteAlertSettingUIEvent.ShowWowDialog)
                 }
             } else {

@@ -3,7 +3,7 @@ package com.example.wordnote.domain.usecase
 import com.example.wordnote.alarm.AlarmScheduler
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.domain.model.WordData
-import com.example.wordnote.utils.Result
+import com.example.wordnote.domain.model.Result
 import com.example.wordnote.utils.WordLevel
 
 class LocalWordUseCase(
@@ -49,6 +49,8 @@ class LocalWordUseCase(
 
     fun getWordsByCategoryAndLevel(id: Int, level: Int) =
         wordRepository.getWordsByCategoryAndLevel(id, level)
+
+    suspend fun getWordById(id: Int) = wordRepository.getWordById(id)
 
     suspend fun countStudyingWords(): Int = wordRepository.countStudyingWords()
 }

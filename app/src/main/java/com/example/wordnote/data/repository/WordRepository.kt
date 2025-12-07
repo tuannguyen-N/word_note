@@ -9,7 +9,7 @@ import com.example.wordnote.data.entities.WordEntity
 import com.example.wordnote.data.mapper.toData
 import com.example.wordnote.data.mapper.toEntity
 import com.example.wordnote.domain.model.WordData
-import com.example.wordnote.utils.Result
+import com.example.wordnote.domain.model.Result
 import com.example.wordnote.utils.getDelay
 import com.example.wordnote.utils.normalizeWord
 import kotlinx.coroutines.flow.Flow

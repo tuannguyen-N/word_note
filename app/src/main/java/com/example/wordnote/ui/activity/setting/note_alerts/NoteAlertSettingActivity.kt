@@ -10,8 +10,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.core.graphics.Insets
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.wordnote.R
+import com.example.wordnote.adapter.QuiteHourAdapter
 import com.example.wordnote.alarm.AlarmScheduler
 import com.example.wordnote.data.AppDatabase
 import com.example.wordnote.data.AppPreferences
@@ -22,6 +26,7 @@ import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.usecase.NoteAlertSettingUseCase
 import com.example.wordnote.ui.activity.BaseActivity
 import com.example.wordnote.ui.components.SeekBar
+import com.example.wordnote.ui.dialog.AddQuiteHourDialog
 import com.example.wordnote.ui.dialog.CatDialog
 import com.example.wordnote.ui.dialog.EditTimeBottomSheet
 import com.example.wordnote.ui.dialog.WordAvailableDialog
@@ -31,6 +36,10 @@ import com.example.wordnote.utils.TimeLevel
 import com.example.wordnote.utils.Utils
 import com.example.wordnote.utils.onTextChanged
 import com.example.wordnote.utils.toUnit
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import nl.joery.timerangepicker.TimeRangePicker
@@ -49,13 +58,32 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
             )
         )
     }
+    private val quiteHourAdapter = QuiteHourAdapter(
+        onDeleteQuiteHour = {
+            viewModel.onAction(NoteAlertSettingAction.DeleteQuiteHour(it))
+        }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupView()
         onClickListener()
         collectUIEvent()
+        collectState()
         setUpViewCompose()
+        setUpRecyclerView()
+    }
+
+    private fun collectState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.quiteHourList.collect { quiteHourList ->
+                        quiteHourAdapter.setItemList(quiteHourList)
+                    }
+                }
+            }
+        }
     }
 
     private fun collectUIEvent() {
@@ -109,6 +137,17 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
             btnEditTime.text = "$startTime - $endTime"
 
             etLv1.setText(AppPreferences.timeLevel1.toUnit(TimeLevel.LEVEL_1).toString())
+
+            binding.etLv1.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    binding.nestedScroll.postDelayed({
+                        binding.nestedScroll.smoothScrollTo(
+                            0,
+                            binding.etLv1.top + 200
+                        )
+                    }, 150)
+                }
+            }
         }
     }
 
@@ -123,8 +162,10 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
             btnEditTime.setOnClickListener {
                 openEditTimeBottomSheet()
             }
-
-            setupLevelInput(binding.etLv1, TimeLevel.LEVEL_1, 1440) // max a days
+            btnAddQuiteHour.setOnClickListener {
+                showAddQuiteHourDialog()
+            }
+            setupLevelInput(binding.etLv1, TimeLevel.LEVEL_1, 60)
         }
     }
 
@@ -135,13 +176,13 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
     ) {
         editText.onTextChanged { text ->
             if (text.isBlank()) {
-                editText.error = "Không được để trống"
+                editText.error = "Not empty"
                 return@onTextChanged
             }
 
             val value = text.toIntOrNull()
             if (value == null || value < 0) {
-                editText.error = "Giá trị không hợp lệ"
+                editText.error = "Invalid value"
                 return@onTextChanged
             }
 
@@ -151,6 +192,12 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
                     editText.setSelection(editText.text.length)
                 }
                 maxValue
+            } else if (value < 20) {
+                editText.post {
+                    editText.setText("20")
+                    editText.setSelection(editText.text.length)
+                }
+                30
             } else {
                 value
             }
@@ -194,5 +241,31 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
                 }
             )
         }
+    }
+
+    private fun setUpRecyclerView() {
+        binding.apply {
+            rvQuiteHour.adapter = quiteHourAdapter
+            rvQuiteHour.layoutManager = FlexboxLayoutManager(this@NoteAlertSettingActivity).apply {
+                flexDirection = FlexDirection.ROW
+                flexWrap = FlexWrap.WRAP
+            }
+        }
+    }
+
+    private fun showAddQuiteHourDialog() {
+        val dialog = AddQuiteHourDialog(
+            onAddQuiteHour = { startTime, endTime ->
+                viewModel.onAction(NoteAlertSettingAction.SaveQuiteHour(startTime, endTime))
+            }
+        )
+        dialog.show(supportFragmentManager, "AddQuiteHourDialog")
+    }
+
+    override fun onInsetsApplied(systemBars: Insets, navigationBars: Insets, imeBottom: Int) {
+        val factor = 0.2f
+        val offset = (imeBottom * factor)
+
+        mBaseBinding.baseMainContentContainer.translationY = -offset
     }
 }

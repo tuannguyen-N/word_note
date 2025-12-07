@@ -9,4 +9,6 @@ sealed interface NoteAlertSettingAction {
     data class StopStudying(val id: Int) : NoteAlertSettingAction
     data class SetTimeRange(val startTime: Int, val endTime: Int) : NoteAlertSettingAction
     data class ReplaceTime(val level: TimeLevel, val amount: Int): NoteAlertSettingAction
+    data class DeleteQuiteHour(val id: Int): NoteAlertSettingAction
+    data class SaveQuiteHour(val startTime: Long, val endTime: Long): NoteAlertSettingAction
 }

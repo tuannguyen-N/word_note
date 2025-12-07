@@ -13,8 +13,11 @@ interface QuiteHourDao {
     suspend fun insertQuiteHour(quiteHourEntity: QuiteHourEntity)
 
     @Query("SELECT * FROM QuiteHourEntity")
-    suspend fun getAllQuiteHour(): Flow<List<QuiteHourEntity>>
+    fun getAllQuiteHour(): Flow<List<QuiteHourEntity>>
 
-    @Delete
+    @Query("DELETE FROM QuiteHourEntity WHERE id = :id")
     suspend fun deleteQuiteHour(id: Int)
+
+    @Query("SELECT * FROM QUITEHOURENTITY")
+    fun getAllQuiteHourSync(): List<QuiteHourEntity>
 }

@@ -18,6 +18,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.viewbinding.ViewBinding
 import com.example.wordnote.databinding.ActivityBaseBinding
 
@@ -75,17 +76,36 @@ open class BaseActivity<VBinding : ViewBinding>(private val bindingProvider: (La
         return false
     }
 
-    protected open  fun setupEdge() {
-        binding.apply {
-            ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
-                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+    private fun setupEdge() {
+        ViewCompat.setOnApplyWindowInsetsListener(mBaseBinding.root) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            val imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
 
-                onInsets(systemBars, navigationBars)
-                insets
-            }
+            applyDefaultInsets(systemBars, navigationBars)
+            onInsetsApplied(systemBars, navigationBars, imeBottom)
+
+            insets
         }
     }
+
+    private fun applyDefaultInsets(systemBars: Insets, navigationBars: Insets) {
+        // topBar cover height
+        mBaseBinding.topBarCoverView.updateLayoutParams {
+            height = systemBars.top
+        }
+
+        // padding bottom navigation
+        mBaseBinding.baseMainContentContainer.updatePadding(
+            bottom = navigationBars.bottom
+        )
+    }
+
+    protected open fun onInsetsApplied(
+        systemBars: Insets,
+        navigationBars: Insets,
+        imeBottom: Int
+    ) { }
 
     fun setTopBarCoverViewColor(colorId: Int) {
         mBaseBinding.topBarCoverView.setBackgroundColor(getColor(colorId))

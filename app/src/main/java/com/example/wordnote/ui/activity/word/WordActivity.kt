@@ -25,7 +25,7 @@ import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.databinding.ActivityWordBinding
 import com.example.wordnote.domain.model.CategoryData
 import com.example.wordnote.domain.model.WordData
-import com.example.wordnote.domain.model.WordState
+import com.example.wordnote.domain.model.state.WordState
 import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.manager.SpeakingManager
 import com.example.wordnote.ui.activity.BaseActivity
@@ -36,7 +36,7 @@ import com.example.wordnote.ui.dialog.ExistWordDialog
 import com.example.wordnote.ui.dialog.FullWordsBottomSheet
 import com.example.wordnote.utils.NotificationPermissionLauncher
 import com.example.wordnote.utils.PermissionResult
-import com.example.wordnote.utils.SortType
+import com.example.wordnote.domain.model.SortType
 import com.example.wordnote.utils.Utils
 import com.example.wordnote.utils.followKeyboardAndEdge
 import kotlinx.coroutines.launch

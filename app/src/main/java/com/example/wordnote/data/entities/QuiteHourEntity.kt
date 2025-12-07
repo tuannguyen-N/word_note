@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class QuiteHourEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int =0 ,
-    val startHour: Int,
-    val endHour: Int
+    val startTime: Long,
+    val endTime: Long
 )

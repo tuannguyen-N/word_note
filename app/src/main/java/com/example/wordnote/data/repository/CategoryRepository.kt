@@ -1,11 +1,10 @@
 package com.example.wordnote.data.repository
 
 import com.example.wordnote.data.dao.CategoryDao
-import com.example.wordnote.data.dao.WordDao
 import com.example.wordnote.data.entities.CategoryEntity
 import com.example.wordnote.data.mapper.toData
 import com.example.wordnote.domain.model.CategoryData
-import com.example.wordnote.utils.Result
+import com.example.wordnote.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

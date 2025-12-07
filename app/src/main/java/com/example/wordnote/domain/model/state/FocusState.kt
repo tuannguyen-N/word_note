@@ -1,4 +1,4 @@
-package com.example.wordnote.domain.model
+package com.example.wordnote.domain.model.state
 
 data class FocusState(
     var totalSeconds: Long = 900,// 15 minutes

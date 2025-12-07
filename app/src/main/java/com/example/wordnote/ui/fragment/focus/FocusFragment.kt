@@ -2,7 +2,6 @@ package com.example.wordnote.ui.fragment.focus
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.View
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -10,13 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.wordnote.R
 import com.example.wordnote.databinding.FragmentFocusBinding
-import com.example.wordnote.domain.model.FocusState
+import com.example.wordnote.domain.model.state.FocusState
 import com.example.wordnote.ui.components.SeekBarTime
 import com.example.wordnote.ui.dialog.ConfirmStopFocusDialog
 import com.example.wordnote.ui.fragment.BaseFragment
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class FocusFragment : BaseFragment<FragmentFocusBinding>(FragmentFocusBinding::inflate) {
