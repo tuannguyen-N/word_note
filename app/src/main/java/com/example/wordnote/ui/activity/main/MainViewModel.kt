@@ -12,11 +12,7 @@ class MainViewModel : ViewModel() {
     private val _uiEvent = MutableSharedFlow<MainViewUIEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
-
     fun onAction(action: MainAction) {
-        when(action) {
-            else -> {}
-        }
     }
 
     fun sendUiEvent(event: MainViewUIEvent) {

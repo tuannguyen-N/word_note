@@ -57,7 +57,7 @@
             app:trp_sliderRangeGradientMiddle="@color/icon"
             app:trp_sliderRangeGradientStart="@color/item"
             app:trp_startTime="6:00"
-            app:trp_stepTimeMinutes="2"
+            app:trp_stepTimeMinutes="30"
             app:trp_thumbIconEnd="@drawable/icon_sun"
             app:trp_thumbIconSize="20dp"
             app:trp_thumbIconStart="@drawable/icon_sun"

@@ -43,7 +43,7 @@ interface WordDao {
     @Query("UPDATE wordentity SET score = :score WHERE id = :wordId")
     suspend fun updateScore(wordId: Int, score: Int)
 
-    @Query("SELECT * FROM wordentity ORDER BY word ASC")
+    @Query("SELECT * FROM wordentity ORDER BY addedTime")
     fun getWordsOrderedByWord(): Flow<List<WordEntity>>
 
     @Query("SELECT * FROM WordEntity ORDER BY word ASC")
@@ -61,6 +61,7 @@ interface WordDao {
     SELECT WordEntity.* FROM WordEntity
     INNER JOIN WordCategoryCrossRef ON WordEntity.id = WordCategoryCrossRef.wordId
     WHERE WordCategoryCrossRef.categoryId = :categoryId
+    ORDER BY WordEntity.addedTime DESC
 """
     )
     fun getWordsByCategory(categoryId: Int): Flow<List<WordEntity>>

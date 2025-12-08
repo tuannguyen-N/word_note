@@ -24,7 +24,7 @@ fun WordResponseItem.resolvePhonetic(): String {
         ?: phonetics
             ?.firstOrNull { !it.text.isNullOrBlank() }
             ?.text
-        ?: ""
+        ?: "N/A"
 }
 
 fun Meaning.toData(): MeaningData =

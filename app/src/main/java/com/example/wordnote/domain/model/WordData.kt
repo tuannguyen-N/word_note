@@ -3,7 +3,7 @@ package com.example.wordnote.domain.model
 data class WordData(
     val id: Int? = null,
     val word: String,
-    val phonetic: String,
+    val phonetic: String?,
     val meanings: List<MeaningData>,
     var level: Int = 1,
     var note: String = "",

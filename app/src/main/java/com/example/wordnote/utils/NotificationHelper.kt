@@ -82,7 +82,7 @@ object NotificationHelper {
             .addAction(replyAction)
 
         val nm = NotificationManagerCompat.from(context)
-        nm.notify(word.id, builder.build())
+        nm.notify(word.id + 1, builder.build())
     }
 
     private fun createChannel(context: Context) {
@@ -99,6 +99,6 @@ object NotificationHelper {
 
     fun isNotificationActive(context: Context, id: Int): Boolean {
         val nm = context.getSystemService(NotificationManager::class.java)
-        return nm?.activeNotifications?.any { it.id == id } == true
+        return nm?.activeNotifications?.any { it.id == id + 1 } == true
     }
 }

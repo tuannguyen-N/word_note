@@ -41,8 +41,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:gravity="center">
 
             <LinearLayout
@@ -53,6 +52,7 @@
                     android:id="@+id/tvStartHour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:includeFontPadding="false"
                     android:inputType="number"
                     android:text="00"
@@ -71,6 +71,7 @@
                     android:id="@+id/tvStartMinute"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:includeFontPadding="false"
                     android:inputType="number"
                     android:text="00"
@@ -92,6 +93,7 @@
                     android:id="@+id/tvEndHour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:includeFontPadding="false"
                     android:text="00"
                     android:textColor="@color/black"
@@ -109,6 +111,7 @@
                     android:id="@+id/tvEndMinute"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:includeFontPadding="false"
                     android:text="00"
                     android:textColor="@color/black"
@@ -118,10 +121,21 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvError"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/hong_be_oi"
+            android:textColor="@color/red"
+            android:textStyle="italic" />
+
+        <TextView
             android:id="@+id/btnAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/bg_item_time"
             android:paddingVertical="15dp"
             android:text="@string/yes_sir"
