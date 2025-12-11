@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordnote.data.AppPreferences
+import com.example.wordnote.domain.model.CategoryData
 import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.model.state.WordState
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
@@ -53,7 +55,7 @@ class WordViewModel(
             }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private val _searchQuery = MutableStateFlow("")
-    private val _filterWords = combine(_words,_searchQuery){words, query->
+    private val _filterWords = combine(_words, _searchQuery) { words, query ->
         if (query.isBlank()) words
         else words.filter { it.word.contains(query, ignoreCase = true) }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
@@ -64,6 +66,13 @@ class WordViewModel(
             words = filterWords, sortType = sortType
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), WordState())
+
+    private val _categories = localWordUseCase.getCategories().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = emptyList()
+    )
+    val categories = _categories
 
     init {
         performShowLoading(true)
@@ -98,14 +107,26 @@ class WordViewModel(
             is WordAction.OnSearchWord -> performSearchWord(action.query)
 
             is WordAction.InitCategory -> performInitCategory(action.id)
+
+            is WordAction.OnChangeCategory -> performChangeCategory(
+                action.wordId,
+                action.categoryId
+            )
         }
     }
 
-    private fun performInitCategory(id: Int){
+
+    private fun performChangeCategory(wordId: Int, categoryId: Int) {
+        viewModelScope.launch {
+            localWordUseCase.changeCategory(wordId, categoryId)
+        }
+    }
+
+    private fun performInitCategory(id: Int) {
         _categoryId.value = id
     }
 
-    private fun performSearchWord(query: String){
+    private fun performSearchWord(query: String) {
         _searchQuery.value = query
     }
 
@@ -182,6 +203,7 @@ class WordViewModel(
             is Result.Success -> {
 //                if (result.word?.level != 0) scheduleWordUseCase.scheduleWord(result.word!!)
             }
+
             is Result.AlreadyExists -> sendUIEvent(WordUIEvent.ScrollToExistWord(word))
             is Result.AlreadyExistsInCategories ->
                 sendUIEvent(WordUIEvent.ShowExistWordDialog(result.category))

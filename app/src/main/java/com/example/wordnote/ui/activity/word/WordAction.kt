@@ -16,4 +16,5 @@ sealed interface WordAction {
     data class OnStopStudying(val wordId: Int): WordAction
     data class OnSearchWord(val query: String): WordAction
     data class InitCategory(val id: Int): WordAction
+    data class OnChangeCategory(val wordId: Int, val categoryId: Int): WordAction
 }

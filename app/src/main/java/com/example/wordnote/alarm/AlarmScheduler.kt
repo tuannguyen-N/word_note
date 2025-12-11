@@ -51,36 +51,34 @@ class AlarmScheduler(private val context: Context) {
     private fun adjustToAllowedTime(triggerAt: Long): Long {
         val start = AppPreferences.startTimeNotification
         val end = AppPreferences.endTimeNotification
-        val current = minutesOfDay(triggerAt)
+        val triggerMin = minutesOfDay(triggerAt)
 
         val crossesMidnight = end < start
-
         val isWithinAllowed = if (!crossesMidnight) {
-            // Normal range: e.g. 08:00 → 20:00
-            current in start..end
+            triggerMin in start..end
         } else {
-            // Cross midnight: e.g. 16:00 → 01:00
-            current !in (end + 1)..<start
+            triggerMin !in (end + 1) until start
         }
 
         if (isWithinAllowed) return triggerAt
 
-        // --- Adjust to next allowed time ---
-        return if (!crossesMidnight) {
-            // Simple range
-            when {
-                current < start -> applyMinutesToday(start)
-                else -> applyMinutesTomorrow(start)
+        val overflowMinutes = when {
+            !crossesMidnight -> {
+                when {
+                    triggerMin < start -> start - (triggerMin - end)
+                    else -> (triggerMin - end)
+                }
             }
-        } else {
-            // Cross-midnight range
-            when {
-                current in (end + 1)..<start ->
-                    applyMinutesToday(start)    // không thuộc 0–end và không thuộc start–24h
-                else ->
-                    applyMinutesTomorrow(start) // sau khi qua vùng hợp lệ
+
+            else -> {
+                when {
+                    triggerMin in (end + 1) until start -> start - triggerMin
+                    else -> 0
+                }
             }
         }
+
+        return applyMinutesTomorrow(start + overflowMinutes)
     }
 
     private fun minutesOfDay(millis: Long): Int {

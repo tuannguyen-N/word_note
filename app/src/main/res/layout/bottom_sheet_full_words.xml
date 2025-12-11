@@ -19,7 +19,7 @@
         android:layout_marginTop="16dp"
         android:includeFontPadding="false"
         android:text="@string/the_learning_word_list_was_full"
-        android:textColor="@color/black1"
+        android:textColor="@color/black"
         android:textSize="20sp" />
 
     <TextView
@@ -40,6 +40,7 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/bg_enter"
         android:includeFontPadding="false"
+        android:textStyle="bold"
         android:paddingVertical="20dp"
         android:text="@string/go_to_setting"
         android:textAlignment="center"
@@ -54,7 +55,7 @@
         android:layout_marginBottom="20dp"
         android:paddingVertical="15dp"
         android:text="@string/no_i_don_t_want_to_learn_this_word"
-        android:textColor="@color/icon"
+        android:textColor="@color/button"
         android:textSize="16sp" />
 
 </LinearLayout>

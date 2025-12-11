@@ -7,7 +7,7 @@
         <group>
             <group>
                 <path
-                    android:fillColor="@color/icon"
+                    android:fillColor="@color/transparent"
                     android:pathData="M0 15C0 6.72 6.72 0 15 0h13c8.28 0 15 6.72 15 15v13c0 8.28-6.72 15-15 15H15C6.72 43 0 36.28 0 28V15Z" />
             </group>
             <path
@@ -23,31 +23,31 @@
     <path
         android:pathData="M22 12v19"
         android:strokeWidth="2.5"
-        android:strokeColor="#FFFFFFFF"
+        android:strokeColor="@color/icon"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M16 16.75v9.5"
         android:strokeWidth="2.5"
-        android:strokeColor="#FFFFFFFF"
+        android:strokeColor="@color/icon"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M10 19.13v4.75"
         android:strokeWidth="2.5"
-        android:strokeColor="#FFFFFFFF"
+        android:strokeColor="@color/icon"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M28 16.75v9.5"
         android:strokeWidth="2.5"
-        android:strokeColor="#FFFFFFFF"
+        android:strokeColor="@color/icon"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M34 19.13v4.75"
         android:strokeWidth="2.5"
-        android:strokeColor="#FFFFFFFF"
+        android:strokeColor="@color/icon"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
 </vector>

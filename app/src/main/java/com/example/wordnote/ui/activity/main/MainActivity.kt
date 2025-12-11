@@ -45,9 +45,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private fun setupPager() {
         val pages = listOf(
-            PageItem(R.id.learn, "Your Category", 0, R.drawable.image_teacher),
-            PageItem(R.id.focus, "", 1, R.drawable.cat),
-            PageItem(R.id.setting, "Note Settings", 2, R.drawable.cat)
+            PageItem(R.id.learn, R.string.good_morning, 0, R.drawable.image_teacher),
+            PageItem(R.id.focus, R.string.focuss, 1, R.drawable.cat),
+            PageItem(R.id.setting, R.string.note_settings, 2, R.drawable.cat)
         )
         binding.bottomNavView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_UNLABELED
         binding.viewPager.isUserInputEnabled = false
@@ -57,7 +57,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         binding.bottomNavView.setOnItemSelectedListener { item ->
             pages.find { it.menuId == item.itemId }?.let { page ->
-                binding.tvApplicationBar.text = page.title
+                binding.tvApplicationBar.setText(page.title)
                 binding.viewPager.setCurrentItem(page.index, true)
                 binding.ivCat.loadGlideImage(page.imageRes)
             }
@@ -67,7 +67,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.bottomNavView.selectedItemId = pages[position].menuId
-                binding.tvApplicationBar.text = pages[position].title
+                binding.tvApplicationBar.setText(pages[position].title)
 
                 if (position == 1)
                     binding.applicationBar.visibility = View.GONE

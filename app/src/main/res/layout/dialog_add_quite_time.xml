@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="30dp"
+        android:layout_margin="40dp"
         android:background="@drawable/bg_dialog"
         android:orientation="vertical"
         android:padding="15dp">
@@ -24,6 +24,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/choose_time_range"
                 android:textColor="@color/black1"
+                android:textStyle="bold"
                 android:textSize="20sp" />
 
             <View
@@ -95,6 +96,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:includeFontPadding="false"
+                    android:inputType="number"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="40sp" />
@@ -113,6 +115,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:includeFontPadding="false"
+                    android:inputType="number"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="40sp" />
@@ -122,13 +125,13 @@
 
         <TextView
             android:id="@+id/tvError"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/hong_be_oi"
             android:textColor="@color/red"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/btnAdd"
@@ -136,11 +139,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="40dp"
-            android:background="@drawable/bg_item_time"
+            android:background="@drawable/bg_enter"
             android:paddingVertical="15dp"
             android:text="@string/yes_sir"
             android:textAlignment="center"
-            android:textColor="@color/icon"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />

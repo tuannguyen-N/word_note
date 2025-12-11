@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/item"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp"
+            android:paddingVertical="20dp"
             android:src="@drawable/ic_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
             android:includeFontPadding="false"
             android:text="@string/name_category"
             android:textAlignment="center"
-            android:textColor="@color/font_title"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -58,124 +58,128 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/bg_word_ac"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/application_bar"
-        tools:itemCount="6"
-        android:paddingBottom="80dp"
-        tools:listitem="@layout/item_word" />
+        app:layout_constraintTop_toBottomOf="@id/application_bar">
 
-    <LinearLayout
-        android:id="@+id/viewNoData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_no_data" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/no_word"
-            android:textColor="@color/gray"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-<!--    <androidx.appcompat.widget.AppCompatImageView-->
-<!--        android:id="@+id/btnDelete"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginBottom="10dp"-->
-<!--        android:src="@drawable/ic_delete"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
-
-
-    <LinearLayout
-        android:id="@+id/container_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="15dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <LinearLayout
-            android:id="@+id/layout_search"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
-            android:background="@drawable/bg_search"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="15dp">
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="6"
+            tools:listitem="@layout/item_word" />
+
+        <FrameLayout
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_loading"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/white" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/viewNoData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/icon_search" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_no_data" />
 
-            <EditText
-                android:id="@+id/etSearch"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginStart="9dp"
-                android:background="@null"
-                android:hint="@string/enter_a_word"
-                android:inputType="text"
-                android:textColor="@color/font_title"
-                android:textColorHint="@color/gray1"
-                android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_word"
+                android:textColor="@color/gray"
+                android:textSize="13sp" />
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/container_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="15dp"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="15dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@id/container_search"
-        app:layout_constraintEnd_toEndOf="parent">
+            <LinearLayout
+                android:id="@+id/layout_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:background="@drawable/bg_search"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp">
 
-        <include
-            android:id="@+id/level_container"
-            layout="@layout/layout_level" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/icon_search" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btnSort"
+                <EditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="9dp"
+                    android:background="@null"
+                    android:hint="@string/enter_a_word_"
+                    android:includeFontPadding="false"
+                    android:inputType="text"
+                    android:textColor="@color/font_title"
+                    android:textColorHint="@color/gray1"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:src="@drawable/filter_list_24px" />
-    </LinearLayout>
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/container_search"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    <FrameLayout
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#80000000"
-        android:visibility="gone">
+            <include
+                android:id="@+id/level_container"
+                layout="@layout/layout_level" />
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/white" />
-    </FrameLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:src="@drawable/filter_list_24px" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

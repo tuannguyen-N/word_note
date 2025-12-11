@@ -121,6 +121,7 @@ class SpellingBeeActivity :
 
     private fun showAnswersUI(answer: String) {
         binding.etSpelling.setText(answer)
+        binding.etSpelling.setBackgroundResource(R.drawable.bg_input_spelling_correct)
     }
 
     private fun handleButtonAnswersUI(isShowAnswer: Boolean) {
@@ -183,7 +184,7 @@ class SpellingBeeActivity :
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun setUpEditText(){
+    private fun setUpEditText() {
         binding.etSpelling.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 binding.etSpelling.setBackgroundResource(R.drawable.bg_input_spelling)

@@ -16,7 +16,8 @@ class WordAdapter(
     private val onSpeaking: (String) -> Unit,
     private val onStartStudying: (WordData) -> Unit,
     private val onStopStudying: (Int) -> Unit,
-    private val onDeleteWord: (Int) -> Unit
+    private val onDeleteWord: (Int) -> Unit,
+    private val onChangeCategory: (Int) -> Unit
 ) : BaseAdapter<WordData>() {
 
     override fun doGetViewType(position: Int): Int = R.layout.item_word
@@ -54,6 +55,10 @@ class WordAdapter(
 
         binding.btnDelete.setOnClickListener {
             onDeleteWord(item.id)
+        }
+
+        binding.btnChangeCategory.setOnClickListener {
+            onChangeCategory(item.id)
         }
     }
 

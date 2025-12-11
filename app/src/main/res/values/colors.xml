@@ -3,6 +3,7 @@
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
+    <color name="purple">#968ce4</color>
     <color name="green">#00B118</color>
     <color name="black">#111619</color>
     <color name="black1">#535059</color>
@@ -25,5 +26,7 @@
     <color name="gray1">#BCBBBB</color>
     <color name="red">#C65D57</color>
     <color name="icon">#f476a3</color>
-    <color name="font_title">#393640</color>
+    <color name="font_title">#6b64b8</color>
+    <color name="button">#f476a3</color>
+    <color name="background_gray">#e8e9f0</color>
 </resources>

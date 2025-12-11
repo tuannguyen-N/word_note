@@ -29,7 +29,7 @@
     <string name="name_category">Name Category</string>
     <string name="_0_word">0</string>
     <string name="any_description">Any description ?</string>
-    <string name="enter_a_new_category">Enter a new category</string>
+    <string name="enter_a_new_category">Enter category name</string>
     <string name="this_action_will_delete_all_words_nin_this_category">This action will delete all words \nin this category.</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="delete_this_category">Delete This Category</string>
@@ -80,4 +80,13 @@
     <string name="show_answers">Show Answers</string>
     <string name="d_you_enter_a_empty_word">:D?? you enter a empty word???</string>
     <string name="hong_be_oi">Hong be oi</string>
+    <string name="spelling_bee">Spelling Bee</string>
+    <string name="current_category">Current category</string>
+    <string name="choosing_the_category_you_want_to_move_to">Choosing the category you want to move to</string>
+    <string name="add_words">Add Words</string>
+    <string name="good_morning">Good morning</string>
+    <string name="focuss" />
+    <string name="note_settings">Note Settings</string>
+    <string name="enter_a_word_">Enter a word</string>
+    <string name="category_list">Category List</string>
 </resources>

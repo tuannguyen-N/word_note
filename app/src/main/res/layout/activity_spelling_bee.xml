@@ -33,9 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:includeFontPadding="false"
-            android:text="Spelling Bee"
+            android:text="@string/spelling_bee"
             android:textAlignment="center"
-            android:textColor="@color/font_title"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -63,8 +63,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/spell_the_word"
-            android:textColor="@color/font_title"
-            android:textSize="16dp" />
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="16sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -105,7 +106,7 @@
                 android:id="@+id/btnSpellIt"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_btn_green"
+                android:background="@drawable/bg_btn_purple"
                 android:gravity="center"
                 android:paddingHorizontal="10dp"
                 android:text="@string/spell_it"
@@ -143,7 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/definitions"
-            android:textColor="@color/font_title"
+            android:textColor="@color/black"
             android:textSize="12sp" />
 
         <View

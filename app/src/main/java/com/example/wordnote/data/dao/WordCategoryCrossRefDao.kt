@@ -29,4 +29,6 @@ interface WordCategoryCrossRefDao{
 """)
     suspend fun getCategoriesOfWord(wordId: Int): CategoryEntity
 
+    @Query("Update WordCategoryCrossRef SET categoryId = :categoryId WHERE wordId = :wordId")
+    suspend fun changeCategory(wordId: Int, categoryId: Int)
 }

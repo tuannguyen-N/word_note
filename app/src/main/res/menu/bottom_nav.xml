@@ -6,6 +6,7 @@
         android:title="Learn" />
 
     <item
+        android:visible="false"
         android:id="@+id/focus"
         android:icon="@drawable/icon_clock"
         android:title="Focus" />

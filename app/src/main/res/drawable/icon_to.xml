@@ -5,13 +5,13 @@
     android:viewportHeight="24">
     <path
         android:fillAlpha="0.4"
-        android:strokeColor="@color/icon"
+        android:strokeColor="@color/button"
         android:strokeWidth="1.5"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
         android:pathData="M12 21.25c6.94 0 9.25-2.31 9.25-9.25 0-6.94-2.31-9.25-9.25-9.25-6.94 0-9.25 2.31-9.25 9.25 0 6.94 2.31 9.25 9.25 9.25Z"/>
     <path
-        android:strokeColor="@color/icon"
+        android:strokeColor="@color/button"
         android:strokeWidth="1.5"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"

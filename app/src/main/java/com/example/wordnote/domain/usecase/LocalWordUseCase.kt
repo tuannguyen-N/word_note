@@ -1,6 +1,7 @@
 package com.example.wordnote.domain.usecase
 
 import com.example.wordnote.alarm.AlarmScheduler
+import com.example.wordnote.data.repository.CategoryRepository
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.model.Result
@@ -8,6 +9,7 @@ import com.example.wordnote.utils.WordLevel
 
 class LocalWordUseCase(
     private val wordRepository: WordRepository,
+    private val categoryRepository: CategoryRepository? = null,
     private val alarmScheduler: AlarmScheduler? = null
 ) {
     suspend fun upsertWord(word: String, categoryId: Int): Result =
@@ -35,6 +37,9 @@ class LocalWordUseCase(
         alarmScheduler?.scheduleWord(word, nextTrigger)
     }
 
+    suspend fun changeCategory(wordId: Int, categoryId: Int){
+        wordRepository.changeCategory(wordId, categoryId)
+    }
 
     suspend fun stopStudying(wordId: Int) {
         wordRepository.updateStudiedTime(wordId, 0)
@@ -53,4 +58,6 @@ class LocalWordUseCase(
     suspend fun getWordById(id: Int) = wordRepository.getWordById(id)
 
     suspend fun countStudyingWords(): Int = wordRepository.countStudyingWords()
+
+    fun getCategories() = categoryRepository!!.getCategoriesWithWordLevel()
 }

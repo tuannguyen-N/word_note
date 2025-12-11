@@ -181,7 +181,7 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
             }
 
             val value = text.toIntOrNull()
-            if (value == null || value < 0) {
+            if (value == null || value < 20) {
                 editText.error = "Invalid value"
                 return@onTextChanged
             }
@@ -192,12 +192,6 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
                     editText.setSelection(editText.text.length)
                 }
                 maxValue
-            } else if (value < 20) {
-                editText.post {
-                    editText.setText("20")
-                    editText.setSelection(editText.text.length)
-                }
-                30
             } else {
                 value
             }

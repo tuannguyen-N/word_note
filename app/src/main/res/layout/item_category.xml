@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
             android:text="@string/note_alerts"
-            android:textColor="@color/font_title"
+            android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,8 +70,8 @@
             app:layout_constraintTop_toBottomOf="@id/tvDescription">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:src="@drawable/vocab_level_1" />
 
             <TextView
@@ -86,8 +86,8 @@
 
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_marginStart="12dp"
                 android:src="@drawable/vocab_level_2" />
 
@@ -102,8 +102,8 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_marginStart="12dp"
                 android:src="@drawable/vocab_level_3" />
 

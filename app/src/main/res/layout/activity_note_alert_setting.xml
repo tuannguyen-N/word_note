@@ -42,7 +42,7 @@
                     android:includeFontPadding="false"
                     android:text="@string/word_alerts_setting"
                     android:textAlignment="center"
-                    android:textColor="@color/font_title"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_notifications"
-                    android:textColor="@color/font_title"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@id/tv_receiveMobile"
@@ -112,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time_range"
-                    android:textColor="@color/font_title"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -126,7 +126,7 @@
                     android:includeFontPadding="false"
                     android:padding="10dp"
                     android:text="10:00 - 10:00"
-                    android:textColor="@color/icon"
+                    android:textColor="@color/gray"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -166,7 +166,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/quite_time"
-                            android:textColor="@color/font_title"
+                            android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -220,7 +220,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
                     android:text="@string/max_learning_words"
-                    android:textColor="@color/font_title"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@id/tv_too_much"
@@ -261,7 +261,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/_5_words"
-                        android:textColor="@color/font_title" />
+                        android:textColor="@color/gray" />
 
                     <View
                         android:layout_width="0dp"
@@ -273,7 +273,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="@string/_10_words"
-                        android:textColor="@color/font_title" />
+                        android:textColor="@color/gray" />
 
                     <View
                         android:layout_width="0dp"
@@ -285,7 +285,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="5dp"
                         android:text="@string/_15_words"
-                        android:textColor="@color/font_title" />
+                        android:textColor="@color/gray" />
 
                     <View
                         android:layout_width="0dp"
@@ -297,7 +297,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="@string/_20_words"
-                        android:textColor="@color/font_title" />
+                        android:textColor="@color/gray" />
 
                 </LinearLayout>
 
@@ -320,7 +320,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/notification_time_at_first"
-                    android:textColor="@color/font_title"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"

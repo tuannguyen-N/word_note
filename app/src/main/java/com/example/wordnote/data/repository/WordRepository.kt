@@ -122,4 +122,9 @@ class WordRepository(
     }
 
     suspend fun countStudyingWords(): Int = dao.countStudyingWords()
+
+    suspend fun changeCategory(wordId: Int, categoryId: Int){
+        wordCategoryDao?.changeCategory(wordId, categoryId)
+    }
+
 }

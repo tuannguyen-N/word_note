@@ -16,11 +16,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.wordnote.adapter.CategoryInWordsAdapter
 import com.example.wordnote.adapter.WordAdapter
 import com.example.wordnote.alarm.AlarmScheduler
 import com.example.wordnote.data.AppDatabase
 import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.data.api.RetrofitInstance
+import com.example.wordnote.data.repository.CategoryRepository
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.databinding.ActivityWordBinding
 import com.example.wordnote.domain.model.CategoryData
@@ -37,8 +39,10 @@ import com.example.wordnote.ui.dialog.FullWordsBottomSheet
 import com.example.wordnote.utils.NotificationPermissionLauncher
 import com.example.wordnote.utils.PermissionResult
 import com.example.wordnote.domain.model.SortType
+import com.example.wordnote.ui.dialog.CurrentCategoryBottomSheet
 import com.example.wordnote.utils.Utils
 import com.example.wordnote.utils.followKeyboardAndEdge
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.launch
 
 class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::inflate) {
@@ -61,11 +65,14 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                     AppDatabase.getInstance(this).wordCategoryDao,
                     RetrofitInstance.api
                 ),
+                CategoryRepository(AppDatabase.getInstance(this).categoryDao),
                 AlarmScheduler(this)
             ),
             SpeakingManager(this),
         )
     }
+
+    private val categories = mutableListOf<CategoryData>()
 
     private val wordAdapter = WordAdapter(
         onAction = {
@@ -86,8 +93,13 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         },
         onDeleteWord = { wordId ->
             wordViewModel.onAction(WordAction.OnDeleteWord(wordId))
+        },
+        onChangeCategory = { wordId ->
+            showBottomSheetCurrentCategory(wordId)
         }
     )
+
+    private lateinit var categoryAdapter: CategoryInWordsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +110,26 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         setOnClick()
         collectState()
         collectUIEvent()
+        setUpBottomSheet()
+    }
+
+    private fun setUpBottomSheet() {
+//        val behavior = BottomSheetBehavior.from(binding.bottomSheet)
+//
+//        behavior.isFitToContents = false
+//        behavior.halfExpandedRatio = 0.75f
+//        behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+//
+//        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+//            override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+//                    behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+//                }
+//            }
+//
+//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//            }
+//        })
     }
 
     private fun setUpView() {
@@ -165,10 +197,20 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
 //        lifecycleScope.launch(Dispatchers.Main) { ... }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                wordViewModel.state.collect { wordState ->
-                    loadingUI(wordState)
-                    wordAdapter.setItemList(wordState.words)
-                    onSelectedLevel(wordState.selectedLevel)
+                launch {
+                    wordViewModel.state.collect { wordState ->
+                        loadingUI(wordState)
+                        wordAdapter.setItemList(wordState.words)
+                        onSelectedLevel(wordState.selectedLevel)
+                    }
+                }
+
+                launch {
+                    wordViewModel.categories.collect { categoryList ->
+                        categories.clear()
+                        categories.addAll(categoryList)
+//                        categoryAdapter.setItemList(categoryList)
+                    }
                 }
             }
         }
@@ -288,6 +330,15 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
             layoutManager = LinearLayoutManager(this@WordActivity)
 //            ItemTouchHelper(SwipeHelper()).attachToRecyclerView(this)
         }
+//
+//        binding.rvCategory.apply {
+//            categoryAdapter = CategoryInWordsAdapter(
+//                currentCategoryId = intent.getIntExtra("CATEGORY_ID", -1)
+//            )
+//            adapter = categoryAdapter
+//            layoutManager =
+//                LinearLayoutManager(this@WordActivity, LinearLayoutManager.HORIZONTAL, false)
+//        }
     }
 
     private fun initNotificationPermissionLauncher() {
@@ -309,5 +360,16 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                 }
             }
         )
+    }
+
+    private fun showBottomSheetCurrentCategory(wordId: Int) {
+        val bottomSheet = CurrentCategoryBottomSheet(
+            currentCategory = intent.getIntExtra("CATEGORY_ID", -1),
+            categories = categories,
+            onClickItem = { categoryId ->
+                wordViewModel.onAction(WordAction.OnChangeCategory(wordId, categoryId))
+            }
+        )
+        bottomSheet.show(supportFragmentManager, "CurrentCategoryBottomSheet")
     }
 }
