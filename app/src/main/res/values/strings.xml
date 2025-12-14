@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Word learning</string>
+    <string name="app_name">Vocatbee</string>
     <string name="word_of_the_day">Mother fucking day</string>
     <string name="demo">Demo</string>
     <string name="word">Word</string>
@@ -84,9 +84,10 @@
     <string name="current_category">Current category</string>
     <string name="choosing_the_category_you_want_to_move_to">Choosing the category you want to move to</string>
     <string name="add_words">Add Words</string>
-    <string name="good_morning">Good morning</string>
+    <string name="good_morning">Good Morning</string>
     <string name="focuss" />
     <string name="note_settings">Note Settings</string>
     <string name="enter_a_word_">Enter a word</string>
     <string name="category_list">Category List</string>
+    <string name="have_you_review_those_categories">Have you review those categories?</string>
 </resources>

@@ -45,7 +45,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private fun setupPager() {
         val pages = listOf(
-            PageItem(R.id.learn, R.string.good_morning, 0, R.drawable.image_teacher),
+            PageItem(R.id.learn, R.string.app_name, 0, R.drawable.image_teacher),
             PageItem(R.id.focus, R.string.focuss, 1, R.drawable.cat),
             PageItem(R.id.setting, R.string.note_settings, 2, R.drawable.cat)
         )

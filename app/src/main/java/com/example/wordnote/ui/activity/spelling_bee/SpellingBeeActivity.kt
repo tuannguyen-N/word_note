@@ -95,6 +95,7 @@ class SpellingBeeActivity :
                         enableSubmitButton(state.isSubmitEnabled)
                         setMeaningAdapter(state)
                         handleButtonAnswersUI(state.isShowAnswers)
+                        binding.tvNote.text =if (state.currentWord?.note?.isNotEmpty() ?: false) "Note: " +state.currentWord.note else "No any notes"
                     }
                 }
 

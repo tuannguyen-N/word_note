@@ -6,6 +6,7 @@
     <color name="purple">#968ce4</color>
     <color name="green">#00B118</color>
     <color name="black">#111619</color>
+    <color name="text_color">#3F414E</color>
     <color name="black1">#535059</color>
     <color name="hint">#D2CED9</color>
     <color name="white">#FFFFFFFF</color>
@@ -13,6 +14,7 @@
     <color name="background">#FFFFFFFF</color>
     <color name="background1">#FFEAFD</color>
     <color name="item">#FFD2F4</color>
+    <color name="item_category">#272731</color>
     <color name="bottom_sheet">#FFFFFFFF</color>
     <color name="btn_enter">#5E5B92</color>
     <color name="font_green">#253334</color>
@@ -25,7 +27,7 @@
     <color name="gray">#6F6F6F</color>
     <color name="gray1">#BCBBBB</color>
     <color name="red">#C65D57</color>
-    <color name="icon">#f476a3</color>
+    <color name="icon">#968ce4</color>
     <color name="font_title">#6b64b8</color>
     <color name="button">#f476a3</color>
     <color name="background_gray">#e8e9f0</color>

@@ -33,8 +33,7 @@
             android:includeFontPadding="false"
             android:text="@string/meaning_fuk_fuk_fuk"
             android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
 
     </LinearLayout>
 
