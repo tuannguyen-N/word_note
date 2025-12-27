@@ -42,6 +42,7 @@ import com.example.wordnote.domain.model.SortType
 import com.example.wordnote.ui.dialog.CurrentCategoryBottomSheet
 import com.example.wordnote.utils.Utils
 import com.example.wordnote.utils.followKeyboardAndEdge
+import com.example.wordnote.utils.setSafeOnClickListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.launch
 
@@ -145,18 +146,18 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
     @SuppressLint("ClickableViewAccessibility")
     private fun setOnClick() {
         binding.apply {
-            btnBack.setOnClickListener { finish() }
+            btnBack.setSafeOnClickListener { finish() }
 
-            btnAddWord.setOnClickListener {
+            btnAddWord.setSafeOnClickListener {
                 wordViewModel.onAction(WordAction.OnShowAddWordDialog)
             }
 
-            btnSort.setOnClickListener {
+            btnSort.setSafeOnClickListener {
                 levelContainer.root.visibility =
                     if (levelContainer.root.isVisible) View.GONE else View.VISIBLE
             }
 
-//            btnDelete.setOnClickListener {
+//            btnDelete.setSafeOnClickListener {
 //                wordViewModel.onAction(WordAction.OnDeleteWords(wordAdapter.getTickedItem()))
 //            }
 
@@ -186,7 +187,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         )
 
         levelButtons.forEach { (button, level) ->
-            button.setOnClickListener {
+            button.setSafeOnClickListener {
                 wordViewModel.onAction(WordAction.OnSortWords(SortType.LEVEL(level)))
             }
         }
@@ -206,7 +207,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                 }
 
                 launch {
-                    wordViewModel.categories.collect { categoryList ->
+                    wordViewModel.categories?.collect { categoryList ->
                         categories.clear()
                         categories.addAll(categoryList)
 //                        categoryAdapter.setItemList(categoryList)

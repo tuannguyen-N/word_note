@@ -11,6 +11,7 @@ import com.example.wordnote.R
 import com.example.wordnote.databinding.DialogAddWordBinding
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.utils.loadGlideImage
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class AddWordDialog(
     private val onEnter: (String) -> Unit,
@@ -33,9 +34,9 @@ class AddWordDialog(
 
     private fun setOnClick() {
         binding.apply {
-            enterBtn.setOnClickListener { handleClickEnter() }
+            enterBtn.setSafeOnClickListener { handleClickEnter() }
 
-            cancelBtn.setOnClickListener { dismiss() }
+            cancelBtn.setSafeOnClickListener { dismiss() }
 
             etWord.setOnEditorActionListener { _, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE ||

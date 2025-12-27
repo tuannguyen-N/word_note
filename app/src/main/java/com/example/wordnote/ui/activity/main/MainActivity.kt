@@ -6,7 +6,9 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import com.example.wordnote.R
 import com.example.wordnote.adapter.MainPagerAdapter
@@ -17,6 +19,7 @@ import com.example.wordnote.ui.activity.BaseActivity
 import com.example.wordnote.utils.NotificationPermissionLauncher
 import com.example.wordnote.utils.PermissionResult
 import com.example.wordnote.utils.loadGlideImage
+import com.example.wordnote.utils.setSafeOnClickListener
 import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,21 +34,39 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onCreate(savedInstanceState)
         setupPager()
         listenUIEvent()
+        collectMainUIState()
+        setOnClickListener()
+    }
+
+    private fun collectMainUIState(){
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+
+            }
+        }
     }
 
     private fun listenUIEvent() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            mainViewModel.uiEvent.collect { event ->
-                when (event) {
-                    else -> {}
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                mainViewModel.uiEvent.collect { event ->
+                    when (event) {
+                        is MainViewUIEvent.ChangeDeleteMode -> changeDeleteMode(event.isDeleteMode)
+                        is MainViewUIEvent.RequestDelete -> Unit
+                    }
                 }
             }
         }
     }
 
+    private fun changeDeleteMode(isDeleteMode: Boolean){
+        binding.bottomNavView.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
+        binding.btnDelete.visibility = if (isDeleteMode) View.VISIBLE else View.GONE
+    }
+
     private fun setupPager() {
         val pages = listOf(
-            PageItem(R.id.learn, R.string.app_name, 0, R.drawable.image_teacher),
+            PageItem(R.id.learn, R.string.good_morning, 0, R.drawable.cat),
             PageItem(R.id.focus, R.string.focuss, 1, R.drawable.cat),
             PageItem(R.id.setting, R.string.note_settings, 2, R.drawable.cat)
         )
@@ -71,8 +92,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
                 if (position == 1)
                     binding.applicationBar.visibility = View.GONE
-                else
+                else if (position == 3) {
                     binding.applicationBar.visibility = View.VISIBLE
+                    binding.tvHaveYouReview.visibility = View.GONE
+                } else {
+                    binding.applicationBar.visibility = View.VISIBLE
+                    binding.tvHaveYouReview.visibility = View.VISIBLE
+                }
 
                 if (position == 0) {
                     startShakeForever()
@@ -92,5 +118,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private fun stopShake() {
         binding.ivCat.clearAnimation()
+    }
+
+    private fun setOnClickListener(){
+        binding.apply {
+            btnDelete.setSafeOnClickListener {
+                mainViewModel.onAction(MainAction.RequestDelete)
+            }
+        }
     }
 }

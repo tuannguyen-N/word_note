@@ -4,6 +4,7 @@ import com.example.wordnote.data.dao.CategoryDao
 import com.example.wordnote.data.entities.CategoryEntity
 import com.example.wordnote.data.mapper.toData
 import com.example.wordnote.domain.model.CategoryData
+import com.example.wordnote.domain.model.ColorType
 import com.example.wordnote.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -17,7 +18,8 @@ class CategoryRepository(
         categoryDao.insertCategory(
             CategoryEntity(
                 name = name,
-                description = description
+                description = description,
+                color = ColorType.NORMAL
             )
         )
         return Result.Success()
@@ -26,6 +28,11 @@ class CategoryRepository(
     suspend fun deleteCategory(id: Int) {
         categoryDao.deleteWordsByCategory(id)
         categoryDao.deleteCategory(id)
+    }
+
+    suspend fun deleteCategories(ids: List<Int>){
+        categoryDao.deleteWordsByCategories(ids)
+        categoryDao.deleteCategories(ids)
     }
 
     suspend fun updateCategory(id: Int, name: String, description: String): Result {

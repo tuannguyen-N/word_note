@@ -22,6 +22,7 @@ import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.manager.SpeakingManager
 import com.example.wordnote.ui.activity.BaseActivity
 import com.example.wordnote.ui.dialog.EndSpellingBeeDialog
+import com.example.wordnote.utils.setSafeOnClickListener
 import kotlinx.coroutines.launch
 
 class SpellingBeeActivity :
@@ -59,13 +60,13 @@ class SpellingBeeActivity :
 
     private fun setupClickListeners() {
         binding.apply {
-            btnBack.setOnClickListener { finish() }
+            btnBack.setSafeOnClickListener { finish() }
 
-            btnSpellIt.setOnClickListener {
+            btnSpellIt.setSafeOnClickListener {
                 sbViewModel.onAction(SpellingBeeAction.OnSubmit(etSpelling.text.toString()))
             }
 
-            btnSpeaking.setOnClickListener {
+            btnSpeaking.setSafeOnClickListener {
                 sbViewModel.onAction(SpellingBeeAction.OnSpeakingCurrentWord)
             }
 
@@ -76,7 +77,7 @@ class SpellingBeeActivity :
                 } else false
             }
 
-            btnShowAnswers.setOnClickListener {
+            btnShowAnswers.setSafeOnClickListener {
                 sbViewModel.onAction(SpellingBeeAction.OnShowAnswers)
             }
         }

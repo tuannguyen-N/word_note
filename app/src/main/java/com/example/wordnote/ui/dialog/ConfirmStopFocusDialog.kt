@@ -5,6 +5,7 @@ import android.view.View
 import com.example.wordnote.R
 import com.example.wordnote.databinding.DialogConfirmStopFocusBinding
 import com.example.wordnote.utils.loadGlideImage
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class ConfirmStopFocusDialog(
     private val onDismiss: () -> Unit,
@@ -15,17 +16,17 @@ class ConfirmStopFocusDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpView()
-        setOnClickListener()
+        setSafeOnClickListener()
     }
 
-    private fun setOnClickListener() {
+    private fun setSafeOnClickListener() {
         binding.apply {
-            btnClose.setOnClickListener {
+            btnClose.setSafeOnClickListener {
                 onDismiss()
                 dismiss()
             }
 
-            btnStopFocus.setOnClickListener {
+            btnStopFocus.setSafeOnClickListener {
                 onStopFocus()
                 dismiss()
             }

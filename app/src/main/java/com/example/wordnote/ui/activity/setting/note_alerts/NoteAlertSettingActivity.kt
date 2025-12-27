@@ -35,6 +35,7 @@ import com.example.wordnote.utils.PermissionResult
 import com.example.wordnote.utils.TimeLevel
 import com.example.wordnote.utils.Utils
 import com.example.wordnote.utils.onTextChanged
+import com.example.wordnote.utils.setSafeOnClickListener
 import com.example.wordnote.utils.toUnit
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -88,13 +89,15 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
 
     private fun collectUIEvent() {
         lifecycleScope.launch {
-            viewModel.uiEvent.collect { event ->
-                when (event) {
-                    is NoteAlertSettingUIEvent.ResetSeekBar -> resetSeekBar(event.oldValue)
-                    is NoteAlertSettingUIEvent.ShowDialogMeme -> showMeme()
-                    is NoteAlertSettingUIEvent.ShowWowDialog -> showWowDialog()
-                    is NoteAlertSettingUIEvent.ShowDialogWordAvailable -> {
-                        showDialogWordAvailable(event.list)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiEvent.collect { event ->
+                    when (event) {
+                        is NoteAlertSettingUIEvent.ResetSeekBar -> resetSeekBar(event.oldValue)
+                        is NoteAlertSettingUIEvent.ShowDialogMeme -> showMeme()
+                        is NoteAlertSettingUIEvent.ShowWowDialog -> showWowDialog()
+                        is NoteAlertSettingUIEvent.ShowDialogWordAvailable -> {
+                            showDialogWordAvailable(event.list)
+                        }
                     }
                 }
             }
@@ -153,16 +156,16 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
 
     private fun onClickListener() {
         binding.apply {
-            btnBack.setOnClickListener {
+            btnBack.setSafeOnClickListener {
                 finish()
             }
             switchAppNotification.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.onAction(NoteAlertSettingAction.SetNotificationPost(isChecked))
             }
-            btnEditTime.setOnClickListener {
+            btnEditTime.setSafeOnClickListener {
                 openEditTimeBottomSheet()
             }
-            btnAddQuiteHour.setOnClickListener {
+            btnAddQuiteHour.setSafeOnClickListener {
                 showAddQuiteHourDialog()
             }
             setupLevelInput(binding.etLv1, TimeLevel.LEVEL_1, 60)

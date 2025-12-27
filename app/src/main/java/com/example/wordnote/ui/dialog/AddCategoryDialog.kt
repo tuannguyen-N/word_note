@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.core.widget.addTextChangedListener
 import com.example.wordnote.R
 import com.example.wordnote.databinding.DialogAddCategoryBinding
 import com.example.wordnote.utils.loadGlideImage
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class AddCategoryDialog(
     private val onEnter: (String, String) -> Unit
@@ -19,9 +21,9 @@ class AddCategoryDialog(
 
     private fun setOnClick() {
         binding.apply {
-            cancelBtn.setOnClickListener { dismiss() }
+            btnCancel.setSafeOnClickListener { dismiss() }
 
-            enterBtn.setOnClickListener {
+            btnEnter.setSafeOnClickListener {
                 handleClickEnter()
             }
 
@@ -33,6 +35,12 @@ class AddCategoryDialog(
                     true
                 } else
                     false
+            }
+
+            etCategory.addTextChangedListener {
+                etCategory.isActivated = false
+                tvError.visibility = View.GONE
+                ivValid.visibility = if (it?.isNotBlank() == true) View.VISIBLE else View.GONE
             }
         }
     }
@@ -51,7 +59,7 @@ class AddCategoryDialog(
     }
 
     private fun handleEmptyCategory() {
-        binding.etCategory.setBackgroundResource(R.drawable.background_et_border_error)
+        binding.etCategory.isActivated = true
         binding.tvError.visibility = View.VISIBLE
     }
 }

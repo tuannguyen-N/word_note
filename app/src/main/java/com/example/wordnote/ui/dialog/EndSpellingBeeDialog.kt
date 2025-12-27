@@ -3,6 +3,7 @@ package com.example.wordnote.ui.dialog
 import android.os.Bundle
 import android.view.View
 import com.example.wordnote.databinding.DialogEndSpellingBeeBinding
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class EndSpellingBeeDialog(
     private val onHome: () -> Unit,
@@ -11,12 +12,12 @@ class EndSpellingBeeDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-            btnHome.setOnClickListener {
+            btnHome.setSafeOnClickListener {
                 onHome()
                 dismiss()
             }
 
-            btnAgain.setOnClickListener {
+            btnAgain.setSafeOnClickListener {
                 onAgain()
                 dismiss()
             }

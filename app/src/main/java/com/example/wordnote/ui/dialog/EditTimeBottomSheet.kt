@@ -6,6 +6,7 @@ import android.view.View
 import com.example.wordnote.R
 import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.databinding.BottomSheetEditTimeBinding
+import com.example.wordnote.utils.setSafeOnClickListener
 import nl.joery.timerangepicker.TimeRangePicker
 
 class EditTimeBottomSheet(
@@ -104,6 +105,6 @@ class EditTimeBottomSheet(
         (end - start + MINUTES_IN_DAY) % MINUTES_IN_DAY
 
     private fun setOnClick() {
-        binding.btnClose.setOnClickListener { dismiss() }
+        binding.btnClose.setSafeOnClickListener { dismiss() }
     }
 }

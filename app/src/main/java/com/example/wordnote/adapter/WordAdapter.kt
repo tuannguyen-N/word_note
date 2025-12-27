@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wordnote.R
 import com.example.wordnote.databinding.ItemWordBinding
 import com.example.wordnote.domain.model.WordData
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class WordAdapter(
     private val onAction: (WordData) -> Unit,
@@ -39,25 +40,25 @@ class WordAdapter(
 
         binding.btnStartStudying.updateStudyIcon(item.startStudiedTime > 0)
         binding.btnStartStudying.isEnabled = item.level < 2
-        binding.btnStartStudying.setOnClickListener {
+        binding.btnStartStudying.setSafeOnClickListener {
             if (item.startStudiedTime <= 0) onStartStudying(item)
             else onStopStudying(id)
             notifyItemChanged(position, false)
         }
 
-        binding.containerForeground.setOnClickListener {
+        binding.containerForeground.setSafeOnClickListener {
             onAction(item)
         }
 
-        binding.btnSpeaking.setOnClickListener {
+        binding.btnSpeaking.setSafeOnClickListener {
             onSpeaking(item.word)
         }
 
-        binding.btnDelete.setOnClickListener {
+        binding.btnDelete.setSafeOnClickListener {
             onDeleteWord(item.id)
         }
 
-        binding.btnChangeCategory.setOnClickListener {
+        binding.btnChangeCategory.setSafeOnClickListener {
             onChangeCategory(item.id)
         }
     }

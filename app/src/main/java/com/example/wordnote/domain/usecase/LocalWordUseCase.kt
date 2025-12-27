@@ -59,5 +59,5 @@ class LocalWordUseCase(
 
     suspend fun countStudyingWords(): Int = wordRepository.countStudyingWords()
 
-    fun getCategories() = categoryRepository!!.getCategoriesWithWordLevel()
+    fun getCategories() = categoryRepository?.getCategories()
 }

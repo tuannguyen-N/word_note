@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wordnote.adapter.CurrentCategoryAdapter
 import com.example.wordnote.databinding.BottomSheetCurrentCategoryBinding
 import com.example.wordnote.domain.model.CategoryData
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class CurrentCategoryBottomSheet(
     private val currentCategory: Int,
@@ -25,12 +26,12 @@ class CurrentCategoryBottomSheet(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpView()
-        setOnClickListener()
+        setSafeOnClickListener()
     }
 
-    private fun setOnClickListener() {
+    private fun setSafeOnClickListener() {
         binding.apply {
-            btnClose.setOnClickListener { dismiss() }
+            btnClose.setSafeOnClickListener { dismiss() }
         }
     }
 

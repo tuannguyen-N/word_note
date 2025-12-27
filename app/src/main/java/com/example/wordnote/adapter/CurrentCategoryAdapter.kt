@@ -5,6 +5,7 @@ import android.view.View
 import com.example.wordnote.R
 import com.example.wordnote.databinding.ItemChooseCategoryBinding
 import com.example.wordnote.domain.model.CategoryData
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class CurrentCategoryAdapter(
     private val currentCategory: Int,
@@ -28,7 +29,7 @@ class CurrentCategoryAdapter(
                 icon.setImageResource(R.drawable.icon_in_category)
             }
 
-            root.setOnClickListener {
+            root.setSafeOnClickListener {
                 onClick(item.id!!)
             }
         }

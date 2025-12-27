@@ -6,6 +6,7 @@ import androidx.core.graphics.toColorInt
 import com.example.wordnote.R
 import com.example.wordnote.databinding.ItemCategoryInWordsBinding
 import com.example.wordnote.domain.model.CategoryData
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class CategoryInWordsAdapter(
     private val currentCategoryId: Int
@@ -39,7 +40,7 @@ class CategoryInWordsAdapter(
         }
 
         binding.apply {
-            btnPlay.setOnClickListener {
+            btnPlay.setSafeOnClickListener {
 
             }
         }

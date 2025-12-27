@@ -6,6 +6,7 @@ import android.view.View
 import com.example.wordnote.R
 import com.example.wordnote.databinding.BottomSheetFullWordsBinding
 import com.example.wordnote.utils.loadGlideImage
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class FullWordsBottomSheet(
     private val onGoToSetting: () -> Unit,
@@ -28,11 +29,11 @@ class FullWordsBottomSheet(
 
     private fun setOnClick() {
         binding.apply {
-            btnGoToSetting.setOnClickListener {
+            btnGoToSetting.setSafeOnClickListener {
                 onGoToSetting()
                 dismiss()
             }
-            btnDoNothing.setOnClickListener { dismiss() }
+            btnDoNothing.setSafeOnClickListener { dismiss() }
         }
     }
 }

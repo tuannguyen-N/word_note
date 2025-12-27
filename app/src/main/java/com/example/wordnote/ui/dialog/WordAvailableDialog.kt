@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wordnote.adapter.WordAvailableAdapter
 import com.example.wordnote.databinding.DialogWordAvailableBinding
 import com.example.wordnote.domain.model.WordData
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class WordAvailableDialog(
     private val listItem: List<WordData>,
@@ -37,7 +38,7 @@ class WordAvailableDialog(
     }
 
     private fun setOnClick() {
-        binding.btnClose.setOnClickListener { dismiss() }
+        binding.btnClose.setSafeOnClickListener { dismiss() }
     }
 
 }

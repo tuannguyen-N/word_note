@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi
 import com.example.wordnote.R
 import com.example.wordnote.data.entities.QuiteHourEntity
 import com.example.wordnote.databinding.ItemQuiteHourBinding
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class QuiteHourAdapter(
     private val onDeleteQuiteHour: (Int) -> Unit
@@ -23,7 +24,7 @@ class QuiteHourAdapter(
     ) {
         ItemQuiteHourBinding.bind(view).apply {
             tvQuiteTime.text = "${item.startTime.toHourMinute()} - ${item.endTime.toHourMinute()}"
-            btnRemoveQuiteTime.setOnClickListener { onDeleteQuiteHour(item.id) }
+            btnRemoveQuiteTime.setSafeOnClickListener { onDeleteQuiteHour(item.id) }
         }
     }
 

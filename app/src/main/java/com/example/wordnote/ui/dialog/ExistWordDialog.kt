@@ -6,6 +6,7 @@ import com.example.wordnote.R
 import com.example.wordnote.databinding.DialogExistWordBinding
 import com.example.wordnote.domain.model.CategoryData
 import com.example.wordnote.utils.loadGlideImage
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class ExistWordDialog(
     private val category: CategoryData,
@@ -19,9 +20,9 @@ class ExistWordDialog(
 
     private fun setOnClick() {
         binding.apply {
-            btnClose.setOnClickListener { dismiss() }
+            btnClose.setSafeOnClickListener { dismiss() }
 
-            btnGoToThisList.setOnClickListener {
+            btnGoToThisList.setSafeOnClickListener {
                 onGoToThisList(category)
                 dismiss()
             }

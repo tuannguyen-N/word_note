@@ -15,6 +15,10 @@ class LocalCategoryUseCase(
         categoryRepository.deleteCategory(id)
     }
 
+    suspend fun deleteCategories(selectedIds: List<Int>) {
+        categoryRepository.deleteCategories(selectedIds)
+    }
+
     suspend fun updateCategory(id: Int, name: String, description: String): Result =
         categoryRepository.updateCategory(id, name.lowercase(), description)
 

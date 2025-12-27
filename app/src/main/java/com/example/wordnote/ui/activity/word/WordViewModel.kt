@@ -67,7 +67,7 @@ class WordViewModel(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), WordState())
 
-    private val _categories = localWordUseCase.getCategories().stateIn(
+    private val _categories = localWordUseCase.getCategories()?.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
         initialValue = emptyList()

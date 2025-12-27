@@ -5,6 +5,7 @@ import com.example.wordnote.R
 import com.example.wordnote.databinding.ItemSettingBinding
 import com.example.wordnote.domain.model.item.SettingItem
 import com.example.wordnote.ui.fragment.setting.SettingAction
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class SettingAdapter(
     private val onClickAc: (SettingAction) -> Unit
@@ -21,7 +22,7 @@ class SettingAdapter(
             tvTitle.setText(item.title)
             tvDetail.setText(item.detail)
             ivNotification.setImageResource(item.icon)
-            root.setOnClickListener {
+            root.setSafeOnClickListener {
                 onClickAc(item.action)
             }
         }

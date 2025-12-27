@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wordnote.R
 import com.example.wordnote.databinding.ItemWordAvailableBinding
 import com.example.wordnote.domain.model.WordData
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class WordAvailableAdapter(
     private val onStartStudying: (Int) -> Unit,
@@ -32,7 +33,7 @@ class WordAvailableAdapter(
     }
 
     private fun ItemWordAvailableBinding.setOnClick(item: WordData, position: Int) {
-        btnLearning.setOnClickListener {
+        btnLearning.setSafeOnClickListener {
             if (item.startStudiedTime <= 0) {
                 onStartStudying(item.id!!)
                 item.startStudiedTime = System.currentTimeMillis()

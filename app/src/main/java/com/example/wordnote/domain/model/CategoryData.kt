@@ -7,4 +7,5 @@ data class CategoryData(
     val numberWordLevel1: Int = 0,
     val numberWordLevel2: Int = 0,
     val numberWordLevel3: Int = 0,
+    val color: ColorType = ColorType.NORMAL
 )

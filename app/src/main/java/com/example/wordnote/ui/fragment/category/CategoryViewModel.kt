@@ -1,5 +1,6 @@
 package com.example.wordnote.ui.fragment.category
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordnote.domain.model.state.CategoryState
@@ -32,7 +33,7 @@ class CategoryViewModel(
     fun onAction(action: CategoryAction) {
         when (action) {
             is CategoryAction.OnSaveCategory -> performSaveCategory(action.name, action.description)
-            is CategoryAction.OnDeleteCategory -> performDeleteCategory(action.id)
+            is CategoryAction.OnDeleteSelectedList -> performDeleteSelectedList(action.selectedIds)
             is CategoryAction.OnEditCategory -> performEditCategory(
                 action.id,
                 action.name,
@@ -48,9 +49,10 @@ class CategoryViewModel(
         }
     }
 
-    private fun performDeleteCategory(id: Int) {
+    private fun performDeleteSelectedList(selectedIds: List<Int>) {
         viewModelScope.launch {
-            localCategoryUseCase.deleteCategory(id)
+            Log.e("123123", "performDeleteSelectedList: $selectedIds", )
+            localCategoryUseCase.deleteCategories(selectedIds)
         }
     }
 

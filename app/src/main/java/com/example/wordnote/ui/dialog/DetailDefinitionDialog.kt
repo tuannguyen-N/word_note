@@ -12,6 +12,7 @@ import com.example.wordnote.databinding.DialogDetailDefinitionBinding
 import com.example.wordnote.data.mapper.toListMeaningData
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.utils.loadGlideImage
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class DetailDefinitionDialog(
     private val word: WordData,
@@ -29,7 +30,7 @@ class DetailDefinitionDialog(
     }
 
     private fun setOnClick() {
-        binding.btnClose.setOnClickListener {
+        binding.btnClose.setSafeOnClickListener {
             dismiss()
         }
     }

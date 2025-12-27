@@ -95,4 +95,12 @@ fun CategoryEntity.toData(): CategoryData =
         id = id,
         name = name,
         description = description,
+        color = color
+    )
+
+fun CategoryData.toEntity(): CategoryEntity =
+    CategoryEntity(
+        name = name,
+        description = description,
+        color = color
     )

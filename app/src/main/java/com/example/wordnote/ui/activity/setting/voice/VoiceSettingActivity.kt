@@ -12,6 +12,7 @@ import com.example.wordnote.databinding.ActivityVoiceSettingBinding
 import com.example.wordnote.manager.SpeakingManager
 import com.example.wordnote.ui.activity.BaseActivity
 import com.example.wordnote.utils.loadGlideImage
+import com.example.wordnote.utils.setSafeOnClickListener
 import pl.droidsonroids.gif.GifDrawable
 
 class VoiceSettingActivity :
@@ -27,25 +28,25 @@ class VoiceSettingActivity :
 
     private fun setOnClick() {
         binding.apply {
-            btnBack.setOnClickListener { finish() }
+            btnBack.setSafeOnClickListener { finish() }
 
             switchVoiceNotifying.setOnCheckedChangeListener { _, isChecked ->
                 AppPreferences.canSpeakingVoiceNotification = isChecked
             }
 
-            btnUKVoice.setOnClickListener {
+            btnUKVoice.setSafeOnClickListener {
                 changeCountryVoice("uk")
                 selectOnly(imgUK, tvUK)
                 speakingManager.speak("For us there are only two possibilities")
             }
 
-            btnUSVoice.setOnClickListener {
+            btnUSVoice.setSafeOnClickListener {
                 changeCountryVoice("us")
                 selectOnly(imgUS, tvUS)
                 speakingManager.speak("For us there are only two possibilities")
             }
 
-            btnKoreanVoice.setOnClickListener {
+            btnKoreanVoice.setSafeOnClickListener {
                 changeCountryVoice("korean")
                 selectOnly(imgKorean, tvKorean)
                 speakingManager.speak("미안해, 미안해하지 마, 내가 초라해지잖아")

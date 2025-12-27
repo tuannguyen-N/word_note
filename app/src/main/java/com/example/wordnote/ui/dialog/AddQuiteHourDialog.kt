@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import com.example.wordnote.databinding.DialogAddQuiteTimeBinding
+import com.example.wordnote.utils.setSafeOnClickListener
 
 class AddQuiteHourDialog(
     private val onAddQuiteHour: (Long, Long) -> Unit,
@@ -20,13 +21,13 @@ class AddQuiteHourDialog(
             tvEndHour.setupTimeInput(24)
             tvEndMinute.setupTimeInput(59)
         }
-        setOnClickListener()
+        setSafeOnClickListener()
     }
 
-    private fun setOnClickListener() {
+    private fun setSafeOnClickListener() {
         binding.apply {
-            btnClose.setOnClickListener { dismiss() }
-            btnAdd.setOnClickListener {
+            btnClose.setSafeOnClickListener { dismiss() }
+            btnAdd.setSafeOnClickListener {
                 addQuiteHour()
             }
         }
@@ -57,7 +58,7 @@ class AddQuiteHourDialog(
     fun EditText.setupTimeInput(maxValue: Int) {
         isCursorVisible = false
 
-        setOnClickListener { selectAll() }
+        setSafeOnClickListener { selectAll() }
 
         setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) post { selectAll() }

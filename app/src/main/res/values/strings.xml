@@ -90,4 +90,13 @@
     <string name="enter_a_word_">Enter a word</string>
     <string name="category_list">Category List</string>
     <string name="have_you_review_those_categories">Have you review those categories?</string>
+    <string name="briefly_describe_what_goes_here">Briefly describe what goes here..</string>
+    <string name="optional">(Optional)</string>
+    <string name="description">DESCRIPTION</string>
+    <string name="create_new_category">Create New Category</string>
+    <string name="category_name">CATEGORY NAME</string>
+    <string name="create_category">Create Category</string>
+    <string name="warning">Warning</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure_you_want_to_delete_these_categories_this_action_cannot_be_undone">Are you sure you want to delete these categories? This action cannot be undone.</string>
 </resources>

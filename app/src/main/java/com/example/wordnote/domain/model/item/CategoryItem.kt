@@ -1,13 +1,8 @@
 package com.example.wordnote.domain.model.item
 
-data class CategoryItem(
-    val title: String,
-) {
-    companion object {
-        fun getList(): List<CategoryItem> {
-            return listOf(
-                CategoryItem("Category 1"),
-            )
-        }
-    }
+import com.example.wordnote.domain.model.CategoryData
+
+sealed interface CategoryItem{
+    data class Data( val data: CategoryData): CategoryItem
+    object Add: CategoryItem
 }

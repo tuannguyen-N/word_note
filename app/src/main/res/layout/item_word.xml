@@ -44,6 +44,7 @@
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="invisible"
             android:id="@+id/containerForeground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -25,7 +25,7 @@ class FocusFragment : BaseFragment<FragmentFocusBinding>(FragmentFocusBinding::i
 //        super.onViewCreated(view, savedInstanceState)
 //        setUpViewCompose()
 //        collectState()
-//        setOnClickListener()
+//        setSafeOnClickListener()
 //    }
 //
 //    private fun collectState() {
@@ -49,13 +49,13 @@ class FocusFragment : BaseFragment<FragmentFocusBinding>(FragmentFocusBinding::i
 //        }
 //    }
 //
-//    private fun setOnClickListener() {
+//    private fun setSafeOnClickListener() {
 //        binding.apply {
-//            btnPlay.setOnClickListener {
+//            btnPlay.setSafeOnClickListener {
 //                focusViewModel.onAction(FocusAction.StartPauseFocus)
 //            }
 //
-//            btnStopFocus.setOnClickListener {
+//            btnStopFocus.setSafeOnClickListener {
 //                focusViewModel.onAction(FocusAction.OnPauseTime)
 //                showDialogConfirm()
 //            }
