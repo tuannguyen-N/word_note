@@ -50,16 +50,16 @@
                     android:gravity="center_vertical">
 
                     <TextView
-                        android:layout_marginEnd="10dp"
                         android:id="@+id/tvNameCategory"
                         android:layout_width="0dp"
-                        android:layout_weight="@integer/material_motion_duration_long_1"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="@integer/material_motion_duration_long_1"
+                        android:ellipsize="end"
                         android:fontFamily="@font/be_vietnam_bold"
                         android:includeFontPadding="false"
-                        android:text="Category"
-                        android:ellipsize="end"
                         android:maxLines="1"
+                        android:text="@string/category"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -73,14 +73,14 @@
 
                 <TextView
                     android:id="@+id/tvDescription"
-                    android:layout_marginTop="2dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Discreption you fucki"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/be_vietnam_medium_italic"
                     android:includeFontPadding="false"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/be_vietnam_medium"
-                    android:textColor="@color/text_purple"/>
+                    android:text="@string/discreption_you_fucki"
+                    android:textColor="@color/text_purple"
+                    android:textSize="12sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -89,19 +89,25 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/gray" />
 
-                <androidx.recyclerview.widget.RecyclerView
+                <!--                <androidx.recyclerview.widget.RecyclerView-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    tools:itemCount="4"-->
+                <!--                    tools:listitem="@layout/item_word_in_category" />-->
+                <LinearLayout
+                    android:id="@+id/layoutWords"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/item_word_in_category" />
+                    android:orientation="vertical" />
 
                 <TextView
+                    android:id="@+id/tvNoWords"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="80dp"
                     android:fontFamily="@font/be_vietnam_italic"
                     android:gravity="center"
-                    android:text="No words"
-                    android:textColor="@color/gray"
+                    android:text="@string/no_words"
+                    android:textColor="@color/text_color"
                     android:visibility="gone" />
 
             </LinearLayout>

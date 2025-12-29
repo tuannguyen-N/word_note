@@ -33,8 +33,8 @@
                 android:id="@+id/btnChangeCategory"
                 android:layout_width="23dp"
                 android:layout_height="23dp"
-                android:src="@drawable/icon_moving_word"
-                android:layout_marginEnd="10dp"/>
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/icon_moving_word" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btnDelete"
@@ -44,95 +44,66 @@
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:visibility="invisible"
             android:id="@+id/containerForeground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_word"
-            android:paddingVertical="10dp">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnSpeaking"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:padding="5dp"
-                android:src="@drawable/ic_volume_high"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/container_tv"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp">
 
             <LinearLayout
                 android:id="@+id/container_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btnSpeaking"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/tvWord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/be_vietnam_medium"
                     android:includeFontPadding="false"
                     android:text="@string/demo"
-                    android:textColor="@color/font_green"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tvPhonetic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="@font/be_vietnam_medium"
                     android:text="/asdfasdfasdf/"
-                    android:textColor="@color/font_title"
-                    android:textStyle="italic" />
+                    android:textColor="@color/gray" />
+
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="0.7dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@color/gray" />
 
                 <TextView
                     android:id="@+id/tvNote"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/be_vietnam_thin_italic"
                     android:text="@string/note"
-                    android:textColor="@color/gray"
-                    android:textSize="15sp" />
+                    android:layout_marginBottom="2dp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/vocab_level_4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btnLevel1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:alpha="0.2"
-                    android:src="@drawable/vocab_level_1" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btnLevel2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:alpha="0.2"
-                    android:src="@drawable/vocab_level_2" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btnLevel3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:alpha="0.2"
-                    android:src="@drawable/vocab_level_3" />
-            </LinearLayout>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -140,10 +111,22 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/btn_start_studying"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:padding="5dp"
         android:src="@drawable/icon_studying_no_click"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btnEndStudying"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="-5dp"
+        android:src="@drawable/icon_studying"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

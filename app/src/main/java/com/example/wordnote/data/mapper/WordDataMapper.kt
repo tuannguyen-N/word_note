@@ -95,12 +95,14 @@ fun CategoryEntity.toData(): CategoryData =
         id = id,
         name = name,
         description = description,
-        color = color
+        color = color,
+        isFavorite = isFavorite
     )
 
 fun CategoryData.toEntity(): CategoryEntity =
     CategoryEntity(
         name = name,
         description = description,
-        color = color
+        color = color,
+        isFavorite = isFavorite
     )

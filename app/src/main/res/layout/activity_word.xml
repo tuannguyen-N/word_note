@@ -4,16 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/item"
+    android:background="@color/background"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/application_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:minHeight="56dp"
-        android:paddingHorizontal="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,49 +19,44 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_back"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="20dp"
-            android:src="@drawable/ic_back"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="?actionBarSize"
+            android:paddingHorizontal="15dp"
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/tvNameCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
             android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/be_vietnam_medium"
             android:includeFontPadding="false"
-            android:text="@string/name_category"
-            android:textAlignment="center"
+            android:text="@string/category_name"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="24sp" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btnAddWord"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:src="@drawable/icon_add"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="?actionBarSize"
+            android:paddingHorizontal="10dp"
+            android:src="@drawable/icon_add" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/bg_word_ac"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/application_bar">
+
+        <View
+            android:id="@+id/viewDivider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/gray"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -74,27 +67,9 @@
             android:paddingBottom="80dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewDivider"
             tools:itemCount="6"
             tools:listitem="@layout/item_word" />
-
-        <FrameLayout
-            android:id="@+id/progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/background_loading"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminateTint="@color/white" />
-        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/viewNoData"
@@ -121,65 +96,88 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/container_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="15dp"
-            app:layout_constraintBottom_toBottomOf="parent">
 
-            <LinearLayout
-                android:id="@+id/layout_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
-                android:background="@drawable/bg_search"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="15dp">
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginEnd="10dp"-->
+        <!--            android:layout_marginBottom="15dp"-->
+        <!--            android:gravity="center_horizontal"-->
+        <!--            android:orientation="vertical"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/container_search"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent">-->
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/icon_search" />
+        <!--            <include-->
+        <!--                android:id="@+id/level_container"-->
+        <!--                layout="@layout/layout_level" />-->
 
-                <EditText
-                    android:id="@+id/etSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginStart="9dp"
-                    android:background="@null"
-                    android:hint="@string/enter_a_word_"
-                    android:includeFontPadding="false"
-                    android:inputType="text"
-                    android:textColor="@color/font_title"
-                    android:textColorHint="@color/gray1"
-                    android:textSize="16sp" />
-            </LinearLayout>
+        <!--            <androidx.appcompat.widget.AppCompatImageView-->
+        <!--                android:id="@+id/btnSort"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:padding="5dp"-->
+        <!--                android:src="@drawable/filter_list_24px" />-->
+        <!--        </LinearLayout>-->
 
-        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+    <FrameLayout
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_loading"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="15dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@id/container_search"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/white" />
+    </FrameLayout>
 
-            <include
-                android:id="@+id/level_container"
-                layout="@layout/layout_level" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/layout_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/bg_search"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnSort"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:src="@drawable/filter_list_24px" />
-        </LinearLayout>
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/icon_search" />
 
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginStart="9dp"
+                android:background="@null"
+                android:hint="@string/search_a_word"
+                android:includeFontPadding="false"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp"
+                tools:ignore="LabelFor" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

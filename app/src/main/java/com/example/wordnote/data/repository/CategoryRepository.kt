@@ -25,6 +25,10 @@ class CategoryRepository(
         return Result.Success()
     }
 
+    suspend fun toggleFavorite(id: Int){
+        categoryDao.toggleFavorite(id)
+    }
+
     suspend fun deleteCategory(id: Int) {
         categoryDao.deleteWordsByCategory(id)
         categoryDao.deleteCategory(id)
@@ -44,5 +48,7 @@ class CategoryRepository(
         return categoryDao.getCategories().map { list -> list.map { it.toData() } }
     }
 
-    fun getCategoriesWithWordLevel(): Flow<List<CategoryData>> = categoryDao.getCategoriesWithWordCount()
+    suspend fun getWordsByCategoryId(id: Int):List<String> = categoryDao.getWordsByCategoryId(id)
+
+//    fun getCategoriesWithWordLevel(): Flow<List<CategoryData>> = categoryDao.getCategoriesWithWordCount()
 }

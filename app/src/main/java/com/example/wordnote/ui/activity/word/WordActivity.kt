@@ -16,7 +16,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.wordnote.adapter.CategoryInWordsAdapter
 import com.example.wordnote.adapter.WordAdapter
 import com.example.wordnote.alarm.AlarmScheduler
 import com.example.wordnote.data.AppDatabase
@@ -100,8 +99,6 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         }
     )
 
-    private lateinit var categoryAdapter: CategoryInWordsAdapter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initNotificationPermissionLauncher()
@@ -152,16 +149,16 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                 wordViewModel.onAction(WordAction.OnShowAddWordDialog)
             }
 
-            btnSort.setSafeOnClickListener {
-                levelContainer.root.visibility =
-                    if (levelContainer.root.isVisible) View.GONE else View.VISIBLE
-            }
+//            btnSort.setSafeOnClickListener {
+//                levelContainer.root.visibility =
+//                    if (levelContainer.root.isVisible) View.GONE else View.VISIBLE
+//            }
 
 //            btnDelete.setSafeOnClickListener {
 //                wordViewModel.onAction(WordAction.OnDeleteWords(wordAdapter.getTickedItem()))
 //            }
 
-            setupLevelButtons()
+//            setupLevelButtons()
 
             recyclerView.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -179,19 +176,19 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         }
     }
 
-    private fun setupLevelButtons() {
-        val levelButtons = listOf(
-            binding.levelContainer.btnLevel1 to 1,
-            binding.levelContainer.btnLevel2 to 2,
-            binding.levelContainer.btnLevel3 to 3,
-        )
-
-        levelButtons.forEach { (button, level) ->
-            button.setSafeOnClickListener {
-                wordViewModel.onAction(WordAction.OnSortWords(SortType.LEVEL(level)))
-            }
-        }
-    }
+//    private fun setupLevelButtons() {
+//        val levelButtons = listOf(
+//            binding.levelContainer.btnLevel1 to 1,
+//            binding.levelContainer.btnLevel2 to 2,
+//            binding.levelContainer.btnLevel3 to 3,
+//        )
+//
+//        levelButtons.forEach { (button, level) ->
+//            button.setSafeOnClickListener {
+//                wordViewModel.onAction(WordAction.OnSortWords(SortType.LEVEL(level)))
+//            }
+//        }
+//    }
 
     private fun collectState() {
         /* shouldn't use that because it can cause memory leak (when fragment is destroyed, the job is not cancel)*/
@@ -202,7 +199,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                     wordViewModel.state.collect { wordState ->
                         loadingUI(wordState)
                         wordAdapter.setItemList(wordState.words)
-                        onSelectedLevel(wordState.selectedLevel)
+//                        onSelectedLevel(wordState.selectedLevel)
                     }
                 }
 
@@ -217,16 +214,16 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         }
     }
 
-    private fun onSelectedLevel(selectedLevel: Int?) {
-        val levelButtons = mapOf(
-            binding.levelContainer.btnLevel1 to 1,
-            binding.levelContainer.btnLevel2 to 2,
-            binding.levelContainer.btnLevel3 to 3,
-        )
-        levelButtons.forEach { (button, level) ->
-            button.alpha = if (selectedLevel == level) 1f else 0.3f
-        }
-    }
+//    private fun onSelectedLevel(selectedLevel: Int?) {
+//        val levelButtons = mapOf(
+//            binding.levelContainer.btnLevel1 to 1,
+//            binding.levelContainer.btnLevel2 to 2,
+//            binding.levelContainer.btnLevel3 to 3,
+//        )
+//        levelButtons.forEach { (button, level) ->
+//            button.alpha = if (selectedLevel == level) 1f else 0.3f
+//        }
+//    }
 
     private fun loadingUI(wordState: WordState) {
         binding.viewNoData.visibility =
@@ -242,7 +239,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                         is WordUIEvent.ShowAddWordDialog -> showAddWordDialog()
                         is WordUIEvent.ShowDetailWordDialog -> showDetailWordDialog(event.word)
                         is WordUIEvent.ShowToast -> showToast(event.message)
-                        is WordUIEvent.HideLevelContainer -> hideLevelContainer()
+                        is WordUIEvent.HideLevelContainer -> /*hideLevelContainer()*/ Unit
                         is WordUIEvent.ScrollToExistWord -> scrollToExistWord(event.word)
                         is WordUIEvent.ShowFullStudyingWords -> showFullStudyingWordsBottomSheet()
                         is WordUIEvent.ShowExistWordDialog -> showExistWordDialog(event.category)
@@ -292,9 +289,9 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         }
     }
 
-    private fun hideLevelContainer() {
-        binding.levelContainer.root.visibility = View.GONE
-    }
+//    private fun hideLevelContainer() {
+//        binding.levelContainer.root.visibility = View.GONE
+//    }
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

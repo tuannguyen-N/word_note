@@ -22,6 +22,18 @@ class LocalCategoryUseCase(
     suspend fun updateCategory(id: Int, name: String, description: String): Result =
         categoryRepository.updateCategory(id, name.lowercase(), description)
 
+    suspend fun getPreviewWords(categoryIds: List<Int>): Map<Int, List<String>> {
+        return categoryIds.associateWith { id ->
+            categoryRepository.getWordsByCategoryId(id)
+                .shuffled()
+                .take((5..9).random())
+        }
+    }
+
+    suspend fun toggleFavorite(id: Int) {
+        categoryRepository.toggleFavorite(id)
+    }
+
     fun getCategories(): Flow<List<CategoryData>> = categoryRepository.getCategories()
-    fun getCategoriesWithWordLevel(): Flow<List<CategoryData>> = categoryRepository.getCategoriesWithWordLevel()
+//    fun getCategoriesWithWordLevel(): Flow<List<CategoryData>> = categoryRepository.getCategoriesWithWordLevel()
 }

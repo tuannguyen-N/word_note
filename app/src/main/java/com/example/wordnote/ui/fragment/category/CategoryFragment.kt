@@ -54,6 +54,9 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>(FragmentCategoryB
         },
         onDeleteMode = { isDeleteMode ->
             handleDeleteMode(isDeleteMode)
+        },
+        onClickStar = { categoryId ->
+            categoryViewModel.onAction(CategoryAction.OnToggleFavorite(categoryId))
         }
     )
 
@@ -89,6 +92,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>(FragmentCategoryB
     }
 
     private fun showConfirmDeleteDialog() {
+        if (categoryAdapter.getSelectedIds().isEmpty()) return
         val dialog = ConfirmDeleteDialog(
             onConfirm = {
                 onDeleteSelectedList()

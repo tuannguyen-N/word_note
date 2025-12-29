@@ -20,7 +20,7 @@ interface CategoryDao {
     @Query("UPDATE CATEGORYENTITY SET NAME = :newName, DESCRIPTION = :newDescription WHERE ID = :categoryId")
     suspend fun updateCategory(categoryId: Int, newName: String, newDescription: String)
 
-    @Query("SELECT * FROM categoryentity ORDER BY name ASC")
+    @Query("SELECT * FROM categoryentity ORDER BY isFavorite DESC")
     fun getCategories(): Flow<List<CategoryEntity>>
 
     @Query("DELETE FROM WordEntity WHERE id IN (SELECT wordId FROM WordCategoryCrossRef WHERE categoryId = :categoryId)")
@@ -35,25 +35,37 @@ interface CategoryDao {
     @Query("SELECT * FROM categoryentity WHERE name = :name")
     suspend fun getCategoryByName(name: String): CategoryEntity?
 
-    @Query(
-        """
-    SELECT 
-        c.id AS id,
-        c.name AS name,
-        c.description AS description,
-        c.color AS color,
+    @Query("UPDATE categoryentity SET isFavorite = NOT isFavorite WHERE id = :id")
+    suspend fun toggleFavorite(id: Int)
 
-        COALESCE(SUM(CASE WHEN w.level = 1 THEN 1 ELSE 0 END), 0) AS numberWordLevel1,
-        COALESCE(SUM(CASE WHEN w.level = 2 THEN 1 ELSE 0 END), 0) AS numberWordLevel2,
-        COALESCE(SUM(CASE WHEN w.level = 3 THEN 1 ELSE 0 END), 0) AS numberWordLevel3
+    @Query("""
+    SELECT w.word
+    FROM WordEntity w
+    INNER JOIN WordCategoryCrossRef r ON w.id = r.wordId
+    WHERE r.categoryId = :categoryId
+""")
+    suspend fun getWordsByCategoryId(categoryId: Int): List<String>
 
-    FROM CategoryEntity c
-    LEFT JOIN WordCategoryCrossRef r ON c.id = r.categoryId
-    LEFT JOIN WordEntity w ON w.id = r.wordId
 
-    GROUP BY c.id, c.name, c.description, c.color
-    ORDER BY c.name ASC
-"""
-    )
-    fun getCategoriesWithWordCount(): Flow<List<CategoryData>>
+//    @Query(
+//        """
+//    SELECT
+//        c.id AS id,
+//        c.name AS name,
+//        c.description AS description,
+//        c.color AS color,
+//
+//        COALESCE(SUM(CASE WHEN w.level = 1 THEN 1 ELSE 0 END), 0) AS numberWordLevel1,
+//        COALESCE(SUM(CASE WHEN w.level = 2 THEN 1 ELSE 0 END), 0) AS numberWordLevel2,
+//        COALESCE(SUM(CASE WHEN w.level = 3 THEN 1 ELSE 0 END), 0) AS numberWordLevel3
+//
+//    FROM CategoryEntity c
+//    LEFT JOIN WordCategoryCrossRef r ON c.id = r.categoryId
+//    LEFT JOIN WordEntity w ON w.id = r.wordId
+//
+//    GROUP BY c.id, c.name, c.description, c.color
+//    ORDER BY c.name ASC
+//"""
+//    )
+//    fun getCategoriesWithWordCount(): Flow<List<CategoryData>>
 }

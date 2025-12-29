@@ -6,29 +6,45 @@ import androidx.lifecycle.viewModelScope
 import com.example.wordnote.domain.model.state.CategoryState
 import com.example.wordnote.domain.usecase.LocalCategoryUseCase
 import com.example.wordnote.domain.model.Result
+import com.example.wordnote.domain.usecase.LocalWordUseCase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class CategoryViewModel(
-    private val localCategoryUseCase: LocalCategoryUseCase
+    private val localCategoryUseCase: LocalCategoryUseCase,
 ) : ViewModel() {
     private val _uiEvent = MutableSharedFlow<CategoryUIEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
-    private val _categories = localCategoryUseCase.getCategoriesWithWordLevel()
+    private val _categories = localCategoryUseCase.getCategories()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private val _state = MutableStateFlow(CategoryState())
-    val state = combine(_state, _categories) { state, categories ->
-        state.copy(
-            categories = categories, isLoading = false
-        )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CategoryState())
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val state = _categories
+        .flatMapLatest { categories ->
+            flow {
+                val previewMap =
+                    localCategoryUseCase.getPreviewWords(categories.mapNotNull { it.id })
+                emit(categories.map { category ->
+                    category.copy(
+                        previewWords = previewMap[category.id].orEmpty()
+                    )
+                })
+            }
+        }
+        .map { list -> CategoryState(categories = list, isLoading = false) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CategoryState())
 
     fun onAction(action: CategoryAction) {
         when (action) {
@@ -39,6 +55,13 @@ class CategoryViewModel(
                 action.name,
                 action.description
             )
+            is CategoryAction.OnToggleFavorite -> performToggleFavorite(action.categoryId)
+        }
+    }
+
+    private fun performToggleFavorite(id: Int){
+        viewModelScope.launch {
+            localCategoryUseCase.toggleFavorite(id)
         }
     }
 
@@ -51,7 +74,7 @@ class CategoryViewModel(
 
     private fun performDeleteSelectedList(selectedIds: List<Int>) {
         viewModelScope.launch {
-            Log.e("123123", "performDeleteSelectedList: $selectedIds", )
+            Log.e("123123", "performDeleteSelectedList: $selectedIds")
             localCategoryUseCase.deleteCategories(selectedIds)
         }
     }

@@ -99,4 +99,8 @@
     <string name="warning">Warning</string>
     <string name="delete">Delete</string>
     <string name="are_you_sure_you_want_to_delete_these_categories_this_action_cannot_be_undone">Are you sure you want to delete these categories? This action cannot be undone.</string>
+    <string name="discreption_you_fucki">Discreption you fucki</string>
+    <string name="no_words">No words</string>
+    <string name="category">Category</string>
+    <string name="search_a_word">Search a word...</string>
 </resources>
