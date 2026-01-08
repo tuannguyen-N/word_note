@@ -73,7 +73,7 @@
     <string name="munites">munites</string>
     <string name="_10_00_10_00">10:00 - 10:00</string>
     <string name="add_the_range_time_you_don_t_want_to_get_notification">Add the range time you don\'t want to get notification</string>
-    <string name="quite_time">Quite Time</string>
+    <string name="quite_time">Quiet Time</string>
     <string name="choose_time_range">Choose time range</string>
     <string name="yes_sir">Yes Sir !</string>
     <string name="the_review_was_end">The Review was end!!</string>
@@ -103,4 +103,15 @@
     <string name="no_words">No words</string>
     <string name="category">Category</string>
     <string name="search_a_word">Search a word...</string>
+    <string name="the_word_is_already_in_your_list">The word is already in your list</string>
+    <string name="can_t_add_the_word">Can\'t add the word !</string>
+    <string name="daily_word_limit">Daily Word Limit</string>
+    <string name="start_notification_after">Start Notification After</string>
+    <string name="yes_stop_it">Yes, Stop it</string>
+    <string name="listen_and_spell">Listen And Spell</string>
+    <string name="enter_the_word_here">Enter the word here...</string>
+    <string name="part_of_speech">PART OF SPEECH</string>
+    <string name="notifying_time">Notifying time</string>
+    <string name="speaking_when_notifying">Speaking when notifying</string>
+    <string name="minutes">minutes</string>
 </resources>

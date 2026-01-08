@@ -17,6 +17,9 @@ interface CategoryDao {
     @Query("DELETE FROM categoryentity WHERE id = :categoryId")
     suspend fun deleteCategory(categoryId: Int)
 
+    @Query("SELECT * FROM categoryentity WHERE id = :categoryId")
+    suspend fun getCategory(categoryId: Int): CategoryEntity
+
     @Query("UPDATE CATEGORYENTITY SET NAME = :newName, DESCRIPTION = :newDescription WHERE ID = :categoryId")
     suspend fun updateCategory(categoryId: Int, newName: String, newDescription: String)
 
@@ -46,6 +49,8 @@ interface CategoryDao {
 """)
     suspend fun getWordsByCategoryId(categoryId: Int): List<String>
 
+    @Query("SELECT COUNT(*) FROM WordEntity WHERE id IN (SELECT wordId FROM WordCategoryCrossRef WHERE categoryId = :categoryId)")
+    suspend fun countWordsByCategory(categoryId: Int): Int
 
 //    @Query(
 //        """

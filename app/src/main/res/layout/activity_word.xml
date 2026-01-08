@@ -1,74 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/motion_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:layoutDescription="@xml/activity_word_scene">
 
-    <LinearLayout
-        android:id="@+id/application_bar"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:layout_marginTop="?actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="?actionBarSize"
-            android:paddingHorizontal="15dp"
-            android:src="@drawable/ic_back" />
-
-        <TextView
-            android:id="@+id/tvNameCategory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:fontFamily="@font/be_vietnam_medium"
-            android:includeFontPadding="false"
-            android:text="@string/category_name"
-            android:textColor="@color/black"
-            android:textSize="24sp" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btnAddWord"
-            android:layout_width="wrap_content"
-            android:layout_height="?actionBarSize"
-            android:paddingHorizontal="10dp"
-            android:src="@drawable/icon_add" />
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/application_bar">
 
         <View
             android:id="@+id/viewDivider"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginTop="8dp"
             android:background="@color/gray"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layout_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_search"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewDivider">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/icon_search" />
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginStart="9dp"
+                android:autofillHints=""
+                android:background="@null"
+                android:hint="@string/search_a_word"
+                android:includeFontPadding="false"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp"
+                tools:ignore="LabelFor" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/containerSearch">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
-            android:paddingBottom="80dp"
+            android:layout_marginHorizontal="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/viewDivider"
-            tools:itemCount="6"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="8"
+            android:paddingBottom="10dp"
             tools:listitem="@layout/item_word" />
 
         <LinearLayout
@@ -97,29 +108,93 @@
         </LinearLayout>
 
 
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginEnd="10dp"-->
-        <!--            android:layout_marginBottom="15dp"-->
-        <!--            android:gravity="center_horizontal"-->
-        <!--            android:orientation="vertical"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@id/container_search"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent">-->
-
-        <!--            <include-->
-        <!--                android:id="@+id/level_container"-->
-        <!--                layout="@layout/layout_level" />-->
-
-        <!--            <androidx.appcompat.widget.AppCompatImageView-->
-        <!--                android:id="@+id/btnSort"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:padding="5dp"-->
-        <!--                android:src="@drawable/filter_list_24px" />-->
-        <!--        </LinearLayout>-->
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/hideView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/application_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/background"
+        android:gravity="top"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/layout_detail_category_information"
+        layout="@layout/layout_detail_category_information"
+        android:visibility="gone" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="?actionBarSize"
+        android:paddingHorizontal="15dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etCategoryName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:ellipsize="end"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:fontFamily="@font/be_vietnam_pro_bold"
+        android:gravity="center_vertical"
+        android:imeOptions="actionDone"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:maxLength="50"
+        android:maxLines="2"
+        android:scrollHorizontally="false"
+        android:singleLine="true"
+        android:text="@string/demo"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/etCategoryNote"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:fontFamily="@font/be_vietnam_pro_medium"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:maxLength="50"
+        android:maxLines="1"
+        android:paddingBottom="2dp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="@string/demo"
+        android:textColor="@color/gray"
+        android:textStyle="italic"
+        android:visibility="gone" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btnAddWord"
+        android:layout_width="wrap_content"
+        android:layout_height="?actionBarSize"
+        android:paddingHorizontal="15dp"
+        android:src="@drawable/icon_add"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btnFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="?actionBarSize"
+        android:paddingHorizontal="10dp"
+        android:src="@drawable/icon_star_state_checked"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <FrameLayout
         android:id="@+id/progress_bar"
@@ -138,46 +213,4 @@
             android:layout_gravity="center"
             android:indeterminateTint="@color/white" />
     </FrameLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/containerSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <LinearLayout
-            android:id="@+id/layout_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/bg_search"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/icon_search" />
-
-            <EditText
-                android:id="@+id/etSearch"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginStart="9dp"
-                android:background="@null"
-                android:hint="@string/search_a_word"
-                android:includeFontPadding="false"
-                android:inputType="text"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray"
-                android:textSize="16sp"
-                tools:ignore="LabelFor" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

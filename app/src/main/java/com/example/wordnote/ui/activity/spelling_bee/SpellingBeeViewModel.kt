@@ -1,8 +1,8 @@
 package com.example.wordnote.ui.activity.spelling_bee
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wordnote.domain.model.SpellingInputState
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.model.state.SpellingBeeState
 import com.example.wordnote.domain.usecase.LocalWordUseCase
@@ -30,6 +30,8 @@ class SpellingBeeViewModel(
 
     private lateinit var engine: SpellingBeeGameEngine
 
+    private val failedWordIds = mutableSetOf<Int>()
+
     fun onAction(action: SpellingBeeAction) = viewModelScope.launch {
         when (action) {
             is SpellingBeeAction.InitWord -> initGame(action.categoryId)
@@ -48,6 +50,9 @@ class SpellingBeeViewModel(
         isSingleMode: Boolean
     ) {
         setState { copy(isBusy = true) }
+
+        if (!state.value.isSingleMode)
+            failedWordIds.clear()
 
         engine = SpellingBeeGameEngine(words)
         val first = engine.next()
@@ -102,8 +107,15 @@ class SpellingBeeViewModel(
     }
 
     private suspend fun onCorrect() {
-        setState { copy(isSubmitEnabled = false, isBusy = true) }
-        sendUIEvent(SpellingBeeUIEvent.OnCorrect)
+        updateScore()
+
+        setState {
+            copy(
+                inputState = SpellingInputState.CORRECT,
+                isSubmitEnabled = false,
+                isBusy = true
+            )
+        }
 
         delay(1000)
 
@@ -114,30 +126,40 @@ class SpellingBeeViewModel(
         }
     }
 
+    private suspend fun updateScore() {
+        val word = state.value.currentWord ?: return
+
+        if (word.id !in failedWordIds) {
+            localWordUseCase.updateScore(
+                word.id!!,
+                word.score + 1
+            )
+        }
+    }
+
     private fun onIncorrect() {
-        val nextCount = state.value.incorrectionCount + 1
+        val wordId = state.value.currentWord?.id
+        wordId?.let { failedWordIds.add(it) }
 
-        sendUIEvent(SpellingBeeUIEvent.OnInCorrect)
-
+        val next = state.value.incorrectionCount + 1
         setState {
             copy(
-                incorrectionCount = nextCount,
-                isShowAnswers = nextCount >= 3
+                incorrectionCount = next,
+                inputState = SpellingInputState.INCORRECT,
+                isShowAnswers = next >= 3
             )
         }
     }
 
     /**------------------- NEXT WORD -------------------------*/
     private fun moveToNextWord() {
-        if (state.value.isSingleMode) return
-
         if (engine.isFinished()) {
             finishGame()
             return
         }
 
         val next = engine.next()
-
+        sendUIEvent(SpellingBeeUIEvent.OnNextWord)
         setState {
             copy(
                 currentWord = next,
@@ -145,24 +167,29 @@ class SpellingBeeViewModel(
                 isShowAnswers = false,
                 isSubmitEnabled = true,
                 isBusy = false,
+                inputState = SpellingInputState.NORMAL,
                 remainingCount = remainingCount - 1
             )
         }
-
-        speak(next?.word ?: "")
-        sendUIEvent(SpellingBeeUIEvent.OnNextWord)
+        speak(next?.word.orEmpty())
     }
 
     // ------------------- SHOW ANSWERS -------------------------
     private suspend fun showAnswers() {
-        val cur = state.value.currentWord ?: return
+        setState {
+            copy(
+                inputState = SpellingInputState.CORRECT,
+                isSubmitEnabled = false,
+                isBusy = true
+            )
+        }
 
-        setState { copy(isBusy = true, isSubmitEnabled = false) }
-        sendUIEvent(SpellingBeeUIEvent.ShowAnswersUI(cur.word))
+        sendUIEvent(SpellingBeeUIEvent.ShowAnswersUI(state.value.currentWord?.word.orEmpty()))
 
         delay(3000)
         moveToNextWord()
     }
+
 
     private fun speakCurrent() = state.value.currentWord?.let { speak(it.word) }
     private fun speak(w: String) = speakingManager.speak(w)
@@ -180,5 +207,3 @@ class SpellingBeeViewModel(
         viewModelScope.launch { _uiEvent.emit(e) }
     }
 }
-
-

@@ -27,6 +27,10 @@ class LocalWordUseCase(
         wordRepository.updateNote(word)
     }
 
+    suspend fun updateScore(wordId: Int, score: Int) {
+        wordRepository.updateScore(wordId, score)
+    }
+
     suspend fun startStudying(word: WordData) {
         val currentTime = System.currentTimeMillis()
         val timeLevel = WordLevel.fromScore(word.score)

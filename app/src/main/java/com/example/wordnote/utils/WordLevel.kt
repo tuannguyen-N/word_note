@@ -3,10 +3,10 @@ package com.example.wordnote.utils
 import com.example.wordnote.data.AppPreferences
 
 enum class WordLevel(val range: IntRange) {
-    LEVEL_1(0..9),
-    LEVEL_2(10..15),
-    LEVEL_3(16..21),
-    LEVEL_4(22..24);
+    LEVEL_1(0..18),
+    LEVEL_2(20..30),
+    LEVEL_3(32..42),
+    LEVEL_4(44..48);
 
     fun getDelay(): Long {
         return when (this) {

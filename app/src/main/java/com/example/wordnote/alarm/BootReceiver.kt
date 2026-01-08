@@ -21,29 +21,31 @@ class BootReceiver : BroadcastReceiver() {
         if (intent?.action != Intent.ACTION_BOOT_COMPLETED) return
         if (!AppPreferences.canPostNotifications) return
 
-        val dao = AppDatabase.getInstance(context).wordDao
-        val alarmScheduler = AlarmScheduler(context)
-        val now = System.currentTimeMillis()
+        val pendingResult = goAsync()
 
         CoroutineScope(Dispatchers.IO).launch {
-            val list = dao.getWordByStudiedTime()
+            try {
+                val dao = AppDatabase.getInstance(context).wordDao
+                val scheduler = AlarmScheduler(context)
+                val now = System.currentTimeMillis()
 
-            for (entity in list) {
-                val data = entity.toData()
+                dao.getWordByStudiedTime().forEach { entity ->
+                    val trigger = entity.nextTriggerTime
 
-                if (entity.nextTriggerTime <= now) {
-                    withContext(Dispatchers.Main) {
-                        NotificationHelper.showWordNotification(context, data)
+                    val nextTime = if (trigger > now) {
+                        trigger
+                    } else {
+                        //reschedule
+                        now + WordLevel.fromScore(entity.score).getDelay()
                     }
 
-                    val level = WordLevel.fromScore(entity.score)
-                    val next = now + level.getDelay()
-
-                    dao.updateLevel(entity.id, level.ordinal + 1, next)
-                    alarmScheduler.scheduleWord(data, next)
-                } else {
-                    alarmScheduler.scheduleWord(data, entity.nextTriggerTime)
+                    scheduler.scheduleWord(
+                        entity.toData(),
+                        nextTime
+                    )
                 }
+            } finally {
+                pendingResult.finish()
             }
         }
     }

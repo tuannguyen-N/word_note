@@ -2,11 +2,7 @@ package com.example.wordnote.ui.activity.setting.note_alerts
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import android.view.MotionEvent
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,15 +19,13 @@ import com.example.wordnote.data.repository.QuiteHourRepository
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.databinding.ActivityNoteAlertSettingBinding
 import com.example.wordnote.domain.model.WordData
-import com.example.wordnote.domain.usecase.NoteAlertSettingUseCase
+import com.example.wordnote.domain.usecase.SettingUseCase
 import com.example.wordnote.ui.activity.BaseActivity
 import com.example.wordnote.ui.components.SeekBar
 import com.example.wordnote.ui.dialog.AddQuiteHourDialog
 import com.example.wordnote.ui.dialog.CatDialog
 import com.example.wordnote.ui.dialog.EditTimeBottomSheet
 import com.example.wordnote.ui.dialog.WordAvailableDialog
-import com.example.wordnote.utils.NotificationPermissionLauncher
-import com.example.wordnote.utils.PermissionResult
 import com.example.wordnote.utils.TimeLevel
 import com.example.wordnote.utils.Utils
 import com.example.wordnote.utils.onTextChanged
@@ -40,7 +34,6 @@ import com.example.wordnote.utils.toUnit
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import nl.joery.timerangepicker.TimeRangePicker
@@ -52,7 +45,7 @@ class NoteAlertSettingActivity : BaseActivity<ActivityNoteAlertSettingBinding>(
     private val viewModel: NoteAlertViewModel by viewModels {
         val appDatabase = AppDatabase.getInstance(this@NoteAlertSettingActivity)
         NoteAlertSettingViewModelFactory(
-            NoteAlertSettingUseCase(
+            SettingUseCase(
                 WordRepository(appDatabase.wordDao),
                 QuiteHourRepository(appDatabase.quiteHourDao),
                 AlarmScheduler(this)

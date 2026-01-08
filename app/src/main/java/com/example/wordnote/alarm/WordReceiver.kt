@@ -23,40 +23,46 @@ import kotlinx.coroutines.launch
 class WordReceiver : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context, intent: Intent) {
-        val notificationEnabled = context.isNotificationChannelEnabled("word_channel")
+        val pendingResult = goAsync()
         val wordId = intent.getIntExtra(EXTRA_ID, -1)
-        if (wordId == -1) return
-
-        val dao = AppDatabase.getInstance(context).wordDao
-        val alarmScheduler = AlarmScheduler(context)
+        if (wordId == -1) {
+            pendingResult.finish()
+            return
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
-            val wordData = dao.getWordById(wordId)?.toData() ?: return@launch
+            try {
+                val dao = AppDatabase.getInstance(context).wordDao
+                val scheduler = AlarmScheduler(context)
 
-            // Check Quiet Time
-            val inQuietTime = isInQuietTime(context)
+                val wordData = dao.getWordById(wordId)?.toData() ?: return@launch
 
-            val notificationId = wordData.id!!
-            val isActive = NotificationHelper.isNotificationActive(context, notificationId)
+                val newLevel = WordLevel.fromScore(wordData.score)
+                if (newLevel >= WordLevel.LEVEL_4) {
+                    return@launch
+                }
 
-            //Only show notification when NOT in quiet time
-            if (!isActive) {
-                NotificationHelper.showWordNotification(context, wordData)
+                val inQuietTime = isInQuietTime(context)
+                val isActive = NotificationHelper.isNotificationActive(context, wordId)
+
+                if (!inQuietTime && !isActive) {
+                    NotificationHelper.showWordNotification(context, wordData)
+                }
+
+                val notificationEnabled =
+                    context.isNotificationChannelEnabled("word_channel")
+
+                if (!inQuietTime && notificationEnabled && AppPreferences.canSpeakingVoiceNotification) {
+                    QueueManager.add(wordData.word)
+                    context.startSpeakingService(wordData)
+                }
+
+                val nextTrigger = newLevel.nextTrigger
+                dao.updateLevel(wordId, newLevel.ordinal + 1, nextTrigger)
+                scheduler.scheduleWord(wordData, nextTrigger)
+            } finally {
+                pendingResult.finish()
             }
-
-            //Only speak when NOT in quiet time
-            if (!inQuietTime && notificationEnabled && AppPreferences.canSpeakingVoiceNotification) {
-                QueueManager.add(wordData.word)
-                context.startSpeakingService(wordData)
-            }
-
-            val newLevel = WordLevel.fromScore(wordData.score)
-            val nextTrigger = newLevel.nextTrigger
-
-            dao.updateLevel(wordId, newLevel.ordinal + 1, nextTrigger)
-            if (newLevel > WordLevel.LEVEL_4) return@launch
-
-            alarmScheduler.scheduleWord(wordData, nextTrigger)
         }
     }
 
@@ -104,5 +110,3 @@ class WordReceiver : BroadcastReceiver() {
         return false
     }
 }
-
-

@@ -4,11 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
+import android.text.TextUtils
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.commit
@@ -16,6 +23,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.wordnote.R
 import com.example.wordnote.adapter.WordAdapter
 import com.example.wordnote.alarm.AlarmScheduler
 import com.example.wordnote.data.AppDatabase
@@ -38,24 +46,32 @@ import com.example.wordnote.ui.dialog.FullWordsBottomSheet
 import com.example.wordnote.utils.NotificationPermissionLauncher
 import com.example.wordnote.utils.PermissionResult
 import com.example.wordnote.domain.model.SortType
+import com.example.wordnote.domain.usecase.LocalCategoryUseCase
 import com.example.wordnote.ui.dialog.CurrentCategoryBottomSheet
 import com.example.wordnote.utils.Utils
 import com.example.wordnote.utils.followKeyboardAndEdge
+import com.example.wordnote.utils.formatDate
+import com.example.wordnote.utils.onTextChanged
 import com.example.wordnote.utils.setSafeOnClickListener
+import com.example.wordnote.utils.showKeyboard
+import com.example.wordnote.utils.upperFirstChar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::inflate) {
     companion object {
         fun goToActivity(context: Context, category: CategoryData) {
             val intent = Intent(context, WordActivity::class.java)
             intent.putExtra("CATEGORY_ID", category.id)
-            intent.putExtra("CATEGORY_NAME", category.name)
             context.startActivity(intent)
         }
     }
 
     private lateinit var notificationPermissionLauncher: NotificationPermissionLauncher
+    private lateinit var backCallback: OnBackPressedCallback
 
     private val wordViewModel: WordViewModel by viewModels {
         WordViewModelFactory(
@@ -67,6 +83,11 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                 ),
                 CategoryRepository(AppDatabase.getInstance(this).categoryDao),
                 AlarmScheduler(this)
+            ),
+            LocalCategoryUseCase(
+                CategoryRepository(
+                    AppDatabase.getInstance(this).categoryDao
+                )
             ),
             SpeakingManager(this),
         )
@@ -104,11 +125,14 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         initNotificationPermissionLauncher()
         setUpView()
         handleIntent()
+        collectState()
         setUpRecyclerView()
         setOnClick()
-        collectState()
         collectUIEvent()
         setUpBottomSheet()
+        setUpMotionLayout()
+        setUpIme()
+        setupBackCallback()
     }
 
     private fun setUpBottomSheet() {
@@ -131,34 +155,20 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
     }
 
     private fun setUpView() {
-        binding.root.followKeyboardAndEdge(
-            target = binding.containerSearch,
-            topCover = mBaseBinding.topBarCoverView
-        )
-
-        binding.tvNameCategory.text =
-            intent.getStringExtra("CATEGORY_NAME").toString().replaceFirstChar { it.uppercase() }
+//        binding.root.followKeyboardAndEdge(
+//            target = binding.containerSearch,
+//            topCover = mBaseBinding.topBarCoverView
+//        )
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setOnClick() {
         binding.apply {
-            btnBack.setSafeOnClickListener { finish() }
+            btnBack.setOnClickListener { handleClickBtnBack() }
 
             btnAddWord.setSafeOnClickListener {
                 wordViewModel.onAction(WordAction.OnShowAddWordDialog)
             }
-
-//            btnSort.setSafeOnClickListener {
-//                levelContainer.root.visibility =
-//                    if (levelContainer.root.isVisible) View.GONE else View.VISIBLE
-//            }
-
-//            btnDelete.setSafeOnClickListener {
-//                wordViewModel.onAction(WordAction.OnDeleteWords(wordAdapter.getTickedItem()))
-//            }
-
-//            setupLevelButtons()
 
             recyclerView.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -173,22 +183,35 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                 val query = editable.toString().trim()
                 wordViewModel.onAction(WordAction.OnSearchWord(query))
             }
+
+            etCategoryName.setSafeOnClickListener {
+                if (motionLayout.currentState == R.id.start) {
+                    motionLayout.transitionToEnd()
+                }
+            }
+
+            btnFavorite.setSafeOnClickListener {
+                wordViewModel.onAction(WordAction.ToggleFavorite)
+                btnFavorite.isSelected = !btnFavorite.isSelected
+            }
         }
     }
 
-//    private fun setupLevelButtons() {
-//        val levelButtons = listOf(
-//            binding.levelContainer.btnLevel1 to 1,
-//            binding.levelContainer.btnLevel2 to 2,
-//            binding.levelContainer.btnLevel3 to 3,
-//        )
-//
-//        levelButtons.forEach { (button, level) ->
-//            button.setSafeOnClickListener {
-//                wordViewModel.onAction(WordAction.OnSortWords(SortType.LEVEL(level)))
-//            }
-//        }
-//    }
+    private fun ActivityWordBinding.handleClickBtnBack() {
+        if (motionLayout.currentState == R.id.end) {
+            motionLayout.transitionToStart()
+            updateCategoryName()
+        } else
+            finish()
+    }
+
+    private fun updateCategoryName() {
+        val categoryName = binding.etCategoryName.text.toString().trim()
+        val description = binding.etCategoryNote.text.toString().trim()
+        if (categoryName.isNotEmpty()) {
+            wordViewModel.onAction(WordAction.OnUpdateCategoryName(categoryName, description))
+        }
+    }
 
     private fun collectState() {
         /* shouldn't use that because it can cause memory leak (when fragment is destroyed, the job is not cancel)*/
@@ -199,36 +222,36 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                     wordViewModel.state.collect { wordState ->
                         loadingUI(wordState)
                         wordAdapter.setItemList(wordState.words)
-//                        onSelectedLevel(wordState.selectedLevel)
                     }
                 }
 
                 launch {
-                    wordViewModel.categories?.collect { categoryList ->
-                        categories.clear()
-                        categories.addAll(categoryList)
-//                        categoryAdapter.setItemList(categoryList)
+                    wordViewModel.currentCategory.collect { category ->
+                        updateUICategory(category ?: CategoryData())
                     }
                 }
             }
         }
     }
 
-//    private fun onSelectedLevel(selectedLevel: Int?) {
-//        val levelButtons = mapOf(
-//            binding.levelContainer.btnLevel1 to 1,
-//            binding.levelContainer.btnLevel2 to 2,
-//            binding.levelContainer.btnLevel3 to 3,
-//        )
-//        levelButtons.forEach { (button, level) ->
-//            button.alpha = if (selectedLevel == level) 1f else 0.3f
-//        }
-//    }
+    @SuppressLint("SetTextI18n")
+    private fun updateUICategory(category: CategoryData) {
+        binding.btnFavorite.isSelected = category.isFavorite
+        binding.etCategoryName.setText(category.name.upperFirstChar())
+        binding.etCategoryNote.setText(category.description.upperFirstChar())
+        binding.layoutDetailCategoryInformation.apply {
+            tvWordNumber.text = "Word number: ${category.wordNumber} words"
+            tvTimeCreated.text = "Created: ${category.createAt.formatDate()}"
+        }
+    }
 
     private fun loadingUI(wordState: WordState) {
-        binding.viewNoData.visibility =
-            if (wordState.words.isEmpty() && !wordState.isLoading) View.VISIBLE else View.GONE
         binding.progressBar.visibility = if (wordState.isLoading) View.VISIBLE else View.GONE
+        if (wordState.words.isEmpty() && !wordState.isLoading) {
+            binding.viewNoData.visibility = View.VISIBLE
+        } else {
+            binding.viewNoData.visibility = View.GONE
+        }
     }
 
     private fun collectUIEvent() {
@@ -239,7 +262,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
                         is WordUIEvent.ShowAddWordDialog -> showAddWordDialog()
                         is WordUIEvent.ShowDetailWordDialog -> showDetailWordDialog(event.word)
                         is WordUIEvent.ShowToast -> showToast(event.message)
-                        is WordUIEvent.HideLevelContainer -> /*hideLevelContainer()*/ Unit
+                        is WordUIEvent.HideLevelContainer -> Unit //hideLevelContainer()
                         is WordUIEvent.ScrollToExistWord -> scrollToExistWord(event.word)
                         is WordUIEvent.ShowFullStudyingWords -> showFullStudyingWordsBottomSheet()
                         is WordUIEvent.ShowExistWordDialog -> showExistWordDialog(event.category)
@@ -262,7 +285,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
     private fun onChangeList(category: CategoryData) {
         wordViewModel.onAction(WordAction.InitCategory(category.id!!))
 
-        binding.tvNameCategory.text = category.name.replaceFirstChar { it.uppercase() }
+        binding.etCategoryName.setText(category.name.replaceFirstChar { it.uppercase() })
     }
 
     private fun showFullStudyingWordsBottomSheet() {
@@ -288,10 +311,6 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
             }
         }
     }
-
-//    private fun hideLevelContainer() {
-//        binding.levelContainer.root.visibility = View.GONE
-//    }
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -326,7 +345,6 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
         binding.recyclerView.apply {
             adapter = wordAdapter
             layoutManager = LinearLayoutManager(this@WordActivity)
-//            ItemTouchHelper(SwipeHelper()).attachToRecyclerView(this)
         }
 //
 //        binding.rvCategory.apply {
@@ -369,5 +387,121 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
             }
         )
         bottomSheet.show(supportFragmentManager, "CurrentCategoryBottomSheet")
+    }
+
+    private fun setUpMotionLayout() {
+        binding.apply {
+            motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
+                override fun onTransitionCompleted(
+                    motionLayout: MotionLayout,
+                    currentId: Int
+                ) {
+                    when (currentId) {
+                        R.id.end -> {
+                            onBlockClick()
+                            focusEditText()
+                            backCallback.isEnabled = true
+                        }
+
+                        R.id.start -> {
+                            onUnClockClick()
+                            unfocusEditText()
+                            backCallback.isEnabled = false
+                        }
+                    }
+                }
+
+                override fun onTransitionStarted(
+                    motionLayout: MotionLayout, startId: Int, endId: Int
+                ) {
+                }
+
+                override fun onTransitionChange(
+                    motionLayout: MotionLayout,
+                    startId: Int,
+                    endId: Int,
+                    progress: Float
+                ) {
+                }
+
+                override fun onTransitionTrigger(
+                    motionLayout: MotionLayout,
+                    triggerId: Int,
+                    positive: Boolean,
+                    progress: Float
+                ) {
+                }
+            })
+        }
+    }
+
+    private fun focusEditText() {
+        binding.etCategoryName.apply {
+            isFocusableInTouchMode = true
+            isFocusable = true
+            setSingleLine(false)
+            maxLines = 2
+            ellipsize = null
+            requestFocus()
+
+            post {
+                showKeyboard(this@WordActivity, this)
+            }
+        }
+    }
+
+
+    private fun unfocusEditText() {
+        binding.etCategoryName.apply {
+            clearFocus()
+            isFocusable = false
+            isFocusableInTouchMode = false
+            setSingleLine(true)
+            maxLines = 1
+            ellipsize = TextUtils.TruncateAt.END
+        }
+        hideKeyboard()
+    }
+
+    private fun onBlockClick() {
+        binding.hideView.apply {
+            isClickable = true
+            isFocusable = true
+        }
+    }
+
+    private fun onUnClockClick() {
+        binding.hideView.apply {
+            isClickable = false
+            isFocusable = false
+        }
+    }
+
+    private fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+    }
+
+    private fun setUpIme() {
+        binding.etCategoryName.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.etCategoryName.clearFocus()
+                hideKeyboard()
+                true
+            } else false
+        }
+    }
+
+    private fun setupBackCallback() {
+        backCallback = object : OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() {
+                binding.motionLayout.transitionToStart()
+                updateCategoryName()
+            }
+        }
+
+        this
+            .onBackPressedDispatcher
+            .addCallback(this, backCallback)
     }
 }

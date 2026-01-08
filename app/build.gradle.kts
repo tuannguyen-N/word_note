@@ -87,4 +87,7 @@ dependencies {
 
     //
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+
+    //motion layout
+    implementation ("androidx.constraintlayout:constraintlayout:2.2.1")
 }

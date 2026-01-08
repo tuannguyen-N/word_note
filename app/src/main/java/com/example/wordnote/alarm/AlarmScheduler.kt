@@ -48,37 +48,40 @@ class AlarmScheduler(private val context: Context) {
     }
 
     /*------------- helper functions ---------------*/
+
     private fun adjustToAllowedTime(triggerAt: Long): Long {
-        val start = AppPreferences.startTimeNotification
+        val start = AppPreferences.startTimeNotification // minutes
         val end = AppPreferences.endTimeNotification
+        val now = System.currentTimeMillis()
+
         val triggerMin = minutesOfDay(triggerAt)
 
-        val crossesMidnight = end < start
-        val isWithinAllowed = if (!crossesMidnight) {
-            triggerMin in start..end
+        // nếu hợp lệ và ở tương lai → giữ nguyên
+        if (isInAllowedRange(triggerMin, start, end) && triggerAt > now) {
+            return triggerAt
+        }
+
+        // lệch sau end (VD: 22:30)
+        if (triggerMin > end) {
+            val offset = triggerMin - end
+            return applyMinutesTomorrow(start + offset)
+        }
+
+        // lệch trước start
+        if (triggerMin < start) {
+            return applyMinutesToday(start)
+        }
+
+        return applyMinutesTomorrow(start)
+    }
+
+
+    private fun isInAllowedRange(minute: Int, start: Int, end: Int): Boolean {
+        return if (start <= end) {
+            minute in start..end
         } else {
-            triggerMin !in (end + 1) until start
+            minute >= start || minute <= end
         }
-
-        if (isWithinAllowed) return triggerAt
-
-        val overflowMinutes = when {
-            !crossesMidnight -> {
-                when {
-                    triggerMin < start -> start - (triggerMin - end)
-                    else -> (triggerMin - end)
-                }
-            }
-
-            else -> {
-                when {
-                    triggerMin in (end + 1) until start -> start - triggerMin
-                    else -> 0
-                }
-            }
-        }
-
-        return applyMinutesTomorrow(start + overflowMinutes)
     }
 
     private fun minutesOfDay(millis: Long): Int {

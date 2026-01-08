@@ -11,12 +11,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.wordnote.R
 import com.example.wordnote.adapter.MeaningAdapter
 import com.example.wordnote.data.AppDatabase
 import com.example.wordnote.data.mapper.toListMeaningData
 import com.example.wordnote.data.repository.WordRepository
 import com.example.wordnote.databinding.ActivitySpellingBeeBinding
+import com.example.wordnote.domain.model.SpellingInputState
 import com.example.wordnote.domain.model.state.SpellingBeeState
 import com.example.wordnote.domain.usecase.LocalWordUseCase
 import com.example.wordnote.manager.SpeakingManager
@@ -96,15 +96,17 @@ class SpellingBeeActivity :
                         enableSubmitButton(state.isSubmitEnabled)
                         setMeaningAdapter(state)
                         handleButtonAnswersUI(state.isShowAnswers)
-                        binding.tvNote.text =if (state.currentWord?.note?.isNotEmpty() ?: false) "Note: " +state.currentWord.note else "No any notes"
+                        binding.tvNote.text = if (state.currentWord?.note?.isNotEmpty()
+                                ?: false
+                        ) "Note: " + state.currentWord.note else "No any notes"
+
+                        renderInputState(state.inputState)
                     }
                 }
 
                 launch {
                     sbViewModel.uiEvent.collect { event ->
                         when (event) {
-                            is SpellingBeeUIEvent.OnCorrect -> showCorrectUI()
-                            is SpellingBeeUIEvent.OnInCorrect -> showIncorrectUI()
                             is SpellingBeeUIEvent.OnNextWord -> showNextWordUI()
                             is SpellingBeeUIEvent.OnFinish -> showFinishUI()
                             is SpellingBeeUIEvent.ShowAnswersUI -> showAnswersUI(event.answer)
@@ -112,6 +114,14 @@ class SpellingBeeActivity :
                     }
                 }
             }
+        }
+    }
+
+    private fun renderInputState(state: SpellingInputState) {
+        binding.containerInput.apply {
+            isActivated = state == SpellingInputState.CORRECT
+            isSelected = state == SpellingInputState.INCORRECT
+            isEnabled = state != SpellingInputState.DISABLED
         }
     }
 
@@ -123,7 +133,6 @@ class SpellingBeeActivity :
 
     private fun showAnswersUI(answer: String) {
         binding.etSpelling.setText(answer)
-        binding.etSpelling.setBackgroundResource(R.drawable.bg_input_spelling_correct)
     }
 
     private fun handleButtonAnswersUI(isShowAnswer: Boolean) {
@@ -147,17 +156,6 @@ class SpellingBeeActivity :
     private fun showNextWordUI() = with(binding) {
         etSpelling.text.clear()
         etSpelling.requestFocus()
-    }
-
-    private fun showIncorrectUI() = with(binding) {
-        etSpelling.setBackgroundResource(R.drawable.bg_input_spelling_incorrect)
-        tvIncorrect.visibility = View.VISIBLE
-    }
-
-    private fun showCorrectUI() = with(binding) {
-        etSpelling.setBackgroundResource(R.drawable.bg_input_spelling_correct)
-        tvIncorrect.visibility = View.GONE
-        tvCorrect.visibility = View.VISIBLE
     }
 
     private fun handleInit() {
@@ -189,9 +187,7 @@ class SpellingBeeActivity :
     private fun setUpEditText() {
         binding.etSpelling.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                binding.etSpelling.setBackgroundResource(R.drawable.bg_input_spelling)
-                binding.tvIncorrect.visibility = View.GONE
-                binding.tvCorrect.visibility = View.GONE
+//                setSpellState(SpellingState.NORMAL)
             }
         }
     }

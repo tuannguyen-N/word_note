@@ -13,16 +13,22 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object Utils {
-    fun shakeView(view: View){
-        val shake = ObjectAnimator.ofFloat(view, "translationX", 0f, 25f, -25f, 15f, -15f, 6f, -6f, 0f)
+    fun shakeView(view: View) {
+        val shake =
+            ObjectAnimator.ofFloat(view, "translationX", 0f, 25f, -25f, 15f, -15f, 6f, -6f, 0f)
         shake.duration = 500
         shake.start()
     }
+
     fun formatTime(hour: Int, minute: Int): String {
         return String.format("%02d:%02d", hour, minute)
     }
+
     fun formatTimeMinutes(totalMinutes: Int): String {
         val hour = totalMinutes / 60
         val minute = totalMinutes % 60
@@ -30,34 +36,49 @@ object Utils {
     }
 }
 
+fun Long.formatDate(): String {
+    return SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(Date(this))
+}
+
 fun Int.toDp(context: Context): Int =
     (this * context.resources.displayMetrics.density).toInt()
 
-fun ColorType.toStyle(): CategoryColorStyle{
-    return when(this){
+fun ColorType.toStyle(): CategoryColorStyle {
+    return when (this) {
         ColorType.NORMAL -> CategoryColorStyle(
             background = R.color.white,
-            textColor = R.color.black
+            textColor = R.color.black,
+            dividerColor = R.color.gray
         )
+
         ColorType.PURPLE -> CategoryColorStyle(
             background = R.color.purple,
-            textColor = R.color.text_purple
+            textColor = R.color.text_purple,
+            dividerColor = R.color.text_purple
         )
+
         ColorType.YELLOW -> CategoryColorStyle(
             background = R.color.orange,
-            textColor = R.color.text_orange
+            textColor = R.color.text_orange,
+            R.color.text_orange
         )
+
         ColorType.GREEN -> CategoryColorStyle(
             background = R.color.green,
-            textColor = R.color.text_green
+            textColor = R.color.text_green,
+            R.color.text_green
         )
+
         ColorType.BLUE -> CategoryColorStyle(
             background = R.color.blue,
-            textColor = R.color.text_blue
+            textColor = R.color.text_blue,
+            R.color.text_blue
         )
+
         ColorType.PIG -> CategoryColorStyle(
             background = R.color.pink,
-            textColor = R.color.text_pink
+            textColor = R.color.text_pink,
+            R.color.text_pink
         )
     }
 }

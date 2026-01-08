@@ -3,7 +3,7 @@
     android:id="@+id/meaning_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:layout_marginBottom="7dp"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
@@ -16,24 +16,26 @@
             android:id="@+id/tvPartOfSpeech"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/bg_tv_noun"
+            android:background="@drawable/bg_tv_verb"
+            android:fontFamily="@font/be_vietnam_pro_bold"
+            android:paddingHorizontal="10dp"
             android:includeFontPadding="false"
-            android:paddingHorizontal="6dp"
-            android:paddingVertical="4dp"
-            android:text="Noun"
+            android:paddingVertical="2dp"
+            android:text="Adj"
             android:textColor="@color/white"
-            android:textSize="10sp"
-            android:textStyle="bold" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tvDefinition"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
+            android:layout_marginStart="7dp"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/be_vietnam_pro_medium"
             android:text="@string/meaning_fuk_fuk_fuk"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
 
     </LinearLayout>
 

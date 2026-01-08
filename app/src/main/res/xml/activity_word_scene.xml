@@ -1,0 +1,135 @@
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@+id/start"
+        motion:duration="250"
+        motion:motionInterpolator="linear" />
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint android:id="@id/application_bar">
+            <CustomAttribute
+                motion:attributeName="BackgroundColor"
+                motion:customColorValue="@color/background" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/etCategoryName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            motion:layout_constraintBottom_toBottomOf="@id/application_bar"
+            motion:layout_constraintEnd_toStartOf="@id/btnAddWord"
+            motion:layout_constraintStart_toEndOf="@id/btn_back"
+            motion:layout_constraintTop_toTopOf="@id/application_bar">
+
+            <CustomAttribute
+                motion:attributeName="TextSize"
+                motion:customDimension="22px" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="?actionBarSize"
+            android:paddingHorizontal="15dp"
+            android:rotation="0.0"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint android:id="@+id/hideView">
+            <CustomAttribute
+                motion:attributeName="BackgroundColor"
+                motion:customColorValue="@color/transparent" />
+            <PropertySet
+                android:visibility="invisible"
+                motion:visibilityMode="ignore" />
+        </Constraint>
+
+    </ConstraintSet>
+
+    <!--END-->
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@id/application_bar"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            motion:layout_constraintTop_toTopOf="parent">
+            <CustomAttribute
+                motion:attributeName="BackgroundColor"
+                motion:customColorValue="@color/white" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/etCategoryName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="10dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/btn_back">
+            <CustomAttribute
+                motion:attributeName="TextSize"
+                motion:customDimension="25px" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/etCategoryNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:visibility="visible"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/etCategoryName">
+            <CustomAttribute
+                motion:attributeName="TextSize"
+                motion:customDimension="15px" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/btnAddWord"
+            android:visibility="gone" />
+
+        <Constraint
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="?actionBarSize"
+            android:paddingHorizontal="15dp"
+            android:rotation="90.0" />
+
+        <Constraint
+            android:id="@+id/btnFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="?actionBarSize"
+            android:layout_marginEnd="5dp"
+            android:paddingHorizontal="15dp"
+            android:visibility="visible"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint android:id="@+id/hideView">
+            <CustomAttribute
+                motion:attributeName="BackgroundColor"
+                motion:customColorValue="@color/color_50" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/layout_detail_category_information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:visibility="visible"
+            motion:layout_constraintBottom_toBottomOf="@id/application_bar"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/etCategoryNote">
+            <PropertySet
+                android:visibility="visible"
+                motion:visibilityMode="ignore" />
+        </Constraint>
+
+    </ConstraintSet>
+</MotionScene>

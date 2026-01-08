@@ -49,6 +49,7 @@ class CategoryAdapter(
 
             cardView.setCardBackgroundColor(view.color(style.background))
             tvDescription.setTextColor(view.color(style.textColor))
+            viewDivider.setBackgroundColor(view.color(style.textColor))
 
             btnStar.setImageResource(if (item.isFavorite) R.drawable.icon_star else R.drawable.icon_star_unselected)
 
@@ -97,7 +98,7 @@ class CategoryAdapter(
             val tv = TextView(view.context).apply {
                 text = "${index + 1}. " + word.replaceFirstChar { it.uppercase() }
                 setTextColor(view.color(R.color.text_color))
-                textSize = 12f
+                textSize = 13f
             }
             layoutWords.addView(tv)
         }

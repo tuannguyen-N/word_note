@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="250dp"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/gray" />
+
+    <TextView
+        android:id="@+id/tvTimeCreated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/be_vietnam_pro_regular"
+        android:text="Created: October 23, 2025"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvWordNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/be_vietnam_pro_regular"
+        android:text="Word number: 20 words"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/tvProgress"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/be_vietnam_pro_regular"-->
+<!--        android:text="Progress: 70%"-->
+<!--        android:textColor="@color/red"-->
+<!--        android:textSize="12sp" />-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <ImageView-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:id="@+id/ivRadioPurple"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_radio_purple" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/ivRadioBlue"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_radio_blue" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/ivRadioGreen"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_radio_green" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/ivRadioYellow"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_radio_yellow" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/ivRadioPig"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_radio_pig" />-->
+
+<!--    </LinearLayout>-->
+</LinearLayout>

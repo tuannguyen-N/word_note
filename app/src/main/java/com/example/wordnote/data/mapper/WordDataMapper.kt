@@ -96,7 +96,8 @@ fun CategoryEntity.toData(): CategoryData =
         name = name,
         description = description,
         color = color,
-        isFavorite = isFavorite
+        isFavorite = isFavorite,
+        createAt = createAt
     )
 
 fun CategoryData.toEntity(): CategoryEntity =
@@ -104,5 +105,6 @@ fun CategoryData.toEntity(): CategoryEntity =
         name = name,
         description = description,
         color = color,
-        isFavorite = isFavorite
+        isFavorite = isFavorite,
+        createAt = createAt
     )

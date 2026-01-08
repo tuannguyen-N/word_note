@@ -19,10 +19,23 @@ class CategoryRepository(
             CategoryEntity(
                 name = name,
                 description = description,
-                color = ColorType.NORMAL
+                color = ColorType.entries.random(),
+                createAt = System.currentTimeMillis()
             )
         )
         return Result.Success()
+    }
+
+    suspend fun countWordsByCategory(id: Int): Int {
+        return categoryDao.countWordsByCategory(id)
+    }
+
+    suspend fun getCategory(id: Int): CategoryData {
+        return categoryDao.getCategory(id).toData()
+    }
+
+    suspend fun updateCategoryName(id: Int, name: String) {
+//        categoryDao.updateCategoryName(id, name.lowercase())
     }
 
     suspend fun toggleFavorite(id: Int){

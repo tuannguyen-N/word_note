@@ -20,7 +20,6 @@ class WordAdapter(
     private val onDeleteWord: (Int) -> Unit,
     private val onChangeCategory: (Int) -> Unit
 ) : BaseAdapter<WordData>() {
-
     override fun doGetViewType(position: Int): Int = R.layout.item_word
 
     @SuppressLint("NotifyDataSetChanged")
@@ -34,7 +33,7 @@ class WordAdapter(
         binding.tvPhonetic.text = item.phonetic
         binding.tvNote.text = item.note.ifEmpty { view.context.getString(R.string.note) }
         binding.btnStartStudying.updateStudyIcon(item.startStudiedTime > 0)
-        binding.btnStartStudying.isEnabled = item.level < 2
+//        binding.btnStartStudying.isEnabled = item.level < 2
         binding.ivLevel.setImageResource(
             when (item.level) {
                 1 -> R.drawable.vocab_level_1
@@ -55,9 +54,9 @@ class WordAdapter(
             onAction(item)
         }
 
-//        binding.btnSpeaking.setSafeOnClickListener {
-//            onSpeaking(item.word)
-//        }
+        binding.btnSpeaking.setSafeOnClickListener {
+            onSpeaking(item.word)
+        }
 
         binding.btnDelete.setSafeOnClickListener {
             onDeleteWord(item.id)

@@ -10,6 +10,7 @@ import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.domain.model.state.WordState
 import com.example.wordnote.domain.model.Result
 import com.example.wordnote.domain.model.SortType
+import com.example.wordnote.domain.usecase.LocalCategoryUseCase
 import com.example.wordnote.manager.SpeakingManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class)
 class WordViewModel(
     private val localWordUseCase: LocalWordUseCase,
+    private val localCategoryUseCase: LocalCategoryUseCase,
     private val speakingManager: SpeakingManager,
 ) : ViewModel() {
 
@@ -67,12 +69,8 @@ class WordViewModel(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), WordState())
 
-    private val _categories = localWordUseCase.getCategories()?.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = emptyList()
-    )
-    val categories = _categories
+    private val _currentCategory = MutableStateFlow<CategoryData?>(null)
+    val currentCategory = _currentCategory.asStateFlow()
 
     init {
         performShowLoading(true)
@@ -112,9 +110,24 @@ class WordViewModel(
                 action.wordId,
                 action.categoryId
             )
+
+            is WordAction.ToggleFavorite -> performToggleFavorite()
+
+            is WordAction.OnUpdateCategoryName -> performUpdateCategoryName(action.name, action.description)
         }
     }
 
+    private fun performUpdateCategoryName(name: String, description: String) {
+        viewModelScope.launch {
+            localCategoryUseCase.updateCategory(_categoryId.value!!, name, description)
+        }
+    }
+
+    private fun performToggleFavorite() {
+        viewModelScope.launch {
+            localCategoryUseCase.toggleFavorite(_categoryId.value!!)
+        }
+    }
 
     private fun performChangeCategory(wordId: Int, categoryId: Int) {
         viewModelScope.launch {
@@ -124,6 +137,15 @@ class WordViewModel(
 
     private fun performInitCategory(id: Int) {
         _categoryId.value = id
+
+        viewModelScope.launch {
+            val category = localCategoryUseCase.getCategory(id)
+            val count = localCategoryUseCase.countWordsByCategory(id)
+
+            _currentCategory.value = category.copy(
+                wordNumber = count
+            )
+        }
     }
 
     private fun performSearchWord(query: String) {

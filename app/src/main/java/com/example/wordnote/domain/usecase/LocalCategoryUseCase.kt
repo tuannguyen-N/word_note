@@ -15,6 +15,14 @@ class LocalCategoryUseCase(
         categoryRepository.deleteCategory(id)
     }
 
+    suspend fun countWordsByCategory(id: Int): Int {
+        return categoryRepository.countWordsByCategory(id)
+    }
+
+    suspend fun getCategory(id: Int): CategoryData {
+        return categoryRepository.getCategory(id)
+    }
+
     suspend fun deleteCategories(selectedIds: List<Int>) {
         categoryRepository.deleteCategories(selectedIds)
     }
@@ -26,7 +34,7 @@ class LocalCategoryUseCase(
         return categoryIds.associateWith { id ->
             categoryRepository.getWordsByCategoryId(id)
                 .shuffled()
-                .take((5..9).random())
+                .take((5..15).random())
         }
     }
 
