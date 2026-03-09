@@ -84,7 +84,7 @@
                     android:id="@+id/switchAppNotification"
                     android:layout_width="55dp"
                     android:layout_height="20dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:theme="@style/ThemeOverlay.App.MaterialSwitch"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

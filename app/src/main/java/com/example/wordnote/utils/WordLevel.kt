@@ -45,7 +45,10 @@ fun getDelay(wordLevel: Int): Long {
 }
 
 val WordLevel.nextTrigger: Long
-    get() = System.currentTimeMillis() + getDelay()
+    get() {
+        val jitterMs = (-5..5).random() * 60 * 1000L
+        return System.currentTimeMillis() + getDelay() + jitterMs
+    }
 
 enum class TimeLevel(val unitInMillis: Long) {
     LEVEL_1(60 * 1000L),

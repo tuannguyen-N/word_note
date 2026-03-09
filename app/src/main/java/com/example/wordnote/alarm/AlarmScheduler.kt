@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
-import android.util.Log
 import com.example.wordnote.data.AppPreferences
 import com.example.wordnote.domain.model.WordData
 
@@ -62,23 +61,24 @@ class AlarmScheduler(private val context: Context) {
 
         if (isWithinAllowed) return triggerAt
 
-        val overflowMinutes = when {
-            !crossesMidnight -> {
-                when {
-                    triggerMin < start -> start - (triggerMin - end)
-                    else -> (triggerMin - end)
-                }
+        return if (!crossesMidnight) {
+            when {
+                // Trước giờ bắt đầu → hôm nay lúc start
+                triggerMin < start -> applyMinutesToday(start)
+                // Sau giờ kết thúc → ngày mai lúc start
+                else               -> applyMinutesTomorrow(start)
             }
-
-            else -> {
-                when {
-                    triggerMin in (end + 1) until start -> start - triggerMin
-                    else -> 0
-                }
+        } else {
+            // Vùng cấm: từ end+1 đến start-1 → dời về hôm nay lúc start (hoặc ngày mai tùy vị trí)
+            // triggerMin nằm trong khoảng (end..start) → dời về start hôm nay nếu chưa qua, hoặc ngày mai
+            val now = minutesOfDay(System.currentTimeMillis())
+            if (triggerMin in (end + 1) until start) {
+                if (now >= start || now <= end) applyMinutesToday(start)
+                else applyMinutesTomorrow(start)
+            } else {
+                triggerAt // đã trong vùng cho phép (nhưng logic trên đã chặn)
             }
         }
-
-        return applyMinutesTomorrow(start + overflowMinutes)
     }
 
     private fun minutesOfDay(millis: Long): Int {

@@ -2,6 +2,7 @@ package com.example.wordnote.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Pair
 
 object AppPreferences {
     private const val NAME = "Note_App"
@@ -48,51 +49,30 @@ object AppPreferences {
 
     private const val TIME_LEVEL_1 = "time_level_1"
     var timeLevel1: Long
-        get() = preferences.getLong(TIME_LEVEL_1, 30 * 60 * 1000L) // 30'
+        get() = preferences.getLong(TIME_LEVEL_1, 2 * 60 * 60 * 1000L) // 60'
         set(value) = preferences.edit {
             it.putLong(TIME_LEVEL_1, value)
         }
 
     private const val TIME_LEVEL_2 = "time_level_2"
     var timeLevel2: Long
-        get() = preferences.getLong(TIME_LEVEL_2, 3 * 24 * 60 * 60 * 1000L) // 3days
+        get() = preferences.getLong(TIME_LEVEL_2, 1 * 24 * 60 * 60 * 1000L) // 1 days
         set(value) = preferences.edit {
             it.putLong(TIME_LEVEL_2, value)
         }
 
     private const val TIME_LEVEL_3 = "time_level_3"
     var timeLevel3: Long
-        get() = preferences.getLong(TIME_LEVEL_3, 7 * 24 * 60 * 60 * 1000L) // a week
+        get() = preferences.getLong(TIME_LEVEL_3, 3 * 24 * 60 * 60 * 1000L) // 3
         set(value) = preferences.edit {
             it.putLong(TIME_LEVEL_3, value)
         }
 
-    private const val TIME_LEVEL_4 = "time_level_3"
+    private const val TIME_LEVEL_4 = "time_level_4"
     var timeLevel4: Long
-        get() = preferences.getLong(TIME_LEVEL_4, 30 * 24 * 60 * 60 * 1000L) // a month
+        get() = preferences.getLong(TIME_LEVEL_4, 7 * 24 * 60 * 60 * 1000L) // a week
         set(value) = preferences.edit {
             it.putLong(TIME_LEVEL_4, value)
-        }
-
-    private val CAN_SHOW_SWIPE_HINT = Pair("can_show_swipe_hint", true)
-    var canShowSwipeHint: Boolean
-        get() = preferences.getBoolean(
-            CAN_SHOW_SWIPE_HINT.first,
-            CAN_SHOW_SWIPE_HINT.second
-        )
-        set(value) = preferences.edit {
-            it.putBoolean(CAN_SHOW_SWIPE_HINT.first, value)
-        }
-
-    private val NEED_OPEN_SETTINGS_FOR_VIDEO_PERMISSION =
-        Pair("need_open_settings_for_video_permission", false)
-    var needOpenSettingForVideoPermission: Boolean
-        get() = preferences.getBoolean(
-            NEED_OPEN_SETTINGS_FOR_VIDEO_PERMISSION.first,
-            NEED_OPEN_SETTINGS_FOR_VIDEO_PERMISSION.second
-        )
-        set(value) = preferences.edit {
-            it.putBoolean(NEED_OPEN_SETTINGS_FOR_VIDEO_PERMISSION.first, value)
         }
 
     private val NEED_OPEN_SETTINGS_FOR_READ_AUDIO_PERMISSION =
@@ -104,16 +84,6 @@ object AppPreferences {
         )
         set(value) = preferences.edit {
             it.putBoolean(NEED_OPEN_SETTINGS_FOR_READ_AUDIO_PERMISSION.first, value)
-        }
-    private val NEED_OPEN_SETTINGS_FOR_RECORD_AUDIO_PERMISSION =
-        Pair("need_open_settings_for_record_audio_permission", false)
-    var needOpenSettingForRecordAudioPermission: Boolean
-        get() = preferences.getBoolean(
-            NEED_OPEN_SETTINGS_FOR_RECORD_AUDIO_PERMISSION.first,
-            NEED_OPEN_SETTINGS_FOR_RECORD_AUDIO_PERMISSION.second
-        )
-        set(value) = preferences.edit {
-            it.putBoolean(NEED_OPEN_SETTINGS_FOR_RECORD_AUDIO_PERMISSION.first, value)
         }
 
     private val NEED_OPEN_SETTINGS_FOR_NOTIFICATION_PERMISSION =

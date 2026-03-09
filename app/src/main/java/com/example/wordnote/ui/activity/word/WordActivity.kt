@@ -198,6 +198,7 @@ class WordActivity : BaseActivity<ActivityWordBinding>(ActivityWordBinding::infl
 //        lifecycleScope.launch(Dispatchers.Main) { ... }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+
                 launch {
                     wordViewModel.state.collect { wordState ->
                         loadingUI(wordState)
