@@ -19,10 +19,27 @@ class CategoryRepository(
             CategoryEntity(
                 name = name,
                 description = description,
-                color = ColorType.NORMAL
+                color = ColorType.entries.random(),
+                createAt = System.currentTimeMillis()
             )
         )
         return Result.Success()
+    }
+
+    suspend fun countWordsByCategory(id: Int): Int {
+        return categoryDao.countWordsByCategory(id)
+    }
+
+    suspend fun getCategory(id: Int): CategoryData {
+        return categoryDao.getCategory(id).toData()
+    }
+
+    suspend fun updateCategoryName(id: Int, name: String) {
+//        categoryDao.updateCategoryName(id, name.lowercase())
+    }
+
+    suspend fun toggleFavorite(id: Int){
+        categoryDao.toggleFavorite(id)
     }
 
     suspend fun deleteCategory(id: Int) {
@@ -44,5 +61,7 @@ class CategoryRepository(
         return categoryDao.getCategories().map { list -> list.map { it.toData() } }
     }
 
-    fun getCategoriesWithWordLevel(): Flow<List<CategoryData>> = categoryDao.getCategoriesWithWordCount()
+    suspend fun getWordsByCategoryId(id: Int):List<String> = categoryDao.getWordsByCategoryId(id)
+
+//    fun getCategoriesWithWordLevel(): Flow<List<CategoryData>> = categoryDao.getCategoriesWithWordCount()
 }

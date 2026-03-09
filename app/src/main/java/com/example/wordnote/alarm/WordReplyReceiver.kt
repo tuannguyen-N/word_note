@@ -14,6 +14,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class WordReplyReceiver : BroadcastReceiver() {
+    companion object{
+        const val SCORE_CORRECT = 2
+        const val SCORE_WRONG = -2
+    }
+
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context == null || intent == null) return
         val wordRepository = WordRepository(AppDatabase.getInstance(context).wordDao)
@@ -31,12 +36,12 @@ class WordReplyReceiver : BroadcastReceiver() {
             var delta = 0
 
             if (word.word.equals(replyText, ignoreCase = true)) {
-                delta = 1
+                delta = SCORE_CORRECT
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Correct!", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                delta = -1
+                delta = SCORE_WRONG
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Wrong!", Toast.LENGTH_SHORT).show()
                 }

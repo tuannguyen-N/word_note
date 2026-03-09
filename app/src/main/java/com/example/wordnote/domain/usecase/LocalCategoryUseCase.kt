@@ -15,6 +15,14 @@ class LocalCategoryUseCase(
         categoryRepository.deleteCategory(id)
     }
 
+    suspend fun countWordsByCategory(id: Int): Int {
+        return categoryRepository.countWordsByCategory(id)
+    }
+
+    suspend fun getCategory(id: Int): CategoryData {
+        return categoryRepository.getCategory(id)
+    }
+
     suspend fun deleteCategories(selectedIds: List<Int>) {
         categoryRepository.deleteCategories(selectedIds)
     }
@@ -22,6 +30,18 @@ class LocalCategoryUseCase(
     suspend fun updateCategory(id: Int, name: String, description: String): Result =
         categoryRepository.updateCategory(id, name.lowercase(), description)
 
+    suspend fun getPreviewWords(categoryIds: List<Int>): Map<Int, List<String>> {
+        return categoryIds.associateWith { id ->
+            categoryRepository.getWordsByCategoryId(id)
+                .shuffled()
+                .take((5..15).random())
+        }
+    }
+
+    suspend fun toggleFavorite(id: Int) {
+        categoryRepository.toggleFavorite(id)
+    }
+
     fun getCategories(): Flow<List<CategoryData>> = categoryRepository.getCategories()
-    fun getCategoriesWithWordLevel(): Flow<List<CategoryData>> = categoryRepository.getCategoriesWithWordLevel()
+//    fun getCategoriesWithWordLevel(): Flow<List<CategoryData>> = categoryRepository.getCategoriesWithWordLevel()
 }

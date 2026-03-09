@@ -36,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:visibility="gone"
             android:text="abc words"
             android:textColor="@color/gray" />
     </LinearLayout>

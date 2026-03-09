@@ -3,7 +3,7 @@ package com.example.wordnote.ui.activity.setting.note_alerts
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordnote.data.AppPreferences
-import com.example.wordnote.domain.usecase.NoteAlertSettingUseCase
+import com.example.wordnote.domain.usecase.SettingUseCase
 import com.example.wordnote.utils.TimeLevel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,12 +13,12 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class NoteAlertViewModel(
-    private val noteAlertSettingUseCase: NoteAlertSettingUseCase,
+    private val settingUseCase: SettingUseCase,
 ) : ViewModel() {
     private val _uiEvent = MutableSharedFlow<NoteAlertSettingUIEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
-    val quiteHourList = noteAlertSettingUseCase.getQuiteHour().stateIn(
+    val quiteHourList = settingUseCase.getQuiteHour().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
@@ -61,13 +61,13 @@ class NoteAlertViewModel(
 
     private fun performSaveQuiteHour(startTime: Long, endTime: Long) {
         viewModelScope.launch {
-            noteAlertSettingUseCase.insertQuiteHour(startTime, endTime)
+            settingUseCase.insertQuiteHour(startTime, endTime)
         }
     }
 
     private fun performDeleteQuiteHour(id: Int) {
         viewModelScope.launch {
-            noteAlertSettingUseCase.deleteQuiteHour(id)
+            settingUseCase.deleteQuiteHour(id)
         }
     }
 
@@ -88,7 +88,7 @@ class NoteAlertViewModel(
 
     private fun updateWordsNextTriggerAfterTimeRangeChange(newStart: Int, newEnd: Int) {
         viewModelScope.launch {
-            val words = noteAlertSettingUseCase.getWordByStudiedTime()
+            val words = settingUseCase.getWordByStudiedTime()
 
             words.forEach { word ->
 
@@ -99,7 +99,7 @@ class NoteAlertViewModel(
                 val triggerMinutes = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE)
 
                 if (triggerMinutes in newStart..newEnd) {
-                    noteAlertSettingUseCase.scheduleWord(word)
+                    settingUseCase.scheduleWord(word)
                     return@forEach
                 }
 
@@ -119,9 +119,9 @@ class NoteAlertViewModel(
 
                 val newTriggerTime = cal.timeInMillis
 
-                noteAlertSettingUseCase.stopAlarm(word.id!!)
-                noteAlertSettingUseCase.updateNextTrigger(word.id, newTriggerTime)
-                noteAlertSettingUseCase.scheduleWord(word.copy(nextTriggerTime = newTriggerTime))
+                settingUseCase.stopAlarm(word.id!!)
+                settingUseCase.updateNextTrigger(word.id, newTriggerTime)
+                settingUseCase.scheduleWord(word.copy(nextTriggerTime = newTriggerTime))
             }
         }
     }
@@ -129,20 +129,20 @@ class NoteAlertViewModel(
 
     private fun performStartStudying(id: Int) {
         viewModelScope.launch {
-            noteAlertSettingUseCase.startStudying(id)
+            settingUseCase.startStudying(id)
         }
     }
 
     private fun performStopStudying(id: Int) {
         viewModelScope.launch {
-            noteAlertSettingUseCase.stopStudying(id)
+            settingUseCase.stopStudying(id)
         }
     }
 
     private fun checkAndApplyMaxWords(maxWords: Int) {
         viewModelScope.launch {
             val currentMax = AppPreferences.maxWords
-            val studyingCount = noteAlertSettingUseCase.countStudyingWord()
+            val studyingCount = settingUseCase.countStudyingWord()
 
             if (studyingCount <= maxWords) {
                 val isDecrease = maxWords < currentMax
@@ -156,7 +156,7 @@ class NoteAlertViewModel(
                 }
             } else {
                 sendUIEvent(NoteAlertSettingUIEvent.ResetSeekBar(currentMax.toFloat() / 5))
-                sendUIEvent(NoteAlertSettingUIEvent.ShowDialogWordAvailable(noteAlertSettingUseCase.getWordByStudiedTime()))
+                sendUIEvent(NoteAlertSettingUIEvent.ShowDialogWordAvailable(settingUseCase.getWordByStudiedTime()))
             }
         }
     }
@@ -171,20 +171,20 @@ class NoteAlertViewModel(
 
     private fun saveRemainingTime() {
         viewModelScope.launch {
-            val words = noteAlertSettingUseCase.getWordByStudiedTime()
+            val words = settingUseCase.getWordByStudiedTime()
 
             words.forEach { word ->
-                noteAlertSettingUseCase.updateRemainingTime(word)
-                noteAlertSettingUseCase.stopAlarm(word.id!!)
+                settingUseCase.updateRemainingTime(word)
+                settingUseCase.stopAlarm(word.id!!)
             }
         }
     }
 
     private fun restoreRemainingAlarms() {
         viewModelScope.launch {
-            val words = noteAlertSettingUseCase.getAllWords()
+            val words = settingUseCase.getAllWords()
             words.forEach { word ->
-                noteAlertSettingUseCase.updateNextTrigger(word)
+                settingUseCase.updateNextTrigger(word)
             }
         }
     }

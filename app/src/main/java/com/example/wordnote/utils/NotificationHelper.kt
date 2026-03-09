@@ -44,7 +44,7 @@ object NotificationHelper {
             .build()
         val replyIntent = Intent(context, WordReplyReceiver::class.java).apply {
             putExtra("WORD_ID", word.id)
-            putExtra(NOTIFICATION_ID, word.id)
+            putExtra(NOTIFICATION_ID, notificationId(word.id))
         }
         val replyPendingIntent = PendingIntent.getBroadcast(
             context,
@@ -71,8 +71,14 @@ object NotificationHelper {
             definitions.forEach { inboxStyle.addLine(it) }
             notificationText = definitions.firstOrNull() ?: ""
         }
+        val title = if (word.level == 1) {
+            word.word.upperFirstChar()
+        } else {
+            "What's this word ?"
+        }
+
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle("What's this word ?")
+            .setContentTitle(title)
             .setContentText(notificationText)
             .setSmallIcon(R.drawable.icon_notification)
             .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.image_cry))
@@ -82,8 +88,10 @@ object NotificationHelper {
             .addAction(replyAction)
 
         val nm = NotificationManagerCompat.from(context)
-        nm.notify(word.id + 1, builder.build())
+        nm.notify(notificationId(word.id), builder.build())
     }
+
+    private fun notificationId(wordId: Int) = wordId + 1
 
     private fun createChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

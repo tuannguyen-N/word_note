@@ -82,8 +82,7 @@ fun SeekBarTime(
     )
 }
 
-@Preview(showBackground = true)
 @Composable
-fun PreviewSeekBarTime() {
-    SeekBar(value = 0.5f, onValueChange = {}, onValueChangeFinish = {})
+fun SeekBarTime() {
+    SeekBarTime(value = 0.5f, onValueChange = {}, onValueChangeFinish = {})
 }

@@ -2,14 +2,12 @@ package com.example.wordnote.ui.activity.setting.note_alerts
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.wordnote.alarm.AlarmScheduler
-import com.example.wordnote.domain.usecase.NoteAlertSettingUseCase
-import com.example.wordnote.ui.activity.main.MainViewModel
+import com.example.wordnote.domain.usecase.SettingUseCase
 
 class NoteAlertSettingViewModelFactory(
-    private val noteAlertSettingUseCase: NoteAlertSettingUseCase,
+    private val settingUseCase: SettingUseCase,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return NoteAlertViewModel(noteAlertSettingUseCase) as T
+        return NoteAlertViewModel(settingUseCase) as T
     }
 }

@@ -16,6 +16,7 @@
     <color name="pink">#FD9FFF</color>
     <color name="text_pink">#7E257F</color>
     <color name="text_color">#3F414E</color>
+    <color name="color_50">#4D000000</color>
     <color name="black1">#535059</color>
     <color name="hint">#BEBCC5</color>
     <color name="white">#FFFFFFFF</color>
@@ -33,9 +34,10 @@
     <color name="blue1">#1c828d</color>
     <color name="gray">#929191</color>
     <color name="gray1">#EEF0F4</color>
+    <color name="gray2">#D9D9D9</color>
     <color name="red">#ef4444</color>
     <color name="red_30">#4DF97171</color>
-    <color name="icon">#968ce4</color>
+    <color name="icon">#17c8ec</color>
     <color name="font_title">#726F7E</color>
     <color name="button">#f476a3</color>
     <color name="background_gray">#e8e9f0</color>

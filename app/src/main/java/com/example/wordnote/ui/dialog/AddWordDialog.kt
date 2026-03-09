@@ -12,6 +12,7 @@ import com.example.wordnote.databinding.DialogAddWordBinding
 import com.example.wordnote.domain.model.WordData
 import com.example.wordnote.utils.loadGlideImage
 import com.example.wordnote.utils.setSafeOnClickListener
+import com.example.wordnote.utils.showKeyboard
 
 class AddWordDialog(
     private val onEnter: (String) -> Unit,
@@ -21,6 +22,7 @@ class AddWordDialog(
         super.onViewCreated(view, savedInstanceState)
         setUpView()
         setOnClick()
+        showKeyboard(requireContext(), requireView())
     }
 
     private fun setUpView() {
@@ -63,5 +65,4 @@ class AddWordDialog(
         binding.etWord.setBackgroundResource(R.drawable.background_et_border_error)
         binding.tvError.visibility = View.VISIBLE
     }
-
 }

@@ -1,6 +1,8 @@
 package com.example.wordnote.adapter
 
+import android.annotation.SuppressLint
 import android.view.View
+import android.widget.TextView
 import com.example.wordnote.R
 import com.example.wordnote.databinding.ItemCategoryAddBinding
 import com.example.wordnote.databinding.ItemCategoryBinding
@@ -14,7 +16,8 @@ class CategoryAdapter(
     private val onClickItem: (CategoryData) -> Unit = {},
     private val onPlay: (CategoryData) -> Unit,
     private val onAddClick: () -> Unit,
-    private val onDeleteMode: (Boolean) -> Unit
+    private val onDeleteMode: (Boolean) -> Unit,
+    private val onClickStar: (Int) -> Unit
 ) : BaseAdapter<CategoryItem>() {
     private var deleteMode = false
     private val selectedIds = mutableListOf<Int>()
@@ -40,12 +43,15 @@ class CategoryAdapter(
         val style = item.color.toStyle()
 
         binding.apply {
-            tvNameCategory.text = item.name
-            tvDescription.text = item.description
+            tvNameCategory.text = item.name.replaceFirstChar { it.uppercase() }
+            tvDescription.text = item.description.replaceFirstChar { it.uppercase() }
             tvDescription.visibility = if (item.description.isEmpty()) View.GONE else View.VISIBLE
 
             cardView.setCardBackgroundColor(view.color(style.background))
             tvDescription.setTextColor(view.color(style.textColor))
+            viewDivider.setBackgroundColor(view.color(style.textColor))
+
+            btnStar.setImageResource(if (item.isFavorite) R.drawable.icon_star else R.drawable.icon_star_unselected)
 
             if (deleteMode) {
                 ivSelected.visibility = View.VISIBLE
@@ -53,6 +59,8 @@ class CategoryAdapter(
             } else {
                 ivSelected.visibility = View.GONE
             }
+
+            bindPreviewWord(item, view) // view for preview word
 
             root.setOnClickListener {
                 if (deleteMode) {
@@ -73,6 +81,26 @@ class CategoryAdapter(
             tvNameCategory.setSafeOnClickListener {
                 if (!deleteMode) onPlay(item)
             }
+
+            btnStar.setOnClickListener {
+                onClickStar(item.id!!)
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun ItemCategoryBinding.bindPreviewWord(item: CategoryData, view: View) {
+        layoutWords.removeAllViews()
+
+        tvNoWords.visibility = if (item.previewWords.isEmpty()) View.VISIBLE else View.GONE
+
+        item.previewWords.forEachIndexed { index, word ->
+            val tv = TextView(view.context).apply {
+                text = "${index + 1}. " + word.replaceFirstChar { it.uppercase() }
+                setTextColor(view.color(R.color.text_color))
+                textSize = 13f
+            }
+            layoutWords.addView(tv)
         }
     }
 
@@ -90,6 +118,7 @@ class CategoryAdapter(
         if (index != -1) notifyItemChanged(index)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun changeToDeleteMode(enable: Boolean) {
         deleteMode = enable
         if (!enable) {
@@ -115,12 +144,4 @@ class CategoryAdapter(
     }
 
     fun getSelectedIds(): List<Int> = selectedIds.toList()
-
-    fun getDeleteMode(): Boolean = deleteMode
-
-    fun resetState(){
-        selectedIds.clear()
-        deleteMode = false
-        notifyDataSetChanged()
-    }
 }

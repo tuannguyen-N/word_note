@@ -50,64 +50,64 @@
                     android:gravity="center_vertical">
 
                     <TextView
-                        android:layout_marginEnd="10dp"
                         android:id="@+id/tvNameCategory"
-                        android:layout_width="0dp"
-                        android:layout_weight="@integer/material_motion_duration_long_1"
+                        android:layout_width="325dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/be_vietnam_bold"
-                        android:includeFontPadding="false"
-                        android:text="Category"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="@integer/material_motion_duration_long_1"
                         android:ellipsize="end"
+                        android:fontFamily="@font/be_vietnam_pro_semibold"
+                        android:includeFontPadding="false"
                         android:maxLines="1"
+                        android:text="@string/category"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/btnStar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@drawable/icon_star_unselected" />
 
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvDescription"
-                    android:layout_marginTop="2dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Discreption you fucki"
-                    android:includeFontPadding="false"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/be_vietnam_medium"
-                    android:textColor="@color/text_purple"/>
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/be_vietnam_pro_medium"
+                    android:textStyle="italic"
+                    android:text="@string/discreption_you_fucki"
+                    android:textColor="@color/text_purple"
+                    android:textSize="13sp" />
 
                 <View
+                    android:id="@+id/viewDivider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/gray" />
 
-                <androidx.recyclerview.widget.RecyclerView
+                <LinearLayout
+                    android:id="@+id/layoutWords"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/item_word_in_category" />
+                    android:orientation="vertical" />
 
                 <TextView
+                    android:id="@+id/tvNoWords"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:fontFamily="@font/be_vietnam_italic"
+                    android:layout_height="80dp"
+                    android:fontFamily="@font/be_vietnam_pro_regular"
+                    android:textStyle="italic"
                     android:gravity="center"
-                    android:text="No words"
-                    android:textColor="@color/gray"
+                    android:text="@string/no_words"
+                    android:textColor="@color/text_color"
                     android:visibility="gone" />
 
             </LinearLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

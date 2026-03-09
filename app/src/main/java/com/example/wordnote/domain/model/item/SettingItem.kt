@@ -10,20 +10,20 @@ data class SettingItem(
     val action: SettingAction
 ) {
     companion object {
-        fun getList(): List<SettingItem> =
-            listOf(
-                SettingItem(
-                    R.drawable.ic_notification_setting,
-                    title = R.string.note_alerts,
-                    detail = R.string.configure_how_your_nalerts_are_received,
-                    action = SettingAction.OpenNoteAlertSetting
-                ),
-                SettingItem(
-                    R.drawable.ic_volume,
-                    title = R.string.voice_setting,
-                    detail = R.string.configure_how_your_voice_is_received,
-                    action = SettingAction.OpenVoiceSetting
-                )
-            )
+//        fun getList(): List<SettingItem> =
+//            listOf(
+//                SettingItem(
+//                    R.drawable.ic_notification_setting,
+//                    title = R.string.note_alerts,
+//                    detail = R.string.configure_how_your_nalerts_are_received,
+//                    action = SettingAction.OpenNoteAlertSetting
+//                ),
+//                SettingItem(
+//                    R.drawable.ic_volume,
+//                    title = R.string.voice_setting,
+//                    detail = R.string.configure_how_your_voice_is_received,
+//                    action = SettingAction.OpenVoiceSetting
+//                )
+//            )
     }
 }

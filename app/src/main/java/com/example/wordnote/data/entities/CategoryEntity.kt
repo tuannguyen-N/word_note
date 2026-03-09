@@ -10,5 +10,7 @@ data class CategoryEntity (
     val id: Int = 0,
     val name: String,
     val description: String = "",
-    val color: ColorType = ColorType.NORMAL
+    val color: ColorType = ColorType.NORMAL,
+    val isFavorite: Boolean = false,
+    val createAt: Long = 0
 )

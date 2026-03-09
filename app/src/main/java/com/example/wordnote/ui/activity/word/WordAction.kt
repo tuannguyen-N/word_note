@@ -5,6 +5,8 @@ import com.example.wordnote.domain.model.SortType
 
 sealed interface WordAction {
     object OnShowAddWordDialog : WordAction
+    object ToggleFavorite: WordAction
+    data class OnUpdateCategoryName(val name: String, val description: String): WordAction
     data class OnOpenDetailWordDialog(val word: WordData) : WordAction
     data class OnSpeakingWord(val word: String) : WordAction
     data class OnSaveWord(val word: String) : WordAction
